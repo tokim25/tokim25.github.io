@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feedback Coach, a case study by Tony Kim</title>
+  <meta name="description" content="Case study: a Slack-based feedback coach built on Stripe's SBIN framework, a take-home assignment for a Learning Architect role." />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a href="../index.html" class="site-nav__brand">Tony Kim</a>
+      <ul class="site-nav__links">
+        <li><a href="../index.html#case-studies">Case Studies</a></li>
+        <li><a href="../resume.html">Resume</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="wrap case-top-nav">
+    <a href="../index.html#case-studies">&larr; All case studies</a>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <img src="../assets/logos/stripe.svg" alt="Stripe" style="height: 28px; width: auto; margin: 0 auto var(--space-md);" />
+      <p class="hero__eyebrow">Case Study &middot; Take-home Assignment &middot; Stripe</p>
+      <h1 class="hero__headline">Nobody needs the whole framework. They need help in the next five minutes.</h1>
+      <p class="hero__sub">Feedback Coach is a Slack-based coach built on Stripe's own SBIN framework, made as a take-home assignment for a Learning Architect role. Not internal Stripe work, and the outcome of that application isn't part of this write-up.</p>
+      <p class="hero__prompt">Try it yourself: click through a real coaching session below.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap" style="max-width: 1400px;">
+      <div class="visual-block reveal" style="aspect-ratio: auto; height: 900px;">
+        <iframe src="https://embed.figma.com/proto/eePScncBu1mTTmqWrKmMo4/Stripe-Feedback-Coach---Slack-Onboarding-Prototype?node-id=33-149&viewport=-1137%2C-2195%2C0.39&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=12%3A2&show-proto-sidebar=1&page-id=0%3A1&embed-host=share" allowfullscreen loading="lazy" title="Feedback Coach Figma prototype"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <p class="section__eyebrow">The Problem</p>
+      <h2 class="section__title">The framework was fine. The moment it was needed wasn't.</h2>
+      <p class="section__lede">Most people never finish reading Stripe's 2,000-word SBIN framework page. The gap wasn't the content, it was personalized help applying it right when it's hardest to think straight: right before a real feedback conversation, or right after one that didn't go the way you'd hoped.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Design</p>
+        <p class="detail-row__body">Two modes, nothing heavier. Prepare structures what you want to say before a real conversation. Debrief breaks down how one actually went after the fact. No upfront self-assessment gate, people land in the mode they need and start talking.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Voice</p>
+        <p class="detail-row__body">I synthesized a register from Stripe's own Operating Principles and marketing voice: direct and warm. A vulnerable moment needs candor, not corporate distance.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Coaching logic</p>
+        <p class="detail-row__body">The coach is grounded in SBIN and trained on Stripe's own voice, so its advice sounds like Stripe rather than something generic. People share their actual situations, not hypotheticals, and get advice specific to what they wrote. It lives in Slack, where people already talk to their colleagues.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <p class="section__eyebrow">Key Design Decisions</p>
+      <h2 class="section__title">The calls that shaped the build.</h2>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Guardrail</p>
+        <p class="detail-row__body">Any attempt to draft real review content gets redirected to Stripe's actual approved tool. This coach is for everyday practice, not formal review documentation, and it says so upfront.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Coach, don't force</p>
+        <p class="detail-row__body">One nudge per SBIN component, then move on. Pushback gets logged as a growth area instead of blocking the conversation.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">A rubric to score against</p>
+        <p class="detail-row__body">Scoring a live draft takes a structured judgment call, not just conceptual guidance, so I built a Weak / Strong / Stronger rubric myself. It's labeled as my own construction, pending real validation, not Stripe's official stance.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Character clarity</p>
+        <p class="detail-row__body">Colored tags and a "stepping out" line mark the difference between the coach role-playing a conversation and the coach actually coaching, so it's never ambiguous which mode you're in.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="section__eyebrow">Working With Claude</p>
+      <h2 class="section__title">The brief documents this directly.</h2>
+      <p class="section__lede">I mapped my own process against Anthropic's AI Fluency framework, the four D's, right inside the deliverable:</p>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Delegation</p>
+        <p class="detail-row__body">Claude handled the research, drafting, and the Figma build. The learning outcomes, scope calls, and anything touching a real person's rubric or privacy stayed with me.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Description</p>
+        <p class="detail-row__body">I gave Claude real constraints: the SBIN framework, a hard line between everyday coaching and formal review, and I asked for options and reasoning before anything got built.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Discernment</p>
+        <p class="detail-row__body">I caught a writing-style audit that hadn't actually run until I checked.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Diligence</p>
+        <p class="detail-row__body">The scoring rubric and practice scenarios are labeled as my own construction, pending real validation. The privacy language is explicit placeholder text, pending stakeholder review.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <p class="section__eyebrow">Measurement Plan</p>
+      <h2 class="section__title">Three signals, not one score.</h2>
+      <div class="trust-strip">
+        <div class="trust-item reveal">
+          <p class="trust-item__stat">Usage</p>
+          <p class="trust-item__label">Slack analytics and click-throughs to the guide, tracked monthly</p>
+        </div>
+        <div class="trust-item reveal">
+          <p class="trust-item__stat">Effectiveness</p>
+          <p class="trust-item__label">SBIN rubric score trend on each person's weakest component, monthly</p>
+        </div>
+        <div class="trust-item reveal">
+          <p class="trust-item__stat">Behavior change</p>
+          <p class="trust-item__label">Fewer vague or character-judgment patterns in real feedback, aggregated cohorts, quarterly</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="section__eyebrow">Artifacts</p>
+      <h2 class="section__title">The full suite.</h2>
+
+      <p class="section__lede" style="margin-bottom: var(--space-md);">A few more screens from the same prototype, for reference.</p>
+      <div class="device-stack reveal">
+        <div class="shot-card">
+          <img src="../assets/images/feedback-coach-composer.jpg" alt="A Stripe types their situation into the composer, and the coach works from exactly that." loading="lazy" />
+          <p class="shot-card__caption">Specific, not generic. Stripes share their actual scenarios, not hypotheticals, and get advice specific to their situation.</p>
+        </div>
+        <div class="shot-card">
+          <img src="../assets/images/feedback-coach-sbin-scoring-v2.jpg" alt="Coaching scored per SBIN component, called out by name, against what this Stripe actually wrote." loading="lazy" />
+          <p class="shot-card__caption">Coaching scored per SBIN component, called out by name, against what this Stripe actually wrote.</p>
+        </div>
+        <div class="shot-card">
+          <img src="../assets/images/feedback-coach-role-play-cropped.jpg" alt="The 'AS MANAGER' tag marks the role-play; the 'COACH' tag marks the moment the bot steps out to give real feedback." loading="lazy" />
+          <p class="shot-card__caption">The "AS MANAGER" tag marks the role-play; the "COACH" tag marks the moment the bot steps out to give real feedback.</p>
+        </div>
+      </div>
+
+      <p class="section__lede" style="max-width: none; margin-top: var(--space-lg); margin-bottom: var(--space-md);">Learning Strategy Brief, covering the design decisions and measurement plan.</p>
+      <div class="device-stack reveal">
+        <div class="shot-card">
+          <img src="../assets/images/feedback-coach-key-decisions-cropped.jpg" alt="Key design decisions from the Learning Strategy Brief: voice, onboarding, compliance guardrail, coaching logic, scoring rubric, and character clarity." loading="lazy" />
+          <p class="shot-card__caption">Key design decisions</p>
+        </div>
+        <div class="shot-card">
+          <img src="../assets/images/feedback-coach-measurement.jpg" alt="Measurement strategy from the Learning Strategy Brief: three signals, usage, effectiveness, and behavior change, mapped to the learning outcomes." loading="lazy" />
+          <p class="shot-card__caption">Measurement strategy</p>
+        </div>
+      </div>
+
+      <ul class="link-list" style="margin-top: var(--space-lg);">
+        <li>
+          <span class="link-list__title">Redesigned feedback guide</span>
+          <a href="https://tokim25.github.io/solid-spork/stripe-feedback-guide.html" target="_blank" rel="noopener" class="link-list__meta">stripe-feedback-guide.html &rarr;</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="ai-use">
+        <h3>AI use on this site</h3>
+        <p>Case studies, supporting visual assets, and prototype artifacts on this site were assembled with the assistance of Claude (Anthropic), including drafting narrative content, sourcing screenshots from my own Figma files, and building working prototypes. I reviewed all AI-assisted content, verified the factual claims and figures against my own project records, and made the substantive decisions about what to include, how to frame it, and what conclusions to draw. This work reflects my judgment, and I take full responsibility for its accuracy.</p>
+      </div>
+      <p class="site-footer__meta"><a href="../index.html#case-studies">&larr; Back to all case studies</a></p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
