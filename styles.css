@@ -401,6 +401,15 @@ section + section {
   display: block;
 }
 
+.device__screen > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* Rule: every device shell gets an explicit width (not just max-width) so
    it renders at full, consistent size in any layout context, including
    flex columns like .device-stack, where auto margins alone would let it
