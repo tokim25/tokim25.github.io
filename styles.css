@@ -129,8 +129,8 @@ img {
 }
 
 .hero__photo {
-  width: 112px;
-  height: 112px;
+  width: 168px;
+  height: 168px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto var(--space-md);
