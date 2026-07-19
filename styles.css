@@ -447,6 +447,12 @@ section + section {
   background: #000;
 }
 
+/* Overrides the default 16:10 macbook screen ratio for videos recorded at a
+   different aspect ratio, so object-fit: cover doesn't crop the content. */
+.device--macbook .device__screen--video {
+  aspect-ratio: 49 / 25;
+}
+
 .device--iphone {
   max-width: 220px;
   width: 100%;
