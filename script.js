@@ -2,6 +2,53 @@
 // Respects prefers-reduced-motion (handled in CSS; this just skips the
 // IntersectionObserver work when motion is reduced).
 
+// Case study navigation dropdown: CSS handles hover; this adds click, keyboard,
+// outside-click, and Escape behavior for touch and non-pointer users.
+
+(function () {
+  var dropdowns = document.querySelectorAll(".site-nav__item--dropdown");
+  if (dropdowns.length === 0) return;
+
+  function setOpen(dropdown, open) {
+    var trigger = dropdown.querySelector(".site-nav__dropdown-trigger");
+    dropdown.dataset.open = open ? "true" : "false";
+    trigger.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  dropdowns.forEach(function (dropdown) {
+    var trigger = dropdown.querySelector(".site-nav__dropdown-trigger");
+
+    trigger.addEventListener("click", function () {
+      setOpen(dropdown, dropdown.dataset.open !== "true");
+    });
+
+    dropdown.addEventListener("focusout", function (event) {
+      if (!dropdown.contains(event.relatedTarget)) {
+        setOpen(dropdown, false);
+      }
+    });
+  });
+
+  document.addEventListener("click", function (event) {
+    dropdowns.forEach(function (dropdown) {
+      if (!dropdown.contains(event.target)) {
+        setOpen(dropdown, false);
+      }
+    });
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+
+    dropdowns.forEach(function (dropdown) {
+      if (dropdown.dataset.open === "true") {
+        setOpen(dropdown, false);
+        dropdown.querySelector(".site-nav__dropdown-trigger").focus();
+      }
+    });
+  });
+})();
+
 (function () {
   var prefersReduced = window.matchMedia(
     "(prefers-reduced-motion: reduce)"

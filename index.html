@@ -13,7 +13,21 @@
     <div class="wrap">
       <a href="#top" class="site-nav__brand">Tony Kim</a>
       <ul class="site-nav__links">
-        <li><a href="#case-studies">Case Studies</a></li>
+        <li class="site-nav__item--dropdown">
+          <button class="site-nav__dropdown-trigger" type="button" aria-expanded="false" aria-controls="case-studies-menu">
+            Case Studies <span class="site-nav__dropdown-chevron" aria-hidden="true">&#9662;</span>
+          </button>
+          <ul class="site-nav__dropdown" id="case-studies-menu" aria-label="Case studies">
+            <li><a href="#case-studies">All case studies</a></li>
+            <li><a href="case-studies/workprint.html">Workprint</a></li>
+            <li><a href="case-studies/feedback-coach.html">Feedback Coach</a></li>
+            <li><a href="case-studies/experiences-services.html">Airbnb Experiences</a></li>
+            <li><a href="case-studies/5-star-hosting.html">5-Star Hosting</a></li>
+            <li><a href="case-studies/pricing.html">Pricing Your Place</a></li>
+            <li><a href="case-studies/workday-learning-needs-survey.html">Workday Learning Needs Survey</a></li>
+            <li><a href="case-studies/pandora-onboarding.html">Pandora Onboarding</a></li>
+          </ul>
+        </li>
         <li><a href="resume.html">Resume</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>

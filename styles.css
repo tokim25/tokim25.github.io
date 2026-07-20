@@ -104,21 +104,110 @@ img {
 
 .site-nav__links {
   display: flex;
+  align-items: stretch;
   gap: var(--space-md);
+  height: 100%;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.site-nav__links a {
+.site-nav__links > li {
+  display: flex;
+  align-items: center;
+}
+
+.site-nav__links a,
+.site-nav__dropdown-trigger {
   font-size: var(--size-small);
   text-decoration: none;
   color: var(--color-ink-soft);
   transition: color 0.2s ease;
 }
 
-.site-nav__links a:hover {
+.site-nav__links a:hover,
+.site-nav__dropdown-trigger:hover {
   color: var(--color-ink);
+}
+
+.site-nav__item--dropdown {
+  position: relative;
+}
+
+.site-nav__dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.site-nav__dropdown-chevron {
+  font-size: 0.7em;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.site-nav__dropdown {
+  position: absolute;
+  top: calc(100% - 1px);
+  right: 0;
+  width: min(280px, calc(100vw - 2rem));
+  margin: 0;
+  padding: var(--space-xs);
+  list-style: none;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+
+.site-nav__dropdown a {
+  display: block;
+  padding: 0.65rem 0.75rem;
+  border-radius: 9px;
+  color: var(--color-ink);
+  line-height: 1.25;
+}
+
+.site-nav__dropdown a:hover,
+.site-nav__dropdown a:focus-visible {
+  background: var(--color-bg-alt);
+}
+
+.site-nav__item--dropdown:hover .site-nav__dropdown,
+.site-nav__item--dropdown[data-open="true"] .site-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.site-nav__item--dropdown:hover .site-nav__dropdown-chevron,
+.site-nav__item--dropdown[data-open="true"] .site-nav__dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+  .site-nav__links {
+    gap: var(--space-sm);
+  }
+
+  .site-nav__dropdown {
+    position: fixed;
+    top: 51px;
+    right: var(--space-sm);
+    left: var(--space-sm);
+    width: auto;
+    max-height: calc(100vh - 67px);
+    overflow-y: auto;
+  }
 }
 
 /* ---- Hero ---- */
