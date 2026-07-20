@@ -167,6 +167,7 @@ img {
   line-height: 1.05;
   margin: 0 auto var(--space-md);
   max-width: 900px;
+  text-wrap: balance;
 }
 
 .hero__sub {
@@ -246,6 +247,7 @@ section + section {
   line-height: 1.1;
   margin: 0 0 var(--space-md);
   max-width: 760px;
+  text-wrap: balance;
 }
 
 .section__lede {
@@ -633,6 +635,16 @@ section + section {
 
 .device-figure {
   margin: 0;
+}
+
+/* Pre-composited device screenshots (bezel baked in from a real device
+   mockup, e.g. Figma's iPhone 17 Pro) rather than a CSS-drawn frame. */
+.device-photo {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.25));
 }
 
 .device-stack {
