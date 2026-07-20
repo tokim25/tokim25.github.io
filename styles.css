@@ -136,6 +136,22 @@ img {
   margin: 0 auto var(--space-md);
 }
 
+.hero__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-md);
+  font-weight: 600;
+  font-size: var(--size-body-lg);
+  color: var(--color-ink);
+}
+
+.hero__brand-logo {
+  height: 28px;
+  width: auto;
+}
+
 .hero__eyebrow {
   font-size: var(--size-small);
   color: var(--color-ink-soft);
@@ -306,6 +322,18 @@ section + section {
   justify-content: space-between;
   gap: var(--space-md);
   flex-wrap: wrap;
+}
+
+.download-cta {
+  margin-top: var(--space-md);
+}
+
+.download-cta__note {
+  max-width: var(--max-width-text);
+  margin: var(--space-sm) 0 0;
+  font-size: var(--size-small);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
 }
 
 .link-list li:last-child {

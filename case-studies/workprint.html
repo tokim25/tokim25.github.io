@@ -26,6 +26,10 @@
 
   <header class="hero">
     <div class="wrap">
+      <div class="hero__brand">
+        <img src="../assets/logos/workprint.svg" alt="" class="hero__brand-logo" />
+        <span>Workprint</span>
+      </div>
       <p class="hero__eyebrow">Case Study &middot; Product Prototype</p>
       <h1 class="hero__headline">The history wasn't gone. It was just scattered.</h1>
       <p class="hero__sub">Workprint rebuilds the story of a project from its scattered pieces: docs, messages, commits, so nothing gets lost between handoffs.</p>
@@ -34,12 +38,12 @@
 
   <section>
     <div class="wrap">
-      <div class="device device--macbook reveal">
+      <div class="device device--macbook">
         <div class="device__lid">
           <span class="device__camera" aria-hidden="true"></span>
           <div class="device__screen">
             <div class="device__scroll">
-              <img src="../assets/images/workprint-01-hero.jpg" alt="Workprint landing screen: 'See the story behind your work.'" class="device__image" loading="lazy" />
+              <img src="../assets/images/workprint-01-hero.jpg" alt="Workprint landing screen: 'See what you did, what AI did, and how the work came together.'" class="device__image" loading="lazy" />
             </div>
           </div>
         </div>
@@ -67,7 +71,7 @@
       </div>
       <div class="detail-row reveal">
         <p class="detail-row__label">Collaborators</p>
-        <p class="detail-row__body">Built with ChatGPT, Codex, GitHub, and Figma. Each handled a different part of the work, but the product decisions, what to build and why, stayed mine. I reviewed everything before it shipped.</p>
+        <p class="detail-row__body">Built with ChatGPT, Codex, Claude Code, GitHub, and Figma. Each handled a different part of the work, but the product decisions, what to build and why, stayed mine. I reviewed everything before it shipped.</p>
       </div>
     </div>
   </section>
@@ -76,13 +80,13 @@
     <div class="wrap">
       <p class="section__eyebrow">Artifacts</p>
       <h2 class="section__title">What came out of it.</h2>
-      <div class="device-stack reveal">
+      <div class="device-stack">
         <div class="device device--macbook">
           <div class="device__lid">
             <span class="device__camera" aria-hidden="true"></span>
             <div class="device__screen">
               <div class="device__scroll">
-                <img src="../assets/images/workprint-02-sources.jpg" alt="Workprint's source selection screen: GitHub repository, project files, and conversation history." class="device__image" loading="lazy" />
+                <img src="../assets/images/workprint-02-sources.jpg" alt="Workprint's source screen: sample project places including conversation export, project files, and repository history, each marked found, limited, or not available." class="device__image" loading="lazy" />
               </div>
             </div>
           </div>
@@ -93,22 +97,44 @@
             <span class="device__camera" aria-hidden="true"></span>
             <div class="device__screen">
               <div class="device__scroll">
-                <img src="../assets/images/workprint-03-investigating.jpg" alt="Workprint's investigating screen, showing progress through reading the project and finding key moments." class="device__image" loading="lazy" />
+                <img src="../assets/images/workprint-03-investigating.jpg" alt="Workprint's evidence drawer, 'Why Workprint believes this,' showing the specific evidence behind an insight and what it does not prove." class="device__image" loading="lazy" />
               </div>
             </div>
           </div>
-          <p class="device-caption device-caption--plain">Investigating the project</p>
+          <p class="device-caption device-caption--plain">Investigating the evidence</p>
         </div>
         <div class="device device--macbook">
           <div class="device__lid">
             <span class="device__camera" aria-hidden="true"></span>
             <div class="device__screen">
               <div class="device__scroll">
-                <img src="../assets/images/workprint-04-discovery.jpg" alt="Workprint's first discovery screen: 'You consistently set the direction,' with supporting evidence and stated limits." class="device__image" loading="lazy" />
+                <img src="../assets/images/workprint-04-discovery.jpg" alt="Workprint's first discovery screen: 'You repeatedly set the direction,' with a moderate confidence badge, supporting evidence, and stated limits." class="device__image" loading="lazy" />
               </div>
             </div>
           </div>
           <p class="device-caption device-caption--plain">First discovery</p>
+        </div>
+        <div class="device device--macbook">
+          <div class="device__lid">
+            <span class="device__camera" aria-hidden="true"></span>
+            <div class="device__screen">
+              <div class="device__scroll">
+                <img src="../assets/images/workprint-05-ai-fluency-evidence.jpg" alt="Workprint's local Claude session evidence, showing recorded Claude Code, Claude Cowork, and Claude Desktop Chat activity for this project, organized under Anthropic's AI Fluency Framework." class="device__image" loading="lazy" />
+              </div>
+            </div>
+          </div>
+          <p class="device-caption device-caption--plain">AI Fluency evidence</p>
+        </div>
+        <div class="device device--macbook">
+          <div class="device__lid">
+            <span class="device__camera" aria-hidden="true"></span>
+            <div class="device__screen">
+              <div class="device__scroll">
+                <img src="../assets/images/workprint-06-playbook-worksheet.jpg" alt="Workprint's generated report, built from eight evidence sources, with a downloadable AI Fluency Playbook Worksheet." class="device__image" loading="lazy" />
+              </div>
+            </div>
+          </div>
+          <p class="device-caption device-caption--plain">Exporting the Playbook Worksheet</p>
         </div>
       </div>
       <ul class="link-list" style="margin-top: var(--space-md);">
@@ -117,6 +143,10 @@
           <a href="https://github.com/tokim25/Workprint" class="link-list__meta">github.com/tokim25/Workprint &rarr;</a>
         </li>
       </ul>
+      <div class="download-cta">
+        <a href="https://github.com/tokim25/Workprint/releases/download/v0.1.0/Workprint-0.1.0-arm64.dmg" class="btn btn--primary">Download for Mac</a>
+        <p class="download-cta__note">This is an unsigned build, so macOS will say it can&rsquo;t verify the developer the first time you open it. That&rsquo;s expected, not a bug &mdash; right-click the app and choose Open once, and it launches normally after that.<br />Apple Silicon Macs only (M1 or later). No Intel Mac, Windows, or Linux build yet.</p>
+      </div>
     </div>
   </section>
 
