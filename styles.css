@@ -259,6 +259,16 @@ img {
   text-wrap: balance;
 }
 
+.hero__headline--pandora {
+  font-size: clamp(2.25rem, 5.25vw, 4.5rem);
+}
+
+@media (min-width: 760px) {
+  .hero__headline--pandora .hero__headline-nowrap {
+    white-space: nowrap;
+  }
+}
+
 .hero__sub {
   font-size: var(--size-body-lg);
   color: var(--color-ink-soft);
