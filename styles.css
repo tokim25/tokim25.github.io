@@ -751,6 +751,58 @@ section + section {
   gap: var(--space-lg);
 }
 
+/* ---- Workprint: reasoning flow ---- */
+
+.workprint-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workprint-flow__item {
+  min-height: 260px;
+  padding: var(--space-md);
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  background: var(--color-bg);
+}
+
+.workprint-flow__step {
+  margin: 0 0 var(--space-lg);
+  color: var(--color-ink-soft);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workprint-flow__item h3 {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--size-body-lg);
+  letter-spacing: -0.01em;
+}
+
+.workprint-flow__item > p:last-child {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 760px) {
+  .workprint-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .workprint-flow__item {
+    min-height: 0;
+  }
+
+  .workprint-flow__step {
+    margin-bottom: var(--space-md);
+  }
+}
+
 .device-caption {
   display: block;
   text-align: center;

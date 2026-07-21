@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Workprint, a case study by Tony Kim</title>
-  <meta name="description" content="Case study: Workprint, an AI-assisted project reconstruction tool." />
+  <meta name="description" content="Case study: Workprint, an open-source desktop app that turns bounded project evidence into inspectable, AI-assisted insights." />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R22E9YHFLX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,7 +12,7 @@
     gtag('js', new Date());
     gtag('config', 'G-R22E9YHFLX');
   </script>
-  <link rel="stylesheet" href="../styles.css?v=20260720-nav" />
+  <link rel="stylesheet" href="../styles.css?v=20260721-workprint" />
 </head>
 <body>
 
@@ -49,9 +49,9 @@
         <img src="../assets/logos/workprint.svg" alt="" class="hero__brand-logo" />
         <span>Workprint</span>
       </div>
-      <p class="hero__eyebrow">Case Study &middot; Product Prototype</p>
+      <p class="hero__eyebrow">Case Study &middot; Open-source Desktop App</p>
       <h1 class="hero__headline">The history wasn't gone. It was just scattered.</h1>
-      <p class="hero__sub">Workprint rebuilds the story of a project from its scattered pieces: docs, messages, commits, so nothing gets lost between handoffs.</p>
+      <p class="hero__sub">Workprint reconstructs how a project came together from Git history, project files, and AI conversations, then turns that evidence into AI-assisted insights you can inspect.</p>
     </div>
   </header>
 
@@ -74,7 +74,7 @@
     <div class="wrap">
       <p class="section__eyebrow">The Problem</p>
       <h2 class="section__title">Project history goes missing the moment people move on.</h2>
-      <p class="section__lede">When a project changes hands, most of what mattered, the decisions, the reasoning, the dead ends, lives in scattered docs, chat threads, and half-remembered conversations. Workprint's job is to pull that history back together into something a new owner can actually trust.</p>
+      <p class="section__lede">The decisions, the reasoning, and the dead ends live across notes, files, AI conversations, and Git history. Even when that evidence can be recovered, metadata makes it easy to claim more than it proves. Workprint had to rebuild the story without inventing one.</p>
     </div>
   </section>
 
@@ -82,7 +82,7 @@
     <div class="wrap">
       <div class="detail-row reveal">
         <p class="detail-row__label">Role</p>
-        <p class="detail-row__body">Product strategy, experience architecture, and UX writing. I set the direction and structured the flow, then wrote every piece of copy in the product myself.</p>
+        <p class="detail-row__body">Product strategy, experience architecture, trust model, and UX writing. I set the direction, defined what the evidence could and could not support, structured the reasoning flow, and wrote the product copy.</p>
       </div>
       <div class="detail-row reveal">
         <p class="detail-row__label">Visual Direction</p>
@@ -97,8 +97,46 @@
 
   <section class="section-alt">
     <div class="wrap">
-      <p class="section__eyebrow">Artifacts</p>
-      <h2 class="section__title">What came out of it.</h2>
+      <p class="section__eyebrow">The Trust Model</p>
+      <h2 class="section__title">An insight isn't useful if you can't challenge it.</h2>
+      <p class="section__lede">The latest build separates what happens locally from what leaves the device, then makes every conclusion show its work.</p>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Choose the provider</p>
+        <p class="detail-row__body">OpenAI, Claude, and Gemini appear as equal bring-your-own-key choices. There is no default, and the API key is used for that report and not saved by Workprint.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Send only what's needed</p>
+        <p class="detail-row__body">Workprint collects evidence locally. Before reasoning begins, it explains that selected excerpts and metadata will leave the device, not the whole project folder, and reminds the user to confirm they have permission to send it.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Show the evidence and the limit</p>
+        <p class="detail-row__body">Each provider response is checked against the evidence IDs it cites. The result shows why Workprint believes the claim and what the same evidence still cannot determine.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="section__eyebrow">Product Flow</p>
+      <h2 class="section__title">Choose the evidence. Choose the model. Check the claim.</h2>
+      <p class="section__lede">The newest flow makes the handoff to AI visible, then brings the user back to the evidence before asking them to trust the result.</p>
+      <ol class="workprint-flow" aria-label="Workprint reasoning flow">
+        <li class="workprint-flow__item reveal">
+          <p class="workprint-flow__step">01 &middot; Collect locally</p>
+          <h3>See what Workprint found.</h3>
+          <p>Review the project files, Git history, and local AI sessions available as evidence.</p>
+        </li>
+        <li class="workprint-flow__item reveal">
+          <p class="workprint-flow__step">02 &middot; Choose a provider</p>
+          <h3>Decide who reasons over it.</h3>
+          <p>Select OpenAI, Claude, or Gemini for the report. Workprint does not pick one for you.</p>
+        </li>
+        <li class="workprint-flow__item reveal">
+          <p class="workprint-flow__step">03 &middot; Inspect the result</p>
+          <h3>Open the claim and check it.</h3>
+          <p>Trace the insight back to its evidence, then read what that evidence does not prove.</p>
+        </li>
+      </ol>
       <div class="device-stack">
         <div class="device device--macbook">
           <div class="device__lid">
@@ -165,19 +203,49 @@
     </div>
   </section>
 
+  <section class="section-alt">
+    <div class="wrap">
+      <p class="section__eyebrow">Claude Skill</p>
+      <h2 class="section__title">Bring the investigation into the conversation.</h2>
+      <p class="section__lede">The Workprint Claude skill connects through a local MCP server, so someone can investigate a project in Claude Desktop or Claude Code without leaving the conversation they're already in.</p>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Three focused tools</p>
+        <p class="detail-row__body">Claude can list the sources Workprint supports, preview the evidence available in a project, or run a structured investigation against a project path.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Read-only by design</p>
+        <p class="detail-row__body">The tools cannot change project files or Workprint's settings. Every call requires an explicit local project path, so the integration does not assume what Claude should inspect.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">Bounded by default</p>
+        <p class="detail-row__body">Claude gets a compact report with findings, counts, unknowns, and limits. Full observations and timelines appear only when someone asks for them.</p>
+      </div>
+      <ul class="link-list" style="margin-top: var(--space-lg);">
+        <li>
+          <span class="link-list__title">Workprint Claude skill setup</span>
+          <a href="https://github.com/tokim25/Workprint/blob/main/docs/mcp-server.md" class="link-list__meta">Read the integration guide &rarr;</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <section>
     <div class="wrap">
       <p class="section__eyebrow">Outcome</p>
       <h2 class="section__title">In alpha release now.</h2>
-      <p class="section__lede">Workprint's alpha is live: a real, downloadable desktop app, verified against real project data, open source under Apache 2.0. It's still buggy &mdash; but here's what actually exists today:</p>
+      <p class="section__lede">The public alpha is a downloadable macOS desktop app. The current development build adds three-provider reasoning, evidence-linked limits, and the Claude integration above. It's still buggy, but here's what actually exists today:</p>
       <div class="trust-strip">
         <div class="trust-item reveal">
-          <p class="trust-item__stat">Alpha release</p>
-          <p class="trust-item__label">Downloadable now</p>
+          <p class="trust-item__stat">Downloadable alpha</p>
+          <p class="trust-item__label">Apple Silicon macOS app</p>
         </div>
         <div class="trust-item reveal">
-          <p class="trust-item__stat">Real desktop app</p>
-          <p class="trust-item__label">No browser, no setup</p>
+          <p class="trust-item__stat">Three providers</p>
+          <p class="trust-item__label">OpenAI, Claude, or Gemini in the latest development build</p>
+        </div>
+        <div class="trust-item reveal">
+          <p class="trust-item__stat">Inside Claude</p>
+          <p class="trust-item__label">Three read-only investigation tools</p>
         </div>
         <div class="trust-item reveal">
           <p class="trust-item__stat">Open source</p>
