@@ -206,24 +206,32 @@
 
   <section class="section-alt">
     <div class="wrap">
-      <p class="section__eyebrow">Claude Skill</p>
-      <h2 class="section__title">Bring the investigation into the conversation.</h2>
-      <p class="section__lede">The Workprint Claude skill connects through a local MCP server, so someone can investigate a project in Claude Desktop or Claude Code without leaving the conversation they're already in.</p>
+      <p class="section__eyebrow">No Install</p>
+      <h2 class="section__title">Bring the investigation into a conversation you're already having.</h2>
+      <p class="section__lede">No Mac, or don't want to download anything yet? The same investigation approach ships as a Claude Skill and a ChatGPT Custom GPT — drop a project folder into a conversation you already have open.</p>
       <div class="detail-row reveal">
-        <p class="detail-row__label">Three focused tools</p>
-        <p class="detail-row__body">Claude can list the sources Workprint supports, preview the evidence available in a project, or run a structured investigation against a project path.</p>
+        <p class="detail-row__label">Two platforms, one set of rules</p>
+        <p class="detail-row__body">The Claude Skill and the ChatGPT Custom GPT both apply the same evidence-boundary and claim rules, so an insight means the same thing whichever one you're using.</p>
       </div>
       <div class="detail-row reveal">
-        <p class="detail-row__label">Read-only by design</p>
-        <p class="detail-row__body">The tools cannot change project files or Workprint's settings. Every call requires an explicit local project path, so the integration does not assume what Claude should inspect.</p>
+        <p class="detail-row__label">A lighter-weight Workprint</p>
+        <p class="detail-row__body">These bundles apply the rules through instructions, not the desktop app's full deterministic validation pipeline. Good for trying the idea quickly; the desktop app remains the more rigorously checked experience.</p>
       </div>
       <div class="detail-row reveal">
-        <p class="detail-row__label">Bounded by default</p>
-        <p class="detail-row__body">Claude gets a compact report with findings, counts, unknowns, and limits. Full observations and timelines appear only when someone asks for them.</p>
+        <p class="detail-row__label">A real example</p>
+        <p class="detail-row__body">Run on a real internal feedback-coach project, the skill's first insight read: &ldquo;The user consistently took authorship of the words while directing AI to verify, structure, time, and review &mdash; a delegation pattern that held across both sessions in evidence.&rdquo; Evidence-linked, not a compliment &mdash; and it named what it couldn't determine right alongside it.</p>
+      </div>
+      <div class="detail-row reveal">
+        <p class="detail-row__label">A separate, technical option: MCP</p>
+        <p class="detail-row__body">Workprint can also run as a local MCP server so Claude Desktop or Claude Code calls it directly — a different integration from the Skill above, requiring this repository's Python backend running locally.</p>
       </div>
       <ul class="link-list" style="margin-top: var(--space-lg);">
         <li>
-          <span class="link-list__title">Workprint Claude skill setup</span>
+          <span class="link-list__title">Claude Skill &amp; ChatGPT Custom GPT bundle</span>
+          <a href="https://github.com/tokim25/workprint-skills" class="link-list__meta">github.com/tokim25/workprint-skills &rarr;</a>
+        </li>
+        <li>
+          <span class="link-list__title">MCP server setup (technical)</span>
           <a href="https://github.com/tokim25/Workprint/blob/main/docs/mcp-server.md" class="link-list__meta">Read the integration guide &rarr;</a>
         </li>
       </ul>
@@ -245,8 +253,8 @@
           <p class="trust-item__label">OpenAI, Claude, or Gemini in the latest development build</p>
         </div>
         <div class="trust-item reveal">
-          <p class="trust-item__stat">Inside Claude</p>
-          <p class="trust-item__label">Three read-only investigation tools</p>
+          <p class="trust-item__stat">Two platforms</p>
+          <p class="trust-item__label">Claude Skill and ChatGPT Custom GPT, no install required</p>
         </div>
         <div class="trust-item reveal">
           <p class="trust-item__stat">Open source</p>
