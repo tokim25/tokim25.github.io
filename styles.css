@@ -396,12 +396,14 @@ section + section {
   border-radius: 14px;
   padding: var(--space-md);
   background: var(--color-bg-alt);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 0 0 rgba(38, 32, 26, 0);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .case-card:hover {
   border-color: var(--color-accent);
   transform: translateY(-2px);
+  box-shadow: 0 10px 24px -14px rgba(38, 32, 26, 0.28);
 }
 
 .case-card__logo {
@@ -970,6 +972,31 @@ section + section {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* A gentle per-row cascade for lists of .reveal siblings (timeline, resume
+   roles) -- entries a little further down the list settle in a beat later,
+   so scrolling through a career reads as unfolding rather than a flat wall
+   appearing at once. Capped at 6 so a long list doesn't feel laggy. */
+.timeline__entry.reveal:nth-child(1) { transition-delay: 0s; }
+.timeline__entry.reveal:nth-child(2) { transition-delay: 0.06s; }
+.timeline__entry.reveal:nth-child(3) { transition-delay: 0.12s; }
+.timeline__entry.reveal:nth-child(4) { transition-delay: 0.18s; }
+.timeline__entry.reveal:nth-child(5) { transition-delay: 0.24s; }
+.timeline__entry.reveal:nth-child(n+6) { transition-delay: 0.3s; }
+
+.resume-role.reveal:nth-child(1) { transition-delay: 0s; }
+.resume-role.reveal:nth-child(2) { transition-delay: 0.06s; }
+.resume-role.reveal:nth-child(3) { transition-delay: 0.12s; }
+.resume-role.reveal:nth-child(4) { transition-delay: 0.18s; }
+.resume-role.reveal:nth-child(5) { transition-delay: 0.24s; }
+.resume-role.reveal:nth-child(n+6) { transition-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__entry.reveal,
+  .resume-role.reveal {
+    transition-delay: 0s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
