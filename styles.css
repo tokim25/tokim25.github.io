@@ -1,39 +1,48 @@
 /* ==========================================================================
    Tony Kim — Portfolio
-   Shared visual system
+   Shared visual system: "Field Notes"
 
-   Structural principles borrowed from Apple's product pages (whitespace,
-   scale, restraint, one section = one idea, progressive disclosure of
-   detail). Palette and typeface are original, not Apple's.
+   A career told like a working notebook, not a corporate deck. Cream paper,
+   espresso ink, a warm brass accent, an editorial serif for headlines, a
+   humanist sans for reading, monospace for dates and tags, and a rare
+   handwritten line for asides. Type mechanics (scale, tracking, weight,
+   rhythm) are tuned for that serif, not inherited from the old Apple-style
+   system: no negative letter-spacing on the serif, a smaller and more
+   intimate display scale, and tighter vertical rhythm than a product page.
    ========================================================================== */
 
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&display=swap");
+
 :root {
-  /* Palette: neutral base, single accent */
-  --color-bg: #ffffff;
-  --color-bg-alt: #f5f5f7;
-  --color-ink: #1d1d1f;
-  --color-ink-soft: #48484c;
-  --color-line: #d8d8dc;
-  --color-accent: #2a5adf;
+  /* Palette: warm neutral base (paper/ink), one accent hue (brass) */
+  --color-bg: #f7f2e7;
+  --color-bg-alt: #fdfbf6;
+  --color-ink: #26201a;
+  --color-ink-soft: #726a5c;
+  --color-line: #e4dbc8;
+  --color-accent: #b5652e;
   --color-accent-ink: #ffffff;
 
   /* Type scale */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+  --font-serif: "Lora", Georgia, "Times New Roman", serif;
+  --font-sans: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Helvetica, Arial, sans-serif;
-  --size-hero: clamp(2.5rem, 6vw, 5rem);
-  --size-h1: clamp(2rem, 4vw, 3.25rem);
-  --size-h2: clamp(1.5rem, 3vw, 2.25rem);
-  --size-body-lg: clamp(1.125rem, 1.6vw, 1.375rem);
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --font-hand: "Caveat", cursive;
+  --size-hero: clamp(2.25rem, 4.6vw, 3.75rem);
+  --size-h1: clamp(1.75rem, 3.1vw, 2.5rem);
+  --size-h2: clamp(1.375rem, 2.2vw, 1.75rem);
+  --size-body-lg: clamp(1.0625rem, 1.4vw, 1.25rem);
   --size-body: 1.0625rem;
   --size-small: 0.9375rem;
 
-  /* Rhythm */
+  /* Rhythm — closer than a product page; this reads like a page, not a deck */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
-  --space-lg: 4rem;
-  --space-xl: 8rem;
-  --space-2xl: 12rem;
+  --space-lg: 3.25rem;
+  --space-xl: 5.5rem;
+  --space-2xl: 7rem;
 
   --max-width: 1100px;
   --max-width-text: 640px;
@@ -83,7 +92,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(247, 242, 231, 0.88);
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -96,10 +105,20 @@ img {
 }
 
 .site-nav__brand {
+  font-family: var(--font-serif);
   font-weight: 600;
-  font-size: var(--size-small);
+  font-size: 1.05rem;
   text-decoration: none;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.site-nav__brand::after {
+  content: "*";
+  color: var(--color-accent);
+  font-size: 0.85em;
 }
 
 .site-nav__links {
@@ -159,10 +178,10 @@ img {
   margin: 0;
   padding: var(--space-xs);
   list-style: none;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--color-bg-alt);
   border: 1px solid var(--color-line);
-  border-radius: 14px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 18px 45px rgba(38, 32, 26, 0.12);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
@@ -218,11 +237,12 @@ img {
 }
 
 .hero__photo {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 176px;
+  height: 176px;
+  border-radius: 12px;
   object-fit: cover;
   margin: 0 auto var(--space-md);
+  border: 1px solid var(--color-line);
 }
 
 .hero__brand {
@@ -242,20 +262,22 @@ img {
 }
 
 .hero__eyebrow {
-  font-size: var(--size-small);
-  color: var(--color-ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   margin: 0 0 var(--space-sm);
 }
 
 .hero__headline {
+  font-family: var(--font-serif);
   font-size: var(--size-hero);
   font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  letter-spacing: 0;
+  line-height: 1.18;
   margin: 0 auto var(--space-md);
-  max-width: 900px;
+  max-width: 780px;
   text-wrap: balance;
 }
 
@@ -293,7 +315,7 @@ img {
 .btn {
   display: inline-block;
   padding: 0.7rem 1.5rem;
-  border-radius: 980px;
+  border-radius: 8px;
   font-size: var(--size-body);
   text-decoration: none;
   transition: opacity 0.2s ease, background 0.2s ease;
@@ -332,18 +354,20 @@ section + section {
 }
 
 .section__eyebrow {
-  font-size: var(--size-small);
-  color: var(--color-ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   margin: 0 0 var(--space-xs);
 }
 
 .section__title {
+  font-family: var(--font-serif);
   font-size: var(--size-h1);
   font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  letter-spacing: 0;
+  line-height: 1.25;
   margin: 0 0 var(--space-md);
   max-width: 760px;
   text-wrap: balance;
@@ -369,14 +393,14 @@ section + section {
   text-decoration: none;
   color: var(--color-ink);
   border: 1px solid var(--color-line);
-  border-radius: 32px;
+  border-radius: 14px;
   padding: var(--space-md);
-  background: var(--color-bg);
+  background: var(--color-bg-alt);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .case-card:hover {
-  border-color: var(--color-ink-soft);
+  border-color: var(--color-accent);
   transform: translateY(-2px);
 }
 
@@ -387,15 +411,20 @@ section + section {
 }
 
 .case-card__label {
-  font-size: var(--size-small);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--color-ink-soft);
   margin: 0 0 var(--space-xs);
 }
 
 .case-card__title {
+  font-family: var(--font-serif);
   font-size: var(--size-h2);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  line-height: 1.3;
   margin: 0 0 var(--space-sm);
 }
 
@@ -442,6 +471,7 @@ section + section {
 }
 
 .link-list__title {
+  font-family: var(--font-serif);
   font-size: var(--size-body-lg);
   font-weight: 500;
 }
@@ -459,7 +489,7 @@ section + section {
 /* ---- Case study page: full-bleed visual block ---- */
 
 .visual-block {
-  border-radius: 24px;
+  border-radius: 12px;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-line);
   aspect-ratio: 16 / 9;
@@ -551,7 +581,7 @@ section + section {
 
 .device--macbook .device__lid {
   position: relative;
-  background: #1d1d1f;
+  background: #26201a;
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.45);
@@ -595,7 +625,7 @@ section + section {
 
 .device--iphone .device__frame {
   position: relative;
-  background: #1d1d1f;
+  background: #26201a;
   border-radius: 48px;
   padding: 12px;
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
@@ -766,22 +796,24 @@ section + section {
   min-height: 260px;
   padding: var(--space-md);
   border: 1px solid var(--color-line);
-  border-radius: 18px;
-  background: var(--color-bg);
+  border-radius: 12px;
+  background: var(--color-bg-alt);
 }
 
 .workprint-flow__step {
   margin: 0 0 var(--space-lg);
-  color: var(--color-ink-soft);
-  font-size: var(--size-small);
-  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .workprint-flow__item h3 {
+  font-family: var(--font-serif);
   margin: 0 0 var(--space-sm);
   font-size: var(--size-body-lg);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .workprint-flow__item > p:last-child {
@@ -840,7 +872,7 @@ section + section {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--color-line);
 }
 
@@ -913,9 +945,11 @@ section + section {
 }
 
 .trust-item__stat {
+  font-family: var(--font-serif);
   font-size: var(--size-h2);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  color: var(--color-accent);
   margin: 0 0 var(--space-xs);
 }
 
@@ -963,17 +997,19 @@ section + section {
 
 .ai-use {
   background: var(--color-bg-alt);
-  border-radius: 18px;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
   padding: var(--space-md);
   font-size: var(--size-small);
   color: var(--color-ink-soft);
 }
 
 .ai-use h3 {
-  font-size: var(--size-small);
-  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   margin: 0 0 var(--space-sm);
 }
 
@@ -992,7 +1028,8 @@ section + section {
 
 .case-top-nav {
   padding: var(--space-md) 0 0;
-  font-size: var(--size-small);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
 }
 
 .case-top-nav a {
@@ -1011,9 +1048,10 @@ section + section {
 }
 
 .resume-header__name {
+  font-family: var(--font-serif);
   font-size: var(--size-h1);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   margin: 0 0 var(--space-xs);
 }
 
@@ -1043,11 +1081,13 @@ section + section {
 }
 
 .skill-tags li {
-  font-size: var(--size-small);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   border: 1px solid var(--color-line);
-  border-radius: 980px;
-  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
   color: var(--color-ink-soft);
+  background: var(--color-bg-alt);
 }
 
 .resume-role {
@@ -1078,13 +1118,26 @@ section + section {
   gap: 0.15rem;
 }
 
+.resume-role__head-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.resume-role__rung {
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+}
+
 .resume-role__title {
+  font-family: var(--font-serif);
   font-size: var(--size-body-lg);
   font-weight: 500;
 }
 
 .resume-role__meta {
-  font-size: var(--size-small);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--color-ink-soft);
 }
 
@@ -1124,5 +1177,119 @@ section + section {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-line);
+  background: var(--color-accent);
+  opacity: 0.55;
+}
+
+/* ---- Hand-written aside: rare, small, never body copy ---- */
+
+.hand-note {
+  font-family: var(--font-hand);
+  color: var(--color-accent);
+  font-size: 1.2rem;
+}
+
+/* ---- Career timeline (homepage): the six-rung ladder ---- */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline__entry {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.timeline:first-child .timeline__entry:first-child {
+  border-top: 0;
+}
+
+.timeline__rung {
+  flex-shrink: 0;
+  margin-top: 0.35rem;
+}
+
+.timeline__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.timeline__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.7rem;
+  margin-bottom: 0.35rem;
+}
+
+.timeline__role {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0;
+}
+
+.timeline__org {
+  font-size: var(--size-body);
+  color: var(--color-ink-soft);
+}
+
+.timeline__meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.timeline__desc {
+  font-size: var(--size-body);
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--space-xs);
+  max-width: 62ch;
+}
+
+.timeline__cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--space-xs);
+}
+
+.timeline__case-link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-decoration: none;
+  color: var(--color-accent);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.timeline__case-link:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg-alt);
+}
+
+.timeline__stage-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+  margin: 0 0 var(--space-lg);
+  padding: var(--space-sm) 0;
+}
+
+.timeline__stage-key-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-ink-soft);
 }
