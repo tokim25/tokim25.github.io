@@ -1160,6 +1160,7 @@ section + section {
   font-family: var(--font-serif);
   font-size: var(--size-body-lg);
   font-weight: 500;
+  text-wrap: balance;
 }
 
 .resume-role__meta {
@@ -1270,6 +1271,7 @@ section + section {
   font-weight: 600;
   font-size: 1.15rem;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .timeline__org {
@@ -1358,4 +1360,38 @@ section + section {
   border-radius: 1px;
   background: var(--color-accent);
   flex-shrink: 0;
+}
+
+/* Narrow screens: six items in a single nowrap row (each needing room for
+   labels like "Instructional Designer") don't fit -- confirmed overflowing
+   off-screen on a real phone. Wrap into a 3-column grid instead. The single
+   continuous baseline doesn't make sense across two wrapped rows, so it's
+   dropped here rather than trying to fake a per-row segment. */
+@media (max-width: 640px) {
+  .timeline__stage-key {
+    flex-wrap: wrap;
+    row-gap: var(--space-md);
+  }
+
+  .timeline__stage-key::before {
+    content: none;
+  }
+
+  .timeline__stage-key-item {
+    flex: 0 0 33.333%;
+  }
+
+  /* Role, org, and date wrapped unpredictably differently per entry
+     depending on title length -- inconsistent from one entry to the next.
+     Stack them on their own lines always, so every entry reads the same
+     shape regardless of how long its title is. */
+  .timeline__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .timeline__meta {
+    margin-left: 0;
+  }
 }
