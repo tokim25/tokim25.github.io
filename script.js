@@ -131,3 +131,87 @@
     }, 150);
   });
 })();
+
+// Resume role accordions (<details>): native open/close is an instant snap
+// with no way to transition it. Intercept the toggle and animate height
+// with the Web Animations API instead -- widely supported, no dependency.
+(function () {
+  var prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (prefersReduced) return;
+  if (!("animate" in Element.prototype)) return;
+
+  var EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+  var DURATION = 220;
+
+  document.querySelectorAll(".resume-role").forEach(function (details) {
+    var summary = details.querySelector("summary");
+    if (!summary) return;
+
+    var animation = null;
+    var isClosing = false;
+    var isExpanding = false;
+
+    summary.addEventListener("click", function (event) {
+      event.preventDefault();
+      details.style.overflow = "hidden";
+
+      if (isClosing || !details.open) {
+        expand();
+      } else if (isExpanding || details.open) {
+        shrink();
+      }
+    });
+
+    function shrink() {
+      isClosing = true;
+      var startHeight = details.offsetHeight + "px";
+      var endHeight = summary.offsetHeight + "px";
+
+      if (animation) animation.cancel();
+      animation = details.animate(
+        { height: [startHeight, endHeight] },
+        { duration: DURATION, easing: EASING }
+      );
+      animation.onfinish = function () {
+        onFinish(false);
+      };
+      animation.oncancel = function () {
+        isClosing = false;
+      };
+    }
+
+    function expand() {
+      details.style.height = details.offsetHeight + "px";
+      details.open = true;
+
+      requestAnimationFrame(function () {
+        isExpanding = true;
+        var startHeight = details.offsetHeight + "px";
+        var endHeight = details.scrollHeight + "px";
+
+        if (animation) animation.cancel();
+        animation = details.animate(
+          { height: [startHeight, endHeight] },
+          { duration: DURATION, easing: EASING }
+        );
+        animation.onfinish = function () {
+          onFinish(true);
+        };
+        animation.oncancel = function () {
+          isExpanding = false;
+        };
+      });
+    }
+
+    function onFinish(open) {
+      details.open = open;
+      animation = null;
+      isClosing = false;
+      isExpanding = false;
+      details.style.height = "";
+      details.style.overflow = "";
+    }
+  });
+})();

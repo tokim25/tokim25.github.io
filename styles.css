@@ -1187,6 +1187,19 @@ section + section {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  opacity: 0;
+  transition: opacity 0.16s ease 0.05s;
+}
+
+.resume-role[open] .resume-role__bullets {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-role__bullets {
+    opacity: 1;
+    transition: none;
+  }
 }
 
 .resume-role__bullets li {
