@@ -345,7 +345,8 @@ section {
   padding: var(--space-xl) 0;
 }
 
-section + section {
+section + section,
+.site-footer + section {
   border-top: 1px solid var(--color-line);
 }
 
