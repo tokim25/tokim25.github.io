@@ -1259,11 +1259,7 @@ section + section {
 }
 
 .timeline__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.15rem 0.7rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
 
 .timeline__role {
@@ -1274,19 +1270,36 @@ section + section {
   text-wrap: balance;
 }
 
+/* Company + dates read as one grouped byline, deliberately in a different
+   register (small, mono, uppercase, tracked) from the serif role above --
+   the two shouldn't be mistakable for two lines of the same title. */
+.timeline__subhead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
 .timeline__org {
-  font-size: var(--size-body);
   color: var(--color-ink-soft);
+  text-transform: uppercase;
 }
 
 .timeline__meta {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
   color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-left: auto;
   white-space: nowrap;
+}
+
+.timeline__meta::before {
+  content: "\00b7";
+  margin-right: 0.4rem;
+  color: var(--color-line);
 }
 
 .timeline__desc {
@@ -1379,19 +1392,5 @@ section + section {
 
   .timeline__stage-key-item {
     flex: 0 0 33.333%;
-  }
-
-  /* Role, org, and date wrapped unpredictably differently per entry
-     depending on title length -- inconsistent from one entry to the next.
-     Stack them on their own lines always, so every entry reads the same
-     shape regardless of how long its title is. */
-  .timeline__head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-  }
-
-  .timeline__meta {
-    margin-left: 0;
   }
 }
