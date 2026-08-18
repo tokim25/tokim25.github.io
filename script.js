@@ -215,3 +215,153 @@
     }
   });
 })();
+
+// "Talk" card: anonymous, no-account chat backed by a Cloudflare Worker.
+// Only runs on pages that actually have the card (currently just index.html).
+(function () {
+  const form = document.getElementById("talk-form");
+  if (!form) return;
+
+  const WORKER_URL = "https://tokim-talk.tokim25.workers.dev";
+  const POLL_MS = 4000;
+
+  const ADJECTIVES = [
+    "Quiet", "Clever", "Swift", "Gentle", "Bold", "Curious", "Calm", "Bright",
+    "Sly", "Brave", "Merry", "Nimble", "Wise", "Lucky", "Vivid", "Quick",
+    "Steady", "Sunny", "Mellow", "Sharp",
+  ];
+  const ANIMALS = [
+    { name: "Fox", emoji: "\u{1F98A}" }, { name: "Owl", emoji: "\u{1F989}" }, { name: "Otter", emoji: "\u{1F9A6}" },
+    { name: "Panda", emoji: "\u{1F43C}" }, { name: "Falcon", emoji: "\u{1F985}" }, { name: "Rabbit", emoji: "\u{1F430}" },
+    { name: "Wolf", emoji: "\u{1F43A}" }, { name: "Deer", emoji: "\u{1F98C}" }, { name: "Turtle", emoji: "\u{1F422}" },
+    { name: "Koala", emoji: "\u{1F428}" }, { name: "Tiger", emoji: "\u{1F42F}" }, { name: "Lion", emoji: "\u{1F981}" },
+    { name: "Bear", emoji: "\u{1F43B}" }, { name: "Penguin", emoji: "\u{1F427}" }, { name: "Dolphin", emoji: "\u{1F42C}" },
+    { name: "Hedgehog", emoji: "\u{1F994}" }, { name: "Raccoon", emoji: "\u{1F99D}" }, { name: "Peacock", emoji: "\u{1F99A}" },
+    { name: "Swan", emoji: "\u{1F9A2}" }, { name: "Octopus", emoji: "\u{1F419}" },
+  ];
+
+  function hashString(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function getNickname(sessionId) {
+    const h = hashString(sessionId);
+    const adj = ADJECTIVES[h % ADJECTIVES.length];
+    const animal = ANIMALS[Math.floor(h / ADJECTIVES.length) % ANIMALS.length];
+    return `${animal.emoji} ${adj} ${animal.name}`;
+  }
+
+  function getSessionId() {
+    let id = localStorage.getItem("talkSessionId");
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("talkSessionId", id);
+    }
+    return id;
+  }
+
+  const textarea = document.getElementById("talk-message");
+  const website = document.getElementById("talk-website");
+  const sendBtn = document.getElementById("talk-send");
+  const sendLabel = document.getElementById("talk-send-label");
+  const statusEl = document.getElementById("talk-status");
+  const thread = document.getElementById("talk-thread");
+  const emptyState = document.getElementById("talk-empty");
+  const nicknameEl = document.getElementById("talk-nickname");
+
+  const sessionId = getSessionId();
+  nicknameEl.textContent = getNickname(sessionId);
+
+  let renderedCount = 0;
+
+  function renderMessages(messages) {
+    if (messages.length === 0) return;
+    if (emptyState) emptyState.style.display = "none";
+
+    for (let i = renderedCount; i < messages.length; i++) {
+      const m = messages[i];
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${m.role}`;
+      bubble.textContent = m.text;
+      thread.appendChild(bubble);
+    }
+    renderedCount = messages.length;
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  async function poll() {
+    try {
+      const res = await fetch(`${WORKER_URL}/api/messages?sessionId=${sessionId}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      renderMessages(data.messages || []);
+    } catch {
+      // Silent fail on poll -- will retry next interval.
+    }
+  }
+
+  textarea.addEventListener("input", () => {
+    textarea.style.height = "auto";
+    textarea.style.height = Math.min(textarea.scrollHeight, 100) + "px";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const message = textarea.value.trim();
+    statusEl.textContent = "";
+
+    if (!message) {
+      statusEl.textContent = "Type something first.";
+      return;
+    }
+
+    sendBtn.disabled = true;
+    sendLabel.textContent = "…";
+
+    try {
+      const res = await fetch(`${WORKER_URL}/api/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, message, website: website.value }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      textarea.value = "";
+      textarea.style.height = "auto";
+      await poll();
+    } catch (err) {
+      statusEl.textContent = "Couldn't send — check your connection and try again.";
+    } finally {
+      sendBtn.disabled = false;
+      sendLabel.textContent = "Send";
+    }
+  });
+
+  form.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  poll();
+  let pollTimer = setInterval(poll, POLL_MS);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearInterval(pollTimer);
+    } else {
+      poll();
+      pollTimer = setInterval(poll, POLL_MS);
+    }
+  });
+})();
