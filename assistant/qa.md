@@ -22,14 +22,11 @@ Figma, Articulate Storyline, Rise 360, JIRA, Tableau, Excel, GSuite, and Keynote
 
 Bachelor of Arts in Journalism (News-Editorial) from the University of North Carolina at Chapel Hill, 2009. I've also completed Anthropic Academy's AI Fluency coursework: Frameworks and Foundations, AI Fluency for Educators, and Teaching AI Fluency.
 
-<!--
-  PLACEHOLDER -- write this one yourself.
-  Suggested prompts a visitor might actually ask: "Why did you leave
-  Airbnb?" or "What's the story behind your career?"
--->
 ## Q: Why are you looking / what's the story behind this move?
 
-[Write your own answer here. This is exactly the kind of framing you said you want to control -- I'm not guessing at it.]
+I tend to leave a company once the work is in a good place and I've packaged what I built well enough to hand off to someone else. I like starting things, getting them to a state where they're documented and running on their own, and then moving to the next hard problem.
+
+That's the pattern behind this move too. I'm not leaving because something broke. I'm looking for a new kind of challenge, at a different scale, where I can apply what I've learned building systems for people who could easily ignore me and had no reason to trust me by default.
 
 <!--
   PLACEHOLDER -- write this one yourself.
