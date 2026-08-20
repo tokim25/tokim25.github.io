@@ -28,11 +28,6 @@ I tend to leave a company once the work is in a good place and I've packaged wha
 
 That's the pattern behind this move too. I'm not leaving because something broke. I'm looking for a new kind of challenge, at a different scale, where I can apply what I've learned building systems for people who could easily ignore me and had no reason to trust me by default.
 
-<!--
-  PLACEHOLDER -- write this one yourself.
-  Suggested prompts: "Are you open to contract work?" "When could you
-  start?" "Are you looking for remote roles?"
--->
 ## Q: Are you available, and on what basis?
 
-[Write your own answer here.]
+I'm not available for full-time work right now. I'm open to consulting on remote projects.
