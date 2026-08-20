@@ -306,6 +306,19 @@
           <p><a href="https://www.linkedin.com/in/tonykkim" target="_blank" rel="noopener">linkedin.com/in/tonykkim</a></p>
         </div>
       </div>
+
+      <div class="assistant-card">
+        <div class="assistant-card__header">
+          <span class="assistant-card__badge">AI &middot; reads my resume + case studies</span>
+        </div>
+        <p class="assistant-card__intro">Or ask something first. This reads from my resume and case studies to answer. Nothing you ask here gets saved or sent to me.</p>
+        <div class="assistant-card__thread" id="assistant-thread"></div>
+        <form class="assistant-card__form" id="assistant-form">
+          <textarea id="assistant-question" rows="1" maxlength="500" placeholder="Ask about my career&hellip;" required></textarea>
+          <button type="submit" class="assistant-card__send" id="assistant-send"><span id="assistant-send-label">Ask</span> <span aria-hidden="true">&rarr;</span></button>
+        </form>
+        <p class="assistant-card__status" id="assistant-status" role="status" aria-live="polite">&nbsp;</p>
+      </div>
     </div>
   </section>
 

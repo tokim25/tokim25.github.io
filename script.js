@@ -215,3 +215,83 @@
     }
   });
 })();
+
+// Assistant widget: answers questions grounded in resume/case-study
+// content plus a curated Q&A file, via a Cloudflare Worker. No account,
+// no server-side storage -- conversation history lives only in this
+// tab's memory and is gone on refresh.
+(function () {
+  const form = document.getElementById("assistant-form");
+  if (!form) return;
+
+  const WORKER_URL = "https://tokim-assistant.tokim25.workers.dev";
+  const MAX_HISTORY_TURNS = 6;
+
+  const textarea = document.getElementById("assistant-question");
+  const sendBtn = document.getElementById("assistant-send");
+  const sendLabel = document.getElementById("assistant-send-label");
+  const statusEl = document.getElementById("assistant-status");
+  const thread = document.getElementById("assistant-thread");
+
+  let history = [];
+
+  function addBubble(role, text) {
+    const bubble = document.createElement("div");
+    bubble.className = `qa-bubble ${role}`;
+    bubble.textContent = text;
+    thread.appendChild(bubble);
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  textarea.addEventListener("input", () => {
+    textarea.style.height = "auto";
+    textarea.style.height = Math.min(textarea.scrollHeight, 100) + "px";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const question = textarea.value.trim();
+    statusEl.textContent = "";
+
+    if (!question) {
+      statusEl.textContent = "Type a question first.";
+      return;
+    }
+
+    addBubble("question", question);
+    textarea.value = "";
+    textarea.style.height = "auto";
+    sendBtn.disabled = true;
+    sendLabel.textContent = "…";
+
+    try {
+      const res = await fetch(`${WORKER_URL}/api/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, history }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      const data = await res.json();
+      addBubble("answer", data.answer);
+      history.push({ q: question, a: data.answer });
+      history = history.slice(-MAX_HISTORY_TURNS);
+    } catch (err) {
+      statusEl.textContent = "Couldn't get an answer. Check your connection and try again.";
+    } finally {
+      sendBtn.disabled = false;
+      sendLabel.textContent = "Ask";
+    }
+  });
+
+  form.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+})();
