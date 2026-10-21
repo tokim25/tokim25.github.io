@@ -1442,8 +1442,6 @@ section + section {
 }
 
 .assistant-card__thread {
-  max-height: 360px;
-  overflow-y: auto;
   padding: var(--space-md);
   display: flex;
   flex-direction: column;
@@ -1523,7 +1521,8 @@ section + section {
   opacity: 0.85;
 }
 
-.assistant-card__send:disabled {
+.assistant-card__send:disabled,
+.assistant-card__send[aria-disabled="true"] {
   opacity: 0.5;
   cursor: default;
 }
@@ -1533,4 +1532,190 @@ section + section {
   padding: 0 var(--space-md) var(--space-sm);
   font-size: 0.78rem;
   color: var(--color-ink-soft);
+}
+
+.assistant-card__modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: var(--space-sm) var(--space-md) 0;
+}
+
+.assistant-card__mode,
+.assistant-card__starter {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.assistant-card__mode[aria-pressed="true"] {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.assistant-card__starter:hover,
+.assistant-card__mode[aria-pressed="false"]:hover {
+  border-color: var(--color-accent);
+}
+
+.assistant-card__mode:focus-visible,
+.assistant-card__starter:focus-visible,
+.assistant-card__send:focus-visible,
+.qa-bubble__more:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.assistant-card__starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 var(--space-md) var(--space-sm);
+}
+
+.assistant-card__starters[hidden] {
+  display: none;
+}
+
+.assistant-card__thread:empty + .assistant-card__starters {
+  padding-top: var(--space-sm);
+}
+
+.assistant-card__count {
+  margin: 0;
+  padding: 0 var(--space-md) 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-ink-soft);
+  text-align: right;
+}
+
+.assistant-card__count.is-over {
+  color: #a3361f;
+}
+
+.qa-bubble,
+.qa-card {
+  scroll-margin-top: 5rem;
+}
+
+.assistant-card__hint {
+  margin: 0;
+  padding: 0 var(--space-md) var(--space-xs);
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+}
+
+.qa-bubble__more {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* OpenUI answer cards: the bundle's stylesheet loads only after the first
+   OpenUI answer. These overrides map its tokens onto the site's palette and
+   type. Selectors are doubled up with .qa-card so they outrank the bundle's
+   single-class rules no matter which stylesheet loads last. */
+.qa-card {
+  --openui-foreground: var(--color-bg);
+  --openui-background: var(--color-bg-alt);
+  --openui-popover-background: var(--color-bg-alt);
+  --openui-border-default: var(--color-line);
+  --openui-border-interactive: var(--color-line);
+  --openui-text-neutral-primary: var(--color-ink);
+  --openui-text-neutral-secondary: var(--color-ink-soft);
+  --openui-text-neutral-link: var(--color-accent);
+  --openui-text-brand: var(--color-accent);
+  --openui-interactive-accent-default: var(--color-accent);
+  --openui-interactive-accent-hover: #9c5526;
+  --openui-interactive-accent-pressed: #9c5526;
+  --openui-highlight: rgba(181, 101, 46, 0.08);
+  --openui-highlight-subtle: rgba(181, 101, 46, 0.05);
+  --openui-sunk-light: rgba(38, 32, 26, 0.03);
+  --openui-sunk: rgba(38, 32, 26, 0.04);
+  --openui-text-body-default: 400 0.9375rem/1.5 var(--font-sans);
+  --openui-text-body-default-heavy: 600 0.9375rem/1.5 var(--font-sans);
+  --openui-text-body-lg: 400 1.0625rem/1.5 var(--font-sans);
+  --openui-text-body-lg-heavy: 600 1.0625rem/1.5 var(--font-sans);
+  --openui-text-body-sm: 400 0.875rem/1.5 var(--font-sans);
+  --openui-text-body-sm-heavy: 600 0.875rem/1.5 var(--font-sans);
+  --openui-text-body-xs: 400 0.78rem/1.5 var(--font-sans);
+  --openui-text-label-default: 400 0.9375rem/1.3 var(--font-sans);
+  --openui-text-label-default-heavy: 600 0.9375rem/1.3 var(--font-sans);
+  --openui-text-label-sm: 400 0.8125rem/1.3 var(--font-sans);
+  --openui-text-label-sm-heavy: 600 0.8125rem/1.3 var(--font-sans);
+  --openui-text-label-xs: 400 0.75rem/1.3 var(--font-sans);
+  --openui-text-label-xs-heavy: 600 0.75rem/1.3 var(--font-sans);
+  --openui-text-heading-xs: 500 1rem/1.3 var(--font-serif);
+  --openui-text-heading-sm: 500 1.125rem/1.3 var(--font-serif);
+  --openui-text-heading-md: 500 1.375rem/1.25 var(--font-serif);
+  align-self: stretch;
+}
+
+.qa-card .openui-card {
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  padding: 0.85rem 1rem;
+  background: var(--color-bg);
+  gap: 0.75rem;
+}
+
+.qa-card .openui-follow-up-item {
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  margin-top: 0.4rem;
+  width: auto;
+  background: var(--color-bg-alt);
+  font-size: 0.8125rem;
+}
+
+.qa-card .openui-follow-up-item:hover {
+  border-color: var(--color-accent);
+}
+
+.qa-card .openui-follow-up-item:focus-visible,
+.qa-card .openui-citation:focus-visible,
+.qa-card [role="button"]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.qa-card a {
+  color: var(--color-accent);
+}
+
+/* Let fit-check table cells wrap instead of scrolling sideways. */
+.qa-card .openui-table-cell {
+  white-space: normal;
+  vertical-align: top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qa-card *,
+  .qa-card *::before,
+  .qa-card *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
