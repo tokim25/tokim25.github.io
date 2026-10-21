@@ -221,7 +221,7 @@
 // no server-side storage -- conversation history lives only in this
 // tab's memory and is gone on refresh.
 //
-// Response contract (see docs/assistant-openui.md): the Worker returns
+// Response contract (see _docs/assistant-openui.md): the Worker returns
 // { answer }. If it also sends format: "openui", `answer` is OpenUI Lang and
 // is drawn with the OpenUI browser bundle, loaded on the first such answer
 // only. `text` is the plain-text version used for history, screen readers
@@ -235,13 +235,13 @@
 
   // Pinned exact version + SRI hashes. To upgrade, change all four together.
   const OPENUI_JS =
-    "https://cdn.jsdelivr.net/npm/@openuidev/browser-bundle@0.1.4/dist/openui-bundle.min.js";
+    "https://cdn.jsdelivr.net/npm/@openuidev/browser-bundle@0.2.1/dist/openui-bundle.min.js";
   const OPENUI_JS_SRI =
-    "sha384-r37bZh3byM1WK6WC4wvYh5mrFl/P5rLZ4IieE69xm4I+iZVJdSoXjwGGZdgBzWVd";
+    "sha384-GNNBzicRNkuscleA9e7/4cz6JwE9PE4BRKJ1udKWNzBh4DTD2/zpfOz4p91n8sW0";
   const OPENUI_CSS =
-    "https://cdn.jsdelivr.net/npm/@openuidev/browser-bundle@0.1.4/dist/openui-styles.css";
+    "https://cdn.jsdelivr.net/npm/@openuidev/browser-bundle@0.2.1/dist/openui-styles.css";
   const OPENUI_CSS_SRI =
-    "sha384-tT1eeqdeWKDi2Ah0DLk8671QtRhOYieBINHfIk5PXsr5HWRaQzOg39c/Uo2hoAuF";
+    "sha384-A2WnfysZ4D3GKsh9QIb/3l0NpcRI4dymzzey3lw1S+iOCb0oRr5rmGRSi2V2DNlp";
 
   // The only places a generated answer may link to.
   const SITE_HOSTS = [location.host, "tonykim.io", "www.tonykim.io", "tokim25.github.io"];
@@ -259,8 +259,12 @@
 
   const MODES = {
     ask: { label: "Your question", placeholder: "Ask about my career…", rows: 1, max: 500, maxHeight: 100 },
-    fit: { label: "Job description", placeholder: "Paste the job description…", rows: 8, max: 6000, maxHeight: 260 },
+    fit: { label: "Job description", placeholder: "Paste the job description…", rows: 8, max: 12000, maxHeight: 260 },
   };
+  const FIT_NEAR = 11000;
+  const FIT_TOO_LONG =
+    "That's longer than 12,000 characters. Trim the boilerplate (benefits, EEO text) and try again.";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const textarea = document.getElementById("assistant-question");
   const textareaLabel = document.getElementById("assistant-question-label");
@@ -271,20 +275,55 @@
   const fitHint = document.getElementById("assistant-fit-hint");
   const thread = document.getElementById("assistant-thread");
   const starters = document.getElementById("assistant-starters");
+  const countEl = document.getElementById("assistant-count");
+  const countLive = document.getElementById("assistant-count-live");
   const modeButtons = document.querySelectorAll(".assistant-card__mode");
 
   let history = [];
   let mode = "ask";
   let busy = false;
   let openuiPromise = null;
+  let countState = "ok";
 
   function addBubble(role, text) {
     const bubble = document.createElement("div");
     bubble.className = `qa-bubble ${role}`;
     bubble.textContent = text;
     thread.appendChild(bubble);
-    thread.scrollTop = thread.scrollHeight;
     return bubble;
+  }
+
+  // Bring a new answer into view without touching focus. Starts from the
+  // question so a tall card is read from its top.
+  function revealTurn(questionBubble) {
+    const rect = questionBubble.getBoundingClientRect();
+    if (rect.top >= 0 && rect.top < window.innerHeight * 0.6) return;
+    questionBubble.scrollIntoView({
+      block: "start",
+      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    });
+  }
+
+  // Fit mode only: visible "3,214 / 12,000" count. Screen readers hear it
+  // only when it crosses into "near" or "over".
+  function updateCount() {
+    if (mode !== "fit") {
+      countEl.hidden = true;
+      countState = "ok";
+      return;
+    }
+    const n = textarea.value.length;
+    const max = MODES.fit.max;
+    countEl.hidden = false;
+    countEl.textContent = `${n.toLocaleString("en-US")} / ${max.toLocaleString("en-US")}`;
+    countEl.classList.toggle("is-over", n > max);
+    const state = n > max ? "over" : n >= FIT_NEAR ? "near" : "ok";
+    if (state !== countState) {
+      if (state === "over") countLive.textContent = `Over the limit: ${n.toLocaleString("en-US")} of 12,000 characters.`;
+      else if (state === "near") countLive.textContent = `${n.toLocaleString("en-US")} of 12,000 characters used.`;
+      else countLive.textContent = "";
+      countState = state;
+    }
   }
 
   function growTextarea() {
@@ -301,11 +340,15 @@
     textareaLabel.textContent = m.label;
     textarea.placeholder = m.placeholder;
     textarea.rows = m.rows;
-    textarea.maxLength = m.max;
+    // Fit mode has no hard maxlength, so a long paste isn't cut off
+    // silently; the count and the submit check handle it instead.
+    if (mode === "fit") textarea.removeAttribute("maxlength");
+    else textarea.maxLength = m.max;
     fitHint.hidden = mode !== "fit";
     starters.hidden = mode === "fit";
-    if (mode === "fit") textarea.setAttribute("aria-describedby", "assistant-fit-hint");
+    if (mode === "fit") textarea.setAttribute("aria-describedby", "assistant-count assistant-fit-hint");
     else textarea.removeAttribute("aria-describedby");
+    updateCount();
     textarea.style.height = "";
     if (textarea.value) growTextarea();
   }
@@ -371,6 +414,8 @@
       script.src = OPENUI_JS;
       script.integrity = OPENUI_JS_SRI;
       script.crossOrigin = "anonymous";
+      // The bundle follows the OS dark mode by default; this site is light only.
+      document.documentElement.setAttribute("data-openui-theme", "light");
       const timer = setTimeout(() => reject(new Error("timeout")), 15000);
       script.onload = () => {
         clearTimeout(timer);
@@ -507,9 +552,6 @@
       }
     });
 
-    // Scroll to the question, so the card is read from its top.
-    const asked = holder.previousElementSibling || holder;
-    thread.scrollTop += asked.getBoundingClientRect().top - thread.getBoundingClientRect().top - 12;
     return plainText || holder.innerText.trim();
   }
 
@@ -540,7 +582,7 @@
     }
 
     const isFit = askMode === "fit";
-    addBubble(
+    const questionBubble = addBubble(
       "question",
       isFit && question.length > 160 ? `Job description: ${question.slice(0, 160)}…` : question
     );
@@ -577,6 +619,7 @@
       }
 
       announceEl.textContent = spoken ? `Answer: ${spoken}` : "";
+      revealTurn(questionBubble);
       history.push({ q: question, a: remembered });
       history = history.slice(-MAX_HISTORY_TURNS);
     } catch (err) {
@@ -584,13 +627,17 @@
       if (!textarea.value) {
         textarea.value = question;
         growTextarea();
+        updateCount();
       }
     } finally {
       setBusy(false);
     }
   }
 
-  textarea.addEventListener("input", growTextarea);
+  textarea.addEventListener("input", () => {
+    growTextarea();
+    updateCount();
+  });
 
   modeButtons.forEach((btn) => {
     btn.addEventListener("click", () => setMode(btn.dataset.mode));
@@ -604,9 +651,14 @@
     e.preventDefault();
     if (busy) return;
     const question = textarea.value.trim();
+    if (mode === "fit" && question.length > MODES.fit.max) {
+      statusEl.textContent = FIT_TOO_LONG;
+      return;
+    }
     if (question) {
       textarea.value = "";
       textarea.style.height = "auto";
+      updateCount();
     }
     ask(question, mode);
   });

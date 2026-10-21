@@ -14,7 +14,7 @@ Request, `POST https://tokim-assistant.tokim25.workers.dev/api/ask`:
 
 - `question` and `history` are unchanged from today. `history` holds the last 6 turns. For OpenUI turns, `a` is the plain `text` (below), not OpenUI Lang.
 - `mode` is new. It's only sent when the visitor picked "Paste a job description" (value `"fit"`). When it's missing, treat the request as a normal question. Today's Worker ignores it.
-- In fit mode `question` can be up to 6000 characters, where a normal question is capped at 500. If the Worker caps length, raise the cap for `mode: "fit"`.
+- In fit mode `question` can be up to **12,000 characters** (a normal question is capped at 500). The Worker must accept up to 12,000 characters when `mode: "fit"`. The page blocks anything longer before sending and tells the visitor to trim the boilerplate.
 
 Response, `200`:
 
@@ -30,7 +30,7 @@ Response, `200`:
 
 ## 2. What the page does with an OpenUI answer
 
-- Loads `@openuidev/browser-bundle@0.1.4` from jsDelivr (JS + CSS, pinned, with SRI hashes) on the first OpenUI answer only. Text answers never load it. It's about 990 KB gzipped JS and 34 KB CSS, so it must stay lazy.
+- Loads `@openuidev/browser-bundle@0.2.1` from jsDelivr (JS + CSS, pinned, with SRI hashes) on the first OpenUI answer only. Text answers never load it. It's about 900 KB gzipped JS and 39 KB CSS, so it must stay lazy. It sets `data-openui-theme="light"` on `<html>`, because the bundle otherwise follows the OS dark mode and the site is light only.
 - Renders with `Renderer` + `openuiChatLibrary` from `window.__OpenUI` (the bundle exposes only `React`, `createRoot`, `Renderer`, `openuiChatLibrary`, so there are no custom components).
 - Before rendering, it removes every URL that isn't one of the site's own pages (list in section 4). It blanks `@OpenUrl` targets and source `url`s, unwraps off-site markdown links, and after rendering it unwraps any remaining off-site `<a>`. Clicking an `@OpenUrl` only navigates when the target is on the list.
 - `FollowUpItem` and `@ToAssistant` clicks send their text as the next question (always as a normal question, without `mode`).
@@ -38,7 +38,9 @@ Response, `200`:
 
 ## 3. System prompt: generate it, don't hand-write it
 
-Version pairing matters. Bundle 0.1.4 contains react-lang 0.3 / react-ui 0.16, which render **OpenUI Lang 0.x** (actions are written `Action([@OpenUrl("...")])`). Generate the prompt with the matching packages: `@openuidev/react-lang@0.3.0`, `@openuidev/react-ui@0.16.1`, `@openuidev/lang-core@0.3.0`. If the page ever moves to bundle 0.2.x (OpenUI Lang 1.0), regenerate the prompt with the 1.x packages at the same time. A 1.0 prompt teaches bare action steps that a 0.x renderer won't run.
+Version pairing matters. Bundle 0.2.1 contains react-lang 1.0.1 and react-ui 0.18.1, which render **OpenUI Lang 1.0**. Generate the prompt with the same packages, pinned exact: `@openuidev/react-lang@1.0.1`, `@openuidev/react-ui@0.18.1`, `@openuidev/lang-core@1.0.1` (the same generation as Heirloom's pilot). Don't mix in 0.x packages. A 0.x prompt teaches `Action([...])`-only syntax and different rules, and the 1.0 prompt teaches bare steps such as `ListItem(..., @OpenUrl("/resume.html"))`. If the page's bundle version changes, regenerate the prompt at the same time.
+
+**1.0.1 quirk:** a *required* prop whose schema allows null rejects a literal `null` (error code `null-required`). None of the 11 components below have such a prop, so this shouldn't come up. If a later version adds one, tell the model to use `""` or `0` instead of `null`. Optional props can simply be left off the end.
 
 Trimmed component list (11): `Card`, `CardHeader`, `TextContent`, `Callout`, `ListBlock`, `ListItem`, `Table`, `Col`, `Tag`, `FollowUpBlock`, `FollowUpItem`.
 
@@ -61,7 +63,7 @@ fs.writeFileSync("src/openui-prompt.txt", lib.prompt({ examples: [] }));
 fs.writeFileSync("src/openui-schema.json", JSON.stringify(lib.toJSONSchema()));
 ```
 
-Tested in a scratch folder with those exact versions (plus react 19, zod 4, zustand 4): it produces a 5.8 KB prompt and a 283 KB schema. One quirk: the `Card` signature in the prompt still lists every chat component as a possible child, because the trimmed list doesn't change Card's own schema. Rule 1 below covers it.
+Tested in a scratch folder with those exact versions (plus react 19, zod 4.6.5, zustand 4): it produces a 6.1 KB prompt and a 247 KB schema. One quirk: the `Card` signature in the prompt still lists every chat component as a possible child, because the trimmed list doesn't change Card's own schema. Rule 1 below covers it.
 
 The Worker's system prompt is: the existing grounding instructions + the corpus, then `openui-prompt.txt`, then these rules:
 
@@ -111,7 +113,8 @@ Workprint, Intuit Analytics AI, Airbnb Experiences and 5-Star Hosting have no nu
 When `mode` is `"fit"`, `question` is a pasted job description. Add these instructions:
 
 - Pull 4-8 concrete requirements from the posting. Ignore boilerplate (benefits, EEO text).
-- Answer with `CardHeader` (role title from the posting, plus a line like "6 requirements · 5 with direct evidence"), then a `Table` with three `Col`s: requirement, evidence (with `[n]` citation), and a `Tag` of "Strong", "Some" or "Gap".
+- Answer with `CardHeader` (role title from the posting, plus a line like "6 requirements · 5 with direct evidence"), then a `Table` with three `Col`s: requirement, evidence (naming the case study), and a `Tag` of "Strong", "Some" or "Gap".
+- Don't put `[n]` markers inside `Table` cells; the renderer only turns them into citations inside `TextContent`. Name the case study in the cell instead and list it in `sources`.
 - Any requirement without evidence in the corpus gets `Tag("Gap", ...)` and evidence text "Not shown in my resume or case studies." Don't stretch weak evidence into a match. An inflated fit check does more damage than none.
 - Always add a `Callout` with the availability answer from `assistant/qa.md`, word for word.
 - If the paste has no recognizable requirements, return one neutral `Callout` asking for the responsibilities and qualifications section.
@@ -119,7 +122,7 @@ When `mode` is `"fit"`, `question` is a pasted job description. Add these instru
 
 ## 6. Validate before sending, fall back to text
 
-In the Worker, check every OpenUI answer before returning it. Use `@openuidev/lang-core@0.3.0` (no React needed) with the generated schema:
+In the Worker, check every OpenUI answer before returning it. Use `@openuidev/lang-core@1.0.1` (no React needed) with the generated schema:
 
 ```js
 import { createParser } from "@openuidev/lang-core";
@@ -139,7 +142,7 @@ const ok = result.root && result.meta.errors.length === 0 && plainText.trim();
 - [ ] Add the prompt generator and commit `openui-prompt.txt` / `openui-schema.json`.
 - [ ] System prompt = grounding + generated prompt + rules in section 3.
 - [ ] URL allow-list filter + metric list in the Worker.
-- [ ] Fit-mode instructions when `mode === "fit"`; raise the length cap for that mode.
+- [ ] Fit-mode instructions when `mode === "fit"`; accept up to 12,000 characters for that mode.
 - [ ] Validate with `createParser`; fall back to plain text.
 - [ ] Return `{ answer, format: "openui", text }`.
 - [ ] Keep the bundle version on the page and the prompt package versions paired.

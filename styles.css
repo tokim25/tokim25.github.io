@@ -1442,8 +1442,6 @@ section + section {
 }
 
 .assistant-card__thread {
-  max-height: 360px;
-  overflow-y: auto;
   padding: var(--space-md);
   display: flex;
   flex-direction: column;
@@ -1591,6 +1589,24 @@ section + section {
   padding-top: var(--space-sm);
 }
 
+.assistant-card__count {
+  margin: 0;
+  padding: 0 var(--space-md) 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-ink-soft);
+  text-align: right;
+}
+
+.assistant-card__count.is-over {
+  color: #a3361f;
+}
+
+.qa-bubble,
+.qa-card {
+  scroll-margin-top: 5rem;
+}
+
 .assistant-card__hint {
   margin: 0;
   padding: 0 var(--space-md) var(--space-xs);
@@ -1687,6 +1703,12 @@ section + section {
 
 .qa-card a {
   color: var(--color-accent);
+}
+
+/* Let fit-check table cells wrap instead of scrolling sideways. */
+.qa-card .openui-table-cell {
+  white-space: normal;
+  vertical-align: top;
 }
 
 @media (prefers-reduced-motion: reduce) {
