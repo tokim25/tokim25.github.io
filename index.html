@@ -15,7 +15,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<link rel="stylesheet" href="styles.css?v=20260720-nav" />
+<link rel="stylesheet" href="styles.css?v=20261021-assistant" />
 </head>
 <body>
 
@@ -300,12 +300,24 @@
           <span class="assistant-card__badge">AI &middot; reads my resume + case studies</span>
         </div>
         <p class="assistant-card__intro">Or ask something first. This reads from my resume and case studies to answer. Nothing you ask here gets saved or sent to me.</p>
-        <div class="assistant-card__thread" id="assistant-thread"></div>
+        <div class="assistant-card__modes" role="group" aria-label="What do you want to do?">
+          <button type="button" class="assistant-card__mode" data-mode="ask" aria-pressed="true">Ask a question</button>
+          <button type="button" class="assistant-card__mode" data-mode="fit" aria-pressed="false">Paste a job description</button>
+        </div>
+        <div class="assistant-card__thread" id="assistant-thread" aria-label="Conversation"></div>
+        <div class="assistant-card__starters" id="assistant-starters" role="group" aria-label="Suggested questions">
+          <button type="button" class="assistant-card__starter">What's your biggest measurable result?</button>
+          <button type="button" class="assistant-card__starter">What's Workprint?</button>
+          <button type="button" class="assistant-card__starter">Are you available?</button>
+        </div>
         <form class="assistant-card__form" id="assistant-form">
+          <label for="assistant-question" class="sr-only" id="assistant-question-label">Your question</label>
           <textarea id="assistant-question" rows="1" maxlength="500" placeholder="Ask about my career&hellip;" required></textarea>
           <button type="submit" class="assistant-card__send" id="assistant-send"><span id="assistant-send-label">Ask</span> <span aria-hidden="true">&rarr;</span></button>
         </form>
+        <p class="assistant-card__hint" id="assistant-fit-hint" hidden>Paste the responsibilities and qualifications. You'll get each requirement matched to evidence from my resume and case studies, with gaps called out. The text goes to the AI to answer and isn't stored.</p>
         <p class="assistant-card__status" id="assistant-status" role="status" aria-live="polite">&nbsp;</p>
+        <p class="sr-only" id="assistant-announce" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -321,6 +333,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20260720-nav"></script>
+  <script src="script.js?v=20261021-assistant"></script>
 </body>
 </html>
