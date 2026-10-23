@@ -530,6 +530,8 @@ section + section {
 .link-list__meta {
   font-size: var(--size-small);
   color: var(--color-ink-soft);
+  /* Long repo URLs have no break points and overflowed phones at 320px. */
+  overflow-wrap: anywhere;
 }
 
 .pending {
@@ -2103,5 +2105,17 @@ body.is-annotated .design-note {
 
   .site-nav__brand::after {
     content: none;
+  }
+}
+
+/* Landing spot for a role picked from the stage key: clear of the sticky nav
+   and, on wider screens, the sticky key itself. */
+.timeline__entry {
+  scroll-margin-top: 5rem;
+}
+
+@media (min-width: 641px) {
+  .timeline__entry {
+    scroll-margin-top: 9rem;
   }
 }
