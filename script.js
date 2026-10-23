@@ -177,6 +177,14 @@
     document.body.classList.toggle("is-annotated", on);
   });
   document.body.appendChild(btn);
+
+  function syncReady() {
+    var ready = window.scrollY > window.innerHeight * 0.5 || btn.getAttribute("aria-pressed") === "true";
+    btn.classList.toggle("is-ready", ready);
+  }
+  window.addEventListener("scroll", syncReady, { passive: true });
+  btn.addEventListener("click", syncReady);
+  syncReady();
 })();
 
 // Pick-your-path: "What are you hiring for?" moves matching case studies to

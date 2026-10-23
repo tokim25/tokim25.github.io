@@ -10,7 +10,10 @@
      - rail teal  = you can act here, or this is where you are (links, buttons,
                     focus ring, the lit rung on the ladder)
      - signal yellow = a marker, always a fill behind ink, never text or a line
-   Keep yellow to a few small chips and underlines.
+   Yellow has exactly three jobs, and new pages should not add a fourth:
+     1. the one role chip at the top of a page (.hero__eyebrow)
+     2. the marker underline under the proof numbers (.proof__num)
+     3. the "Fits:" badge on a case card the visitor selected (.case-card__fit)
    ========================================================================== */
 
 
@@ -324,6 +327,8 @@ img {
 
 .hero__headline--pandora {
   font-size: clamp(2.25rem, 5.25vw, 4.5rem);
+  /* Its phrases are forced onto one line each, so the wide setting overflows. */
+  font-stretch: 100%;
 }
 
 @media (min-width: 760px) {
@@ -399,12 +404,7 @@ section + section {
 .section__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  display: inline-block;
-  padding: 0.2rem 0.55rem;
-  background: var(--color-signal);
-  color: var(--color-ink);
-  border-radius: 3px;
-  font-weight: 500;
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-xs);
@@ -1920,11 +1920,7 @@ section + section {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  display: inline-block;
-  padding: 0.1rem 0.4rem;
-  background: var(--color-signal);
-  color: var(--color-ink);
-  border-radius: 3px;
+  color: var(--color-ink-soft);
 }
 
 body.is-annotated .design-note {
@@ -1960,7 +1956,7 @@ body.is-annotated .design-note {
   font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.25s ease, transform 0.25s ease;
 }
 
 .design-toggle:hover {
@@ -2045,5 +2041,67 @@ body.is-annotated .design-note {
   .proof__num,
   .resume-header__name {
     font-stretch: 100%;
+  }
+}
+
+/* The toggle stays out of the way at the top of the page, where it would sit
+   on the hero buttons on short phones. It fades in once the visitor scrolls,
+   and stays reachable by keyboard and screen reader the whole time. */
+.design-toggle:not(.is-ready) {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+.design-toggle:not(.is-ready):focus-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Room at the very bottom so the floating toggle never covers the last lines. */
+.site-footer {
+  padding-bottom: calc(var(--space-lg) + 3.5rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-toggle {
+    transition: none;
+  }
+}
+
+/* Archivo runs wider than the old body face; on the narrowest phones the nav
+   needs less padding and tighter gaps to stay on one line without overflow. */
+@media (max-width: 400px) {
+  .site-nav .wrap {
+    padding: 0 var(--space-sm);
+  }
+
+  .site-nav__links {
+    gap: 0.75rem;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .site-nav__links {
+    gap: 0.5rem;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.75rem;
+  }
+
+  .site-nav__brand {
+    font-size: 0.95rem;
+    margin-right: var(--space-xs);
+  }
+
+  .site-nav__brand::after {
+    content: none;
   }
 }
