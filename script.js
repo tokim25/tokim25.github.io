@@ -121,6 +121,135 @@
   });
 })();
 
+// Proof numerals count up once when they scroll into view. The final value is
+// already in the HTML, so no JS, reduced motion, or a missed observer all
+// leave the right numbers on the page.
+(function () {
+  var nums = document.querySelectorAll("[data-count]");
+  if (nums.length === 0) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+
+  function run(el) {
+    var end = Number(el.dataset.count);
+    var pre = el.dataset.prefix || "";
+    var suf = el.dataset.suffix || "";
+    var start = null;
+    var DURATION = 900;
+    function frame(now) {
+      if (start === null) start = now;
+      var t = Math.min((now - start) / DURATION, 1);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = pre + Math.round(end * eased) + suf;
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    el.textContent = pre + "0" + suf;
+    requestAnimationFrame(frame);
+  }
+
+  var io = new IntersectionObserver(
+    function (items) {
+      items.forEach(function (item) {
+        if (!item.isIntersecting) return;
+        io.unobserve(item.target);
+        run(item.target);
+      });
+    },
+    { threshold: 0.6 }
+  );
+  nums.forEach(function (n) {
+    io.observe(n);
+  });
+})();
+
+// "See the design": a toggle that reveals margin notes naming the learning
+// design behind each section. Created here so it only exists when it works.
+(function () {
+  if (!document.querySelector(".design-note")) return;
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "design-toggle";
+  btn.setAttribute("aria-pressed", "false");
+  btn.textContent = "See the design";
+  btn.addEventListener("click", function () {
+    var on = btn.getAttribute("aria-pressed") !== "true";
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    document.body.classList.toggle("is-annotated", on);
+  });
+  document.body.appendChild(btn);
+})();
+
+// Pick-your-path: "What are you hiring for?" moves matching case studies to
+// the front (in the DOM, so tab order follows what you see), badges them, and
+// tells the assistant so it can offer a matching starter question.
+(function () {
+  var chips = document.querySelectorAll(".path__chip");
+  var grid = document.querySelector(".case-grid");
+  if (chips.length === 0 || !grid) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll(".case-card"));
+  var LABELS = {
+    strategy: "Learning strategy",
+    design: "Instructional design",
+    ai: "AI + learning systems",
+  };
+  var KEY = "tk-path";
+
+  function apply(path) {
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.path === path ? "true" : "false");
+    });
+    var matches = [];
+    var rest = [];
+    cards.forEach(function (card) {
+      var fits = path && card.dataset.tags.split(" ").indexOf(path) !== -1;
+      card.classList.toggle("is-match", !!fits);
+      card.classList.toggle("is-dim", !!path && !fits);
+      var badge = card.querySelector(".case-card__fit");
+      if (fits && !badge) {
+        badge = document.createElement("span");
+        badge.className = "case-card__fit";
+        badge.textContent = "Fits: " + LABELS[path];
+        card.insertBefore(badge, card.firstChild);
+      } else if (fits) {
+        badge.textContent = "Fits: " + LABELS[path];
+      } else if (badge) {
+        badge.remove();
+      }
+      (fits ? matches : rest).push(card);
+    });
+    // With no path chosen, restore the original order.
+    (path ? matches.concat(rest) : cards).forEach(function (card) {
+      grid.appendChild(card);
+    });
+    // Deferred so the assistant (loaded later in this file) is listening
+    // when a saved path is restored on page load.
+    setTimeout(function () {
+      document.dispatchEvent(new CustomEvent("pathchange", { detail: { label: path ? LABELS[path] : null } }));
+    }, 0);
+    try {
+      if (path) sessionStorage.setItem(KEY, path);
+      else sessionStorage.removeItem(KEY);
+    } catch (e) {}
+  }
+
+  var current = null;
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      current = current === chip.dataset.path ? null : chip.dataset.path;
+      apply(current);
+    });
+  });
+
+  try {
+    var saved = sessionStorage.getItem(KEY);
+    if (saved && LABELS[saved]) {
+      current = saved;
+      apply(saved);
+    }
+  } catch (e) {}
+})();
+
 // Device mockups (.device__scroll): measure the screenshot against its
 // visible "screen" area and set how far it needs to travel to reveal the
 // bottom. If the image already fits, no scroll is applied.
@@ -685,6 +814,19 @@
 
   document.querySelectorAll(".assistant-card__starter").forEach((btn) => {
     btn.addEventListener("click", () => ask(btn.textContent.trim(), "ask"));
+  });
+
+  // The pick-your-path chips above offer a matching first question.
+  document.addEventListener("pathchange", (e) => {
+    const old = starters.querySelector(".assistant-card__starter--path");
+    if (old) old.remove();
+    if (!e.detail.label) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "assistant-card__starter assistant-card__starter--path";
+    btn.textContent = `Show me your strongest work in ${e.detail.label.replace("AI + learning systems", "AI and learning systems").replace(/^(Learning|Instructional)/, (m) => m.toLowerCase())}`;
+    btn.addEventListener("click", () => ask(btn.textContent.trim(), "ask"));
+    starters.insertBefore(btn, starters.firstChild);
   });
 
   // "Paste a job description" links elsewhere on the page land here in fit mode.

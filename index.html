@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&display=swap" />
-<link rel="stylesheet" href="styles.css?v=20261023-delight" />
+<link rel="stylesheet" href="styles.css?v=20261023-delight2" />
 </head>
 <body>
 
@@ -58,9 +58,10 @@
   <header class="hero" id="top">
     <div class="wrap">
       <img src="assets/images/profile-tony-kim.jpg" alt="Tony Kim" class="hero__photo reveal" />
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Gain attention and state the objective. One headline carries the thesis, so a visitor who reads nothing else still has it.</aside>
       <p class="hero__eyebrow">Learning Architect</p>
       <h1 class="hero__headline">The right education,<br />at the right place,<br />at the right time.</h1>
-      <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to building AI-enabled learning systems at Stripe now. I turn ambiguous goals into learning strategy that actually moves the business: one program alone drove $24M+ in booking value. Some of it built with AI collaborators. All of it reviewed and owned by me.</p>
+      <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to AI-enabled learning systems at Stripe. I turn ambiguous goals into learning strategy that moves the business.</p>
       <div class="hero__cta">
         <a href="#career" class="btn btn--primary">See the path</a>
         <a href="#assistant" class="btn btn--text" data-fit-link>Paste a job description</a>
@@ -71,16 +72,18 @@
 
   <section class="proof" aria-label="Results at a glance">
     <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Show the stakes first. Three results sit above the story, so the evidence arrives before you have to take the claims on trust.</aside>
       <ul class="proof__list">
-        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num">$24M+</span><span class="proof__label">gross booking value from one pricing program</span></a></li>
-        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num">29%</span><span class="proof__label">of the addressable Airbnb host population reached</span></a></li>
-        <li><a href="case-studies/workday-learning-needs-survey.html" class="proof__item"><span class="proof__num">930+</span><span class="proof__label">survey respondents across 45+ job families</span></a></li>
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="24" data-prefix="$" data-suffix="M+">$24M+</span><span class="sr-only">$24M+</span></span><span class="proof__label">gross booking value from one pricing program</span></a></li>
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="29" data-prefix="" data-suffix="%">29%</span><span class="sr-only">29%</span></span><span class="proof__label">of the addressable Airbnb host population reached</span></a></li>
+        <li><a href="case-studies/workday-learning-needs-survey.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="930" data-prefix="" data-suffix="+">930+</span><span class="sr-only">930+</span></span><span class="proof__label">survey respondents across 45+ job families</span></a></li>
       </ul>
     </div>
   </section>
 
   <section id="career">
     <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Give the learner a map. The stage key is an advance organizer: six stages first, then nine roles placed against them. Tapping a stage filters the roles, which puts the path in the visitor's hands.</aside>
       <p class="section__eyebrow">Career</p>
       <h2 class="section__title">How I got here, one role at a time.</h2>
       <p class="section__lede">I care about helping people become the best version of themselves. Facilitation showed me that happening in a room. Training made it repeatable. Instructional design built it in before the room even started. Leading a team changed the question from &ldquo;did this land&rdquo; to &ldquo;will it hold up when I'm not there,&rdquo; and that's what pulled me toward Learning Architect: building systems that put the right education at the right place at the right time.</p>
@@ -245,55 +248,63 @@
 
   <section id="case-studies">
     <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Worked examples. Every case study follows the same arc of problem, action and result, so you can compare projects without relearning the format.</aside>
       <p class="section__eyebrow">Case Studies</p>
       <h2 class="section__title">A few of these, up close.</h2>
       <p class="section__lede">Here's what some of that actually looked like in practice, from an AI-assisted prototyping tool to a pricing education program reaching millions of hosts. Each one covers the problem I was handed, what I did about it, and what shipped.</p>
 
+      <div class="path" role="group" aria-label="What are you hiring for?">
+        <span class="path__q">What are you hiring for?</span>
+        <button type="button" class="path__chip" data-path="strategy" aria-pressed="false">Learning strategy</button>
+        <button type="button" class="path__chip" data-path="design" aria-pressed="false">Instructional design</button>
+        <button type="button" class="path__chip" data-path="ai" aria-pressed="false">AI + learning systems</button>
+      </div>
+
       <div class="case-grid">
 
-        <a href="case-studies/workprint.html" class="case-card reveal">
+        <a href="case-studies/workprint.html" class="case-card reveal" data-tags="ai strategy">
           <img src="assets/logos/workprint.svg" alt="Workprint" class="case-card__logo" />
           <p class="case-card__label">Product</p>
           <h3 class="case-card__title">Workprint</h3>
           <p class="case-card__desc">An AI-assisted tool for reconstructing project context, from product strategy through visual direction.</p>
         </a>
 
-        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal">
+        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal" data-tags="ai design">
           <img src="assets/logos/intuit.svg" alt="Intuit" class="case-card__logo" />
           <p class="case-card__label">Take-home assignment</p>
           <h3 class="case-card__title">Intuit Analytics AI Job Aid</h3>
           <p class="case-card__desc">A learning strategy brief and job aid for Mailchimp's Analytics AI, built for Intuit's seasonal support agents as part of a job application, not internal production work.</p>
         </a>
 
-        <a href="case-studies/experiences-services.html" class="case-card reveal">
+        <a href="case-studies/experiences-services.html" class="case-card reveal" data-tags="design strategy">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">Airbnb Experiences</h3>
           <p class="case-card__desc">Launch education for a brand-new Airbnb business line, built around the product's own six-dimension rating system.</p>
         </a>
 
-        <a href="case-studies/5-star-hosting.html" class="case-card reveal">
+        <a href="case-studies/5-star-hosting.html" class="case-card reveal" data-tags="design">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">5-Star Hosting</h3>
           <p class="case-card__desc">A learning series for Airbnb's Host Resource Center, mapped to the five real dimensions guests use to rate a stay.</p>
         </a>
 
-        <a href="case-studies/pricing.html" class="case-card reveal">
+        <a href="case-studies/pricing.html" class="case-card reveal" data-tags="strategy">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">Pricing Your Place</h3>
           <p class="case-card__desc">Pricing education for Airbnb's Homes hosts. Reached 29% of the addressable host population and generated $24M+ in gross booking value.</p>
         </a>
 
-        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal">
+        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal" data-tags="strategy">
           <img src="assets/logos/workday.svg" alt="Workday" class="case-card__logo" />
           <p class="case-card__label">Research</p>
           <h3 class="case-card__title">Workday Learning Needs Survey</h3>
           <p class="case-card__desc">A 930+ respondent survey across 45+ job families, built into an FY23 learning and enablement roadmap.</p>
         </a>
 
-        <a href="case-studies/pandora-onboarding.html" class="case-card reveal">
+        <a href="case-studies/pandora-onboarding.html" class="case-card reveal" data-tags="design">
           <img src="assets/logos/pandora.svg" alt="Pandora" class="case-card__logo" />
           <p class="case-card__label">Program Design</p>
           <h3 class="case-card__title">Pandora Onboarding</h3>
@@ -317,6 +328,7 @@
         <a href="https://www.linkedin.com/in/tonykkim" target="_blank" rel="noopener">linkedin.com/in/tonykkim</a>
       </p>
 
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Practice and feedback. In place of a contact form, the assistant lets you test a question or a job description against the evidence and get a specific answer back.</aside>
       <div class="assistant-card" id="assistant">
         <div class="assistant-card__header">
           <span class="assistant-card__badge">AI &middot; reads my resume + case studies</span>
@@ -357,6 +369,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261023-delight"></script>
+  <script src="script.js?v=20261023-delight2"></script>
 </body>
 </html>
