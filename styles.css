@@ -11,7 +11,6 @@
    intimate display scale, and tighter vertical rhythm than a product page.
    ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&display=swap");
 
 :root {
   /* Palette: warm neutral base (paper/ink), one accent hue (brass) */
@@ -20,7 +19,7 @@
   --color-ink: #26201a;
   --color-ink-soft: #726a5c;
   --color-line: #e4dbc8;
-  --color-accent: #b5652e;
+  --color-accent: #9c5526; /* darkened from #b5652e: 3.9:1 -> 5.4:1 on cream (AA for small text) */
   --color-accent-ink: #ffffff;
 
   /* Type scale */
@@ -73,6 +72,15 @@ body {
 
 a {
   color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
 }
 
 img {
@@ -198,7 +206,7 @@ img {
 
 .site-nav__dropdown a:hover,
 .site-nav__dropdown a:focus-visible {
-  background: var(--color-bg-alt);
+  background: rgba(156, 85, 38, 0.1);
 }
 
 .site-nav__item--dropdown:hover .site-nav__dropdown,
@@ -216,6 +224,18 @@ img {
 @media (max-width: 600px) {
   .site-nav__links {
     gap: var(--space-sm);
+  }
+
+  .site-nav__links a[data-fit-link] {
+    display: none;
+  }
+
+  .site-nav__brand {
+    white-space: nowrap;
+  }
+
+  .site-nav__dropdown-trigger {
+    white-space: nowrap;
   }
 
   .site-nav__dropdown {
@@ -300,7 +320,9 @@ img {
 
 .hero__cta {
   display: inline-flex;
-  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: var(--space-md);
 }
 
 .hero__prompt {
@@ -963,14 +985,20 @@ section + section {
 /* ---- Scroll reveal ---- */
 
 .reveal {
-  opacity: 0;
-  transform: translateY(16px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+/* Hidden only when scripts can run, so content never stays invisible if JS fails. */
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* A gentle per-row cascade for lists of .reveal siblings (timeline, resume
@@ -1373,22 +1401,71 @@ section + section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   line-height: 1.3;
   color: var(--color-ink-soft);
   text-align: center;
-  padding: 0 0.35rem;
+  padding: 0.5rem 0.35rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
-.timeline__stage-key-dot {
-  width: 2px;
-  height: 16px;
-  border-radius: 1px;
-  background: var(--color-accent);
-  flex-shrink: 0;
+.timeline__stage-key-item:hover {
+  color: var(--color-ink);
+  background: rgba(156, 85, 38, 0.07);
 }
+
+/* Pressed = the visitor filtered to this stage. Current = the stage of the
+   role now scrolling past. Two cues, one palette. */
+.timeline__stage-key-item[aria-pressed="true"] {
+  color: var(--color-accent);
+  background: rgba(156, 85, 38, 0.1);
+  border-color: var(--color-accent);
+}
+
+.timeline__stage-key-item.is-current {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.timeline__stage-key-item.is-current svg {
+  transform: translateY(-2px);
+}
+
+.timeline__stage-key-item svg {
+  transition: transform 0.25s ease;
+}
+
+.timeline .timeline__entry.is-dim {
+  opacity: 0.3;
+}
+
+@media (min-width: 641px) {
+  .timeline__stage-key {
+    position: sticky;
+    top: 52px;
+    z-index: 5;
+    padding: 0.5rem 0 0.25rem;
+    background: rgba(247, 242, 231, 0.92);
+    backdrop-filter: blur(10px);
+  }
+
+  .timeline__stage-key::before {
+    top: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__stage-key-item.is-current svg {
+    transform: none;
+  }
+}
+
 
 /* Narrow screens: six items in a single nowrap row (each needing room for
    labels like "Instructional Designer") don't fit -- confirmed overflowing
@@ -1398,7 +1475,7 @@ section + section {
 @media (max-width: 640px) {
   .timeline__stage-key {
     flex-wrap: wrap;
-    row-gap: var(--space-md);
+    row-gap: var(--space-xs);
   }
 
   .timeline__stage-key::before {
@@ -1718,4 +1795,56 @@ section + section {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ---- Proof strip: three results, readable in three seconds ---- */
+
+.proof {
+  padding: var(--space-lg) 0;
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-line);
+}
+
+.proof__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.proof__item {
+  display: block;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: var(--space-xs) var(--space-sm);
+  margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1);
+  transition: background 0.2s ease;
+}
+
+.proof__item:hover {
+  background: rgba(156, 85, 38, 0.07);
+}
+
+.proof__num {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--size-hero);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-accent);
+}
+
+.proof__label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--size-small);
+  color: var(--color-ink-soft);
+}
+
+/* ---- Case cards: a little give under the finger ---- */
+
+.case-card:active {
+  transform: translateY(0) scale(0.99);
 }

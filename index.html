@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tony Kim, Learning Architect</title>
   <meta name="description" content="Tony Kim's career, chronologically: facilitation to training specialism to instructional design to people management to education strategy to learning architecture, with the case studies to show for it." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tony Kim, Learning Architect" />
+  <meta property="og:description" content="The right education, at the right place, at the right time. Career path, case studies, and an assistant that checks a job description against my work." />
+  <meta property="og:url" content="https://tonykim.io/" />
+  <meta property="og:image" content="https://tonykim.io/assets/images/profile-tony-kim.jpg" />
+  <link rel="canonical" href="https://tonykim.io/" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R22E9YHFLX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,7 +21,11 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<link rel="stylesheet" href="styles.css?v=20261021-assistant" />
+<meta name="theme-color" content="#f7f2e7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&display=swap" />
+<link rel="stylesheet" href="styles.css?v=20261023-delight" />
 </head>
 <body>
 
@@ -39,6 +49,7 @@
           </ul>
         </li>
         <li><a href="resume.html">Resume</a></li>
+        <li><a href="#assistant" data-fit-link>Fit check</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -52,30 +63,41 @@
       <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to building AI-enabled learning systems at Stripe now. I turn ambiguous goals into learning strategy that actually moves the business: one program alone drove $24M+ in booking value. Some of it built with AI collaborators. All of it reviewed and owned by me.</p>
       <div class="hero__cta">
         <a href="#career" class="btn btn--primary">See the path</a>
+        <a href="#assistant" class="btn btn--text" data-fit-link>Paste a job description</a>
         <a href="#contact" class="btn btn--text">Get in touch</a>
       </div>
     </div>
   </header>
+
+  <section class="proof" aria-label="Results at a glance">
+    <div class="wrap">
+      <ul class="proof__list">
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num">$24M+</span><span class="proof__label">gross booking value from one pricing program</span></a></li>
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num">29%</span><span class="proof__label">of the addressable Airbnb host population reached</span></a></li>
+        <li><a href="case-studies/workday-learning-needs-survey.html" class="proof__item"><span class="proof__num">930+</span><span class="proof__label">survey respondents across 45+ job families</span></a></li>
+      </ul>
+    </div>
+  </section>
 
   <section id="career">
     <div class="wrap">
       <p class="section__eyebrow">Career</p>
       <h2 class="section__title">How I got here, one role at a time.</h2>
       <p class="section__lede">I care about helping people become the best version of themselves. Facilitation showed me that happening in a room. Training made it repeatable. Instructional design built it in before the room even started. Leading a team changed the question from &ldquo;did this land&rdquo; to &ldquo;will it hold up when I'm not there,&rdquo; and that's what pulled me toward Learning Architect: building systems that put the right education at the right place at the right time.</p>
-      <p class="section__lede">The mark next to each role below shows where it sits on that path.</p>
+      <p class="section__lede">The mark next to each role below shows where it sits on that path. Tap a stage to see only those roles.</p>
 
-      <div class="timeline__stage-key">
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Facilitator</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Training Specialist</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Instructional Designer</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>People Manager</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Education Strategist</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Learning Architect</span>
+      <div class="timeline__stage-key" role="group" aria-label="Filter roles by career stage">
+        <button type="button" class="timeline__stage-key-item" data-stage="1" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Facilitator</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="2" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Training Specialist</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="3" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Instructional Designer</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="4" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>People Manager</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="5" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Education Strategist</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="6" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#9c5526" stroke-width="2.1" stroke-linecap="round"/></svg><span>Learning Architect</span></button>
       </div>
 
       <div class="timeline">
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="6">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -89,7 +111,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="5">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -107,7 +129,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="4">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -125,7 +147,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="4">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -142,7 +164,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="3">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -156,7 +178,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="3">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -173,7 +195,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="1">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -187,7 +209,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="2">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -201,7 +223,7 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
+        <div class="timeline__entry reveal" data-stage="1">
           <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
@@ -295,7 +317,7 @@
         <a href="https://www.linkedin.com/in/tonykkim" target="_blank" rel="noopener">linkedin.com/in/tonykkim</a>
       </p>
 
-      <div class="assistant-card">
+      <div class="assistant-card" id="assistant">
         <div class="assistant-card__header">
           <span class="assistant-card__badge">AI &middot; reads my resume + case studies</span>
         </div>
@@ -335,6 +357,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261021-assistant"></script>
+  <script src="script.js?v=20261023-delight"></script>
 </body>
 </html>

@@ -81,6 +81,46 @@
   });
 })();
 
+// Career ladder: the stage key doubles as a filter (tap a stage to dim every
+// other role) and a scroll-spy (the stage of the role in view is marked
+// current). Without JS it stays a plain legend.
+(function () {
+  var keys = document.querySelectorAll(".timeline__stage-key-item");
+  var entries = document.querySelectorAll(".timeline__entry[data-stage]");
+  if (keys.length === 0 || entries.length === 0) return;
+
+  var pressed = null;
+
+  keys.forEach(function (key) {
+    key.addEventListener("click", function () {
+      var stage = key.dataset.stage;
+      pressed = pressed === stage ? null : stage;
+      keys.forEach(function (k) {
+        k.setAttribute("aria-pressed", k.dataset.stage === pressed ? "true" : "false");
+      });
+      entries.forEach(function (e) {
+        e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
+      });
+    });
+  });
+
+  if (!("IntersectionObserver" in window)) return;
+  var spy = new IntersectionObserver(
+    function (items) {
+      items.forEach(function (item) {
+        if (!item.isIntersecting) return;
+        keys.forEach(function (k) {
+          k.classList.toggle("is-current", k.dataset.stage === item.target.dataset.stage);
+        });
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+  entries.forEach(function (e) {
+    spy.observe(e);
+  });
+})();
+
 // Device mockups (.device__scroll): measure the screenshot against its
 // visible "screen" area and set how far it needs to travel to reveal the
 // bottom. If the image already fits, no scroll is applied.
@@ -645,6 +685,11 @@
 
   document.querySelectorAll(".assistant-card__starter").forEach((btn) => {
     btn.addEventListener("click", () => ask(btn.textContent.trim(), "ask"));
+  });
+
+  // "Paste a job description" links elsewhere on the page land here in fit mode.
+  document.querySelectorAll("[data-fit-link]").forEach((link) => {
+    link.addEventListener("click", () => setMode("fit"));
   });
 
   form.addEventListener("submit", (e) => {
