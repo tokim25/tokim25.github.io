@@ -101,6 +101,16 @@
       entries.forEach(function (e) {
         e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
       });
+      // Take the visitor to the role, not just dim the others.
+      if (pressed !== null) {
+        var first = document.querySelector('.timeline__entry[data-stage="' + pressed + '"]');
+        if (first) {
+          first.scrollIntoView({
+            block: "start",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+          });
+        }
+      }
     });
   });
 
