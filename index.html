@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tony Kim, Learning Architect</title>
   <meta name="description" content="Tony Kim's career, chronologically: facilitation to training specialism to instructional design to people management to education strategy to learning architecture, with the case studies to show for it." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tony Kim, Learning Architect" />
+  <meta property="og:description" content="The right education, at the right place, at the right time. Career path, case studies, and an assistant that checks a job description against my work." />
+  <meta property="og:url" content="https://tonykim.io/" />
+  <meta property="og:image" content="https://tonykim.io/assets/images/profile-tony-kim.jpg" />
+  <link rel="canonical" href="https://tonykim.io/" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R22E9YHFLX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,7 +21,11 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<link rel="stylesheet" href="styles.css?v=20261021-assistant" />
+<meta name="theme-color" content="#f6f4ee" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Spline+Sans+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="styles.css?v=20261023-signage2" />
 </head>
 <body>
 
@@ -39,6 +49,7 @@
           </ul>
         </li>
         <li><a href="resume.html">Resume</a></li>
+        <li><a href="#assistant" data-fit-link>Fit check</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -47,36 +58,50 @@
   <header class="hero" id="top">
     <div class="wrap">
       <img src="assets/images/profile-tony-kim.jpg" alt="Tony Kim" class="hero__photo reveal" />
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Gain attention and state the objective. One headline carries the thesis, so a visitor who reads nothing else still has it.</aside>
       <p class="hero__eyebrow">Learning Architect</p>
       <h1 class="hero__headline">The right education,<br />at the right place,<br />at the right time.</h1>
-      <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to building AI-enabled learning systems at Stripe now. I turn ambiguous goals into learning strategy that actually moves the business: one program alone drove $24M+ in booking value. Some of it built with AI collaborators. All of it reviewed and owned by me.</p>
+      <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to AI-enabled learning systems at Stripe. I turn ambiguous goals into learning strategy that moves the business.</p>
       <div class="hero__cta">
         <a href="#career" class="btn btn--primary">See the path</a>
+        <a href="#assistant" class="btn btn--text" data-fit-link>Paste a job description</a>
         <a href="#contact" class="btn btn--text">Get in touch</a>
       </div>
     </div>
   </header>
 
+  <section class="proof" aria-label="Results at a glance">
+    <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Show the stakes first. Three results sit above the story, so the evidence arrives before you have to take the claims on trust.</aside>
+      <ul class="proof__list">
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="24" data-prefix="$" data-suffix="M+">$24M+</span><span class="sr-only">$24M+</span></span><span class="proof__label">gross booking value from one pricing program</span></a></li>
+        <li><a href="case-studies/pricing.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="29" data-prefix="" data-suffix="%">29%</span><span class="sr-only">29%</span></span><span class="proof__label">of the addressable Airbnb host population reached</span></a></li>
+        <li><a href="case-studies/workday-learning-needs-survey.html" class="proof__item"><span class="proof__num"><span aria-hidden="true" data-count="930" data-prefix="" data-suffix="+">930+</span><span class="sr-only">930+</span></span><span class="proof__label">survey respondents across 45+ job families</span></a></li>
+      </ul>
+    </div>
+  </section>
+
   <section id="career">
     <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Give the learner a map. The stage key is an advance organizer: six stages first, then nine roles placed against them. Tapping a stage filters the roles, which puts the path in the visitor's hands.</aside>
       <p class="section__eyebrow">Career</p>
       <h2 class="section__title">How I got here, one role at a time.</h2>
       <p class="section__lede">I care about helping people become the best version of themselves. Facilitation showed me that happening in a room. Training made it repeatable. Instructional design built it in before the room even started. Leading a team changed the question from &ldquo;did this land&rdquo; to &ldquo;will it hold up when I'm not there,&rdquo; and that's what pulled me toward Learning Architect: building systems that put the right education at the right place at the right time.</p>
-      <p class="section__lede">The mark next to each role below shows where it sits on that path.</p>
+      <p class="section__lede">The mark next to each role below shows where it sits on that path. Tap a stage to see only those roles.</p>
 
-      <div class="timeline__stage-key">
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Facilitator</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Training Specialist</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Instructional Designer</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>People Manager</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Education Strategist</span>
-        <span class="timeline__stage-key-item"><span class="timeline__stage-key-dot"></span>Learning Architect</span>
+      <div class="timeline__stage-key" role="group" aria-label="Filter roles by career stage">
+        <button type="button" class="timeline__stage-key-item" data-stage="1" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Facilitator</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="2" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Training Specialist</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="3" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Instructional Designer</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="4" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>People Manager</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="5" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Education Strategist</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="6" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/></svg><span>Learning Architect</span></button>
       </div>
 
       <div class="timeline">
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="6">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Learning Architect</span>
@@ -89,8 +114,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="5">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Education Strategist</span>
@@ -107,8 +132,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="4">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Manager, Host Education</span>
@@ -125,8 +150,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="4">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Manager, Instructional Design</span>
@@ -142,8 +167,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="3">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Instructional Designer</span>
@@ -156,8 +181,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="3">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Instructional Designer</span>
@@ -173,8 +198,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="1">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Technical Trainer</span>
@@ -187,8 +212,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="2">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Training Specialist</span>
@@ -201,8 +226,8 @@
           </div>
         </div>
 
-        <div class="timeline__entry reveal">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#E4DBC8" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#B5652E" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#E4DBC8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="timeline__entry reveal" data-stage="1">
+          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Field Trainer</span>
@@ -223,55 +248,63 @@
 
   <section id="case-studies">
     <div class="wrap">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Worked examples. Every case study follows the same arc of problem, action and result, so you can compare projects without relearning the format.</aside>
       <p class="section__eyebrow">Case Studies</p>
       <h2 class="section__title">A few of these, up close.</h2>
       <p class="section__lede">Here's what some of that actually looked like in practice, from an AI-assisted prototyping tool to a pricing education program reaching millions of hosts. Each one covers the problem I was handed, what I did about it, and what shipped.</p>
 
+      <div class="path" role="group" aria-label="What are you hiring for?">
+        <span class="path__q">What are you hiring for?</span>
+        <button type="button" class="path__chip" data-path="strategy" aria-pressed="false">Learning strategy</button>
+        <button type="button" class="path__chip" data-path="design" aria-pressed="false">Instructional design</button>
+        <button type="button" class="path__chip" data-path="ai" aria-pressed="false">AI + learning systems</button>
+      </div>
+
       <div class="case-grid">
 
-        <a href="case-studies/workprint.html" class="case-card reveal">
+        <a href="case-studies/workprint.html" class="case-card reveal" data-tags="ai strategy">
           <img src="assets/logos/workprint.svg" alt="Workprint" class="case-card__logo" />
           <p class="case-card__label">Product</p>
           <h3 class="case-card__title">Workprint</h3>
           <p class="case-card__desc">An AI-assisted tool for reconstructing project context, from product strategy through visual direction.</p>
         </a>
 
-        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal">
+        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal" data-tags="ai design">
           <img src="assets/logos/intuit.svg" alt="Intuit" class="case-card__logo" />
           <p class="case-card__label">Take-home assignment</p>
           <h3 class="case-card__title">Intuit Analytics AI Job Aid</h3>
           <p class="case-card__desc">A learning strategy brief and job aid for Mailchimp's Analytics AI, built for Intuit's seasonal support agents as part of a job application, not internal production work.</p>
         </a>
 
-        <a href="case-studies/experiences-services.html" class="case-card reveal">
+        <a href="case-studies/experiences-services.html" class="case-card reveal" data-tags="design strategy">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">Airbnb Experiences</h3>
           <p class="case-card__desc">Launch education for a brand-new Airbnb business line, built around the product's own six-dimension rating system.</p>
         </a>
 
-        <a href="case-studies/5-star-hosting.html" class="case-card reveal">
+        <a href="case-studies/5-star-hosting.html" class="case-card reveal" data-tags="design">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">5-Star Hosting</h3>
           <p class="case-card__desc">A learning series for Airbnb's Host Resource Center, mapped to the five real dimensions guests use to rate a stay.</p>
         </a>
 
-        <a href="case-studies/pricing.html" class="case-card reveal">
+        <a href="case-studies/pricing.html" class="case-card reveal" data-tags="strategy">
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title">Pricing Your Place</h3>
           <p class="case-card__desc">Pricing education for Airbnb's Homes hosts. Reached 29% of the addressable host population and generated $24M+ in gross booking value.</p>
         </a>
 
-        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal">
+        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal" data-tags="strategy">
           <img src="assets/logos/workday.svg" alt="Workday" class="case-card__logo" />
           <p class="case-card__label">Research</p>
           <h3 class="case-card__title">Workday Learning Needs Survey</h3>
           <p class="case-card__desc">A 930+ respondent survey across 45+ job families, built into an FY23 learning and enablement roadmap.</p>
         </a>
 
-        <a href="case-studies/pandora-onboarding.html" class="case-card reveal">
+        <a href="case-studies/pandora-onboarding.html" class="case-card reveal" data-tags="design">
           <img src="assets/logos/pandora.svg" alt="Pandora" class="case-card__logo" />
           <p class="case-card__label">Program Design</p>
           <h3 class="case-card__title">Pandora Onboarding</h3>
@@ -295,7 +328,8 @@
         <a href="https://www.linkedin.com/in/tonykkim" target="_blank" rel="noopener">linkedin.com/in/tonykkim</a>
       </p>
 
-      <div class="assistant-card">
+      <aside class="design-note"><span class="design-note__tag">Design note</span> Practice and feedback. In place of a contact form, the assistant lets you test a question or a job description against the evidence and get a specific answer back.</aside>
+      <div class="assistant-card" id="assistant">
         <div class="assistant-card__header">
           <span class="assistant-card__badge">AI &middot; reads my resume + case studies</span>
         </div>
@@ -335,6 +369,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261021-assistant"></script>
+  <script src="script.js?v=20261023-signage2"></script>
 </body>
 </html>

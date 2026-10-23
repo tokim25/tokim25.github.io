@@ -1,42 +1,43 @@
 /* ==========================================================================
    Tony Kim — Portfolio
-   Shared visual system: "Field Notes"
+   Shared visual system: "Platform Signage"
 
-   A career told like a working notebook, not a corporate deck. Cream paper,
-   espresso ink, a warm brass accent, an editorial serif for headlines, a
-   humanist sans for reading, monospace for dates and tags, and a rare
-   handwritten line for asides. Type mechanics (scale, tracking, weight,
-   rhythm) are tuned for that serif, not inherited from the old Apple-style
-   system: no negative letter-spacing on the serif, a smaller and more
-   intimate display scale, and tighter vertical rhythm than a product page.
+   Learning that meets people at the right place and time is wayfinding, so
+   the site borrows from station signage. One variable grotesque (Archivo),
+   set wide and heavy for headlines and normal-width for reading; a mono face
+   for the small labels a sign would carry (dates, tags, eyebrows). Cool paper,
+   near-black ink. Two signal colors with strict jobs:
+     - rail teal  = you can act here, or this is where you are (links, buttons,
+                    focus ring, the lit rung on the ladder)
+     - signal yellow = a marker, always a fill behind ink, never text or a line
+   Yellow has exactly three jobs, and new pages should not add a fourth:
+     1. the one role chip at the top of a page (.hero__eyebrow)
+     2. the marker underline under the proof numbers (.proof__num)
+     3. the "Fits:" badge on a case card the visitor selected (.case-card__fit)
    ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,500&family=Karla:wght@400;500;600&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&display=swap");
 
 :root {
-  /* Palette: warm neutral base (paper/ink), one accent hue (brass) */
-  --color-bg: #f7f2e7;
-  --color-bg-alt: #fdfbf6;
-  --color-ink: #26201a;
-  --color-ink-soft: #726a5c;
-  --color-line: #e4dbc8;
-  --color-accent: #b5652e;
+  --color-bg: #f6f4ee;
+  --color-bg-alt: #ffffff;
+  --color-ink: #12151a;
+  --color-ink-soft: #545a63;
+  --color-line: #d9d6cc;
+  --color-accent: #0b6b5f;
   --color-accent-ink: #ffffff;
+  --color-signal: #ffc928;
 
-  /* Type scale */
-  --font-serif: "Lora", Georgia, "Times New Roman", serif;
-  --font-sans: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
-  --font-hand: "Caveat", cursive;
-  --size-hero: clamp(2.25rem, 4.6vw, 3.75rem);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --size-hero: clamp(2.25rem, 4.6vw, 3.5rem);
   --size-h1: clamp(1.75rem, 3.1vw, 2.5rem);
   --size-h2: clamp(1.375rem, 2.2vw, 1.75rem);
   --size-body-lg: clamp(1.0625rem, 1.4vw, 1.25rem);
   --size-body: 1.0625rem;
   --size-small: 0.9375rem;
 
-  /* Rhythm — closer than a product page; this reads like a page, not a deck */
+  /* Rhythm */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
@@ -75,6 +76,15 @@ a {
   color: inherit;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -92,7 +102,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(247, 242, 231, 0.88);
+  background: rgba(246, 244, 238, 0.88);
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -105,7 +115,7 @@ img {
 }
 
 .site-nav__brand {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.05rem;
   text-decoration: none;
@@ -181,7 +191,7 @@ img {
   background: var(--color-bg-alt);
   border: 1px solid var(--color-line);
   border-radius: 10px;
-  box-shadow: 0 18px 45px rgba(38, 32, 26, 0.12);
+  box-shadow: 0 18px 45px rgba(18, 21, 26, 0.12);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
@@ -198,7 +208,7 @@ img {
 
 .site-nav__dropdown a:hover,
 .site-nav__dropdown a:focus-visible {
-  background: var(--color-bg-alt);
+  background: rgba(11, 107, 95, 0.1);
 }
 
 .site-nav__item--dropdown:hover .site-nav__dropdown,
@@ -216,6 +226,34 @@ img {
 @media (max-width: 600px) {
   .site-nav__links {
     gap: var(--space-sm);
+  }
+
+  .site-nav__links a[data-fit-link] {
+    display: none;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.875rem;
+  }
+
+  .site-nav__brand {
+    margin-right: var(--space-xs);
+  }
+
+  .design-toggle {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .site-nav__brand {
+    white-space: nowrap;
+  }
+
+  .site-nav__dropdown-trigger {
+    white-space: nowrap;
   }
 
   .site-nav__dropdown {
@@ -264,18 +302,24 @@ img {
 .hero__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  border-radius: 3px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-sm);
 }
 
 .hero__headline {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-hero);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.18;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
   margin: 0 auto var(--space-md);
   max-width: 780px;
   text-wrap: balance;
@@ -283,6 +327,8 @@ img {
 
 .hero__headline--pandora {
   font-size: clamp(2.25rem, 5.25vw, 4.5rem);
+  /* Its phrases are forced onto one line each, so the wide setting overflows. */
+  font-stretch: 100%;
 }
 
 @media (min-width: 760px) {
@@ -300,7 +346,9 @@ img {
 
 .hero__cta {
   display: inline-flex;
-  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: var(--space-md);
 }
 
 .hero__prompt {
@@ -356,18 +404,19 @@ section + section {
 .section__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-xs);
 }
 
 .section__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h1);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.25;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
   margin: 0 0 var(--space-md);
   max-width: 760px;
   text-wrap: balance;
@@ -396,14 +445,14 @@ section + section {
   border-radius: 14px;
   padding: var(--space-md);
   background: var(--color-bg-alt);
-  box-shadow: 0 0 0 rgba(38, 32, 26, 0);
+  box-shadow: 0 0 0 rgba(18, 21, 26, 0);
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .case-card:hover {
   border-color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -14px rgba(38, 32, 26, 0.28);
+  box-shadow: 0 10px 24px -14px rgba(18, 21, 26, 0.28);
 }
 
 .case-card__logo {
@@ -422,7 +471,7 @@ section + section {
 }
 
 .case-card__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h2);
   font-weight: 600;
   letter-spacing: 0;
@@ -473,7 +522,7 @@ section + section {
 }
 
 .link-list__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-body-lg);
   font-weight: 500;
 }
@@ -582,7 +631,7 @@ section + section {
 
 .device--macbook .device__lid {
   position: relative;
-  background: #26201a;
+  background: #12151a;
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.45);
@@ -626,7 +675,7 @@ section + section {
 
 .device--iphone .device__frame {
   position: relative;
-  background: #26201a;
+  background: #12151a;
   border-radius: 48px;
   padding: 12px;
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
@@ -803,7 +852,7 @@ section + section {
 
 .workprint-flow__step {
   margin: 0 0 var(--space-lg);
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
@@ -811,7 +860,7 @@ section + section {
 }
 
 .workprint-flow__item h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   margin: 0 0 var(--space-sm);
   font-size: var(--size-body-lg);
   letter-spacing: 0;
@@ -946,11 +995,11 @@ section + section {
 }
 
 .trust-item__stat {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h2);
   font-weight: 600;
   letter-spacing: 0;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   margin: 0 0 var(--space-xs);
 }
 
@@ -963,14 +1012,20 @@ section + section {
 /* ---- Scroll reveal ---- */
 
 .reveal {
-  opacity: 0;
-  transform: translateY(16px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+/* Hidden only when scripts can run, so content never stays invisible if JS fails. */
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* A gentle per-row cascade for lists of .reveal siblings (timeline, resume
@@ -1049,7 +1104,7 @@ section + section {
 .ai-use h3 {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin: 0 0 var(--space-sm);
@@ -1090,10 +1145,11 @@ section + section {
 }
 
 .resume-header__name {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h1);
-  font-weight: 600;
-  letter-spacing: 0;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.01em;
   margin: 0 0 var(--space-xs);
 }
 
@@ -1172,7 +1228,7 @@ section + section {
 }
 
 .resume-role__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-body-lg);
   font-weight: 500;
   text-wrap: balance;
@@ -1240,9 +1296,9 @@ section + section {
 /* ---- Hand-written aside: rare, small, never body copy ---- */
 
 .hand-note {
-  font-family: var(--font-hand);
+  font-family: var(--font-mono);
   color: var(--color-accent);
-  font-size: 1.2rem;
+  font-size: 0.85rem;
 }
 
 /* ---- Career timeline (homepage): the six-rung ladder ---- */
@@ -1278,7 +1334,7 @@ section + section {
 }
 
 .timeline__role {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.15rem;
   letter-spacing: 0;
@@ -1305,7 +1361,7 @@ section + section {
 }
 
 .timeline__meta {
-  color: var(--color-accent);
+  color: var(--color-ink);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: nowrap;
@@ -1373,22 +1429,71 @@ section + section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   line-height: 1.3;
   color: var(--color-ink-soft);
   text-align: center;
-  padding: 0 0.35rem;
+  padding: 0.5rem 0.35rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
-.timeline__stage-key-dot {
-  width: 2px;
-  height: 16px;
-  border-radius: 1px;
-  background: var(--color-accent);
-  flex-shrink: 0;
+.timeline__stage-key-item:hover {
+  color: var(--color-ink);
+  background: rgba(11, 107, 95, 0.07);
 }
+
+/* Pressed = the visitor filtered to this stage. Current = the stage of the
+   role now scrolling past. Two cues, one palette. */
+.timeline__stage-key-item[aria-pressed="true"] {
+  color: var(--color-accent);
+  background: rgba(11, 107, 95, 0.1);
+  border-color: var(--color-accent);
+}
+
+.timeline__stage-key-item.is-current {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.timeline__stage-key-item.is-current svg {
+  transform: translateY(-2px);
+}
+
+.timeline__stage-key-item svg {
+  transition: transform 0.25s ease;
+}
+
+.timeline .timeline__entry.is-dim {
+  opacity: 0.3;
+}
+
+@media (min-width: 641px) {
+  .timeline__stage-key {
+    position: sticky;
+    top: 52px;
+    z-index: 5;
+    padding: 0.5rem 0 0.25rem;
+    background: rgba(246, 244, 238, 0.92);
+    backdrop-filter: blur(10px);
+  }
+
+  .timeline__stage-key::before {
+    top: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__stage-key-item.is-current svg {
+    transform: none;
+  }
+}
+
 
 /* Narrow screens: six items in a single nowrap row (each needing room for
    labels like "Instructional Designer") don't fit -- confirmed overflowing
@@ -1398,7 +1503,7 @@ section + section {
 @media (max-width: 640px) {
   .timeline__stage-key {
     flex-wrap: wrap;
-    row-gap: var(--space-md);
+    row-gap: var(--space-xs);
   }
 
   .timeline__stage-key::before {
@@ -1429,7 +1534,7 @@ section + section {
 .assistant-card__badge {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1646,12 +1751,12 @@ section + section {
   --openui-text-neutral-link: var(--color-accent);
   --openui-text-brand: var(--color-accent);
   --openui-interactive-accent-default: var(--color-accent);
-  --openui-interactive-accent-hover: #9c5526;
-  --openui-interactive-accent-pressed: #9c5526;
-  --openui-highlight: rgba(181, 101, 46, 0.08);
-  --openui-highlight-subtle: rgba(181, 101, 46, 0.05);
-  --openui-sunk-light: rgba(38, 32, 26, 0.03);
-  --openui-sunk: rgba(38, 32, 26, 0.04);
+  --openui-interactive-accent-hover: #095a50;
+  --openui-interactive-accent-pressed: #095a50;
+  --openui-highlight: rgba(11, 107, 95, 0.08);
+  --openui-highlight-subtle: rgba(11, 107, 95, 0.05);
+  --openui-sunk-light: rgba(18, 21, 26, 0.03);
+  --openui-sunk: rgba(18, 21, 26, 0.04);
   --openui-text-body-default: 400 0.9375rem/1.5 var(--font-sans);
   --openui-text-body-default-heavy: 600 0.9375rem/1.5 var(--font-sans);
   --openui-text-body-lg: 400 1.0625rem/1.5 var(--font-sans);
@@ -1665,9 +1770,9 @@ section + section {
   --openui-text-label-sm-heavy: 600 0.8125rem/1.3 var(--font-sans);
   --openui-text-label-xs: 400 0.75rem/1.3 var(--font-sans);
   --openui-text-label-xs-heavy: 600 0.75rem/1.3 var(--font-sans);
-  --openui-text-heading-xs: 500 1rem/1.3 var(--font-serif);
-  --openui-text-heading-sm: 500 1.125rem/1.3 var(--font-serif);
-  --openui-text-heading-md: 500 1.375rem/1.25 var(--font-serif);
+  --openui-text-heading-xs: 500 1rem/1.3 var(--font-display);
+  --openui-text-heading-sm: 500 1.125rem/1.3 var(--font-display);
+  --openui-text-heading-md: 500 1.375rem/1.25 var(--font-display);
   align-self: stretch;
 }
 
@@ -1717,5 +1822,286 @@ section + section {
   .qa-card *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ---- Proof strip: three results, readable in three seconds ---- */
+
+.proof {
+  padding: var(--space-lg) 0;
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-line);
+}
+
+.proof__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.proof__item {
+  display: block;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: var(--space-xs) var(--space-sm);
+  margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1);
+  transition: background 0.2s ease;
+}
+
+.proof__item:hover {
+  background: rgba(11, 107, 95, 0.07);
+}
+
+.proof__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--size-hero);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-ink);
+  font-weight: 800;
+  font-stretch: 112%;
+}
+
+.proof__label {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--size-small);
+  color: var(--color-ink-soft);
+}
+
+/* ---- Case cards: a little give under the finger ---- */
+
+.case-card:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* ---- Count-up numerals: keep digits from jittering as they tick ---- */
+
+.proof__num [data-count] {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ---- "See the design": margin notes that annotate the page as a learning
+   design. Hidden until the visitor turns them on; the toggle is created by
+   script.js, so without JS there is nothing dead to click. ---- */
+
+.design-note {
+  display: none;
+  max-width: 34rem;
+  margin: 0 0 var(--space-sm);
+  padding: 0.6rem 0.85rem;
+  border-left: 3px solid var(--color-ink);
+  border-radius: 2px 8px 8px 2px;
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.hero .design-note {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.design-note__tag::before {
+  content: "\2794\00a0";
+}
+
+.design-note__tag {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+body.is-annotated .design-note {
+  display: block;
+  animation: note-in 0.35s ease both;
+}
+
+@keyframes note-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-annotated .design-note {
+    animation: none;
+  }
+}
+
+.design-toggle {
+  position: fixed;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 20;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-bg-alt);
+  box-shadow: 0 8px 24px -12px rgba(18, 21, 26, 0.35);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.design-toggle:hover {
+  border-color: var(--color-accent);
+}
+
+.design-toggle[aria-pressed="true"] {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+/* ---- Pick-your-path: "what are you hiring for?" reorders the case grid ---- */
+
+.path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-md);
+}
+
+.path__q {
+  margin-right: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.path__chip {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.path__chip:hover {
+  border-color: var(--color-accent);
+}
+
+.path__chip[aria-pressed="true"] {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.case-grid .case-card.is-dim {
+  opacity: 0.55;
+}
+
+.case-grid .case-card.is-match {
+  border-color: var(--color-accent);
+}
+
+.case-card__fit {
+  display: inline-block;
+  margin: 0 0 var(--space-xs);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.proof__num > [data-count] {
+  background: linear-gradient(transparent 68%, var(--color-signal) 68%, var(--color-signal) 92%, transparent 92%);
+}
+
+@media (max-width: 640px) {
+  .hero__headline,
+  .section__title,
+  .proof__num,
+  .resume-header__name {
+    font-stretch: 100%;
+  }
+}
+
+/* The toggle stays out of the way at the top of the page, where it would sit
+   on the hero buttons on short phones. It fades in once the visitor scrolls,
+   and stays reachable by keyboard and screen reader the whole time. */
+.design-toggle:not(.is-ready) {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+.design-toggle:not(.is-ready):focus-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Room at the very bottom so the floating toggle never covers the last lines. */
+.site-footer {
+  padding-bottom: calc(var(--space-lg) + 3.5rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-toggle {
+    transition: none;
+  }
+}
+
+/* Archivo runs wider than the old body face; on the narrowest phones the nav
+   needs less padding and tighter gaps to stay on one line without overflow. */
+@media (max-width: 400px) {
+  .site-nav .wrap {
+    padding: 0 var(--space-sm);
+  }
+
+  .site-nav__links {
+    gap: 0.75rem;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .site-nav__links {
+    gap: 0.5rem;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.75rem;
+  }
+
+  .site-nav__brand {
+    font-size: 0.95rem;
+    margin-right: var(--space-xs);
+  }
+
+  .site-nav__brand::after {
+    content: none;
   }
 }
