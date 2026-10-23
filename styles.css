@@ -1,41 +1,40 @@
 /* ==========================================================================
    Tony Kim — Portfolio
-   Shared visual system: "Field Notes"
+   Shared visual system: "Platform Signage"
 
-   A career told like a working notebook, not a corporate deck. Cream paper,
-   espresso ink, a warm brass accent, an editorial serif for headlines, a
-   humanist sans for reading, monospace for dates and tags, and a rare
-   handwritten line for asides. Type mechanics (scale, tracking, weight,
-   rhythm) are tuned for that serif, not inherited from the old Apple-style
-   system: no negative letter-spacing on the serif, a smaller and more
-   intimate display scale, and tighter vertical rhythm than a product page.
+   Learning that meets people at the right place and time is wayfinding, so
+   the site borrows from station signage. One variable grotesque (Archivo),
+   set wide and heavy for headlines and normal-width for reading; a mono face
+   for the small labels a sign would carry (dates, tags, eyebrows). Cool paper,
+   near-black ink. Two signal colors with strict jobs:
+     - rail teal  = you can act here, or this is where you are (links, buttons,
+                    focus ring, the lit rung on the ladder)
+     - signal yellow = a marker, always a fill behind ink, never text or a line
+   Keep yellow to a few small chips and underlines.
    ========================================================================== */
 
 
 :root {
-  /* Palette: warm neutral base (paper/ink), one accent hue (brass) */
-  --color-bg: #f7f2e7;
-  --color-bg-alt: #fdfbf6;
-  --color-ink: #26201a;
-  --color-ink-soft: #726a5c;
-  --color-line: #e4dbc8;
-  --color-accent: #9c5526; /* darkened from #b5652e: 3.9:1 -> 5.4:1 on cream (AA for small text) */
+  --color-bg: #f6f4ee;
+  --color-bg-alt: #ffffff;
+  --color-ink: #12151a;
+  --color-ink-soft: #545a63;
+  --color-line: #d9d6cc;
+  --color-accent: #0b6b5f;
   --color-accent-ink: #ffffff;
+  --color-signal: #ffc928;
 
-  /* Type scale */
-  --font-serif: "Lora", Georgia, "Times New Roman", serif;
-  --font-sans: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
-  --font-hand: "Caveat", cursive;
-  --size-hero: clamp(2.25rem, 4.6vw, 3.75rem);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --size-hero: clamp(2.25rem, 4.6vw, 3.5rem);
   --size-h1: clamp(1.75rem, 3.1vw, 2.5rem);
   --size-h2: clamp(1.375rem, 2.2vw, 1.75rem);
   --size-body-lg: clamp(1.0625rem, 1.4vw, 1.25rem);
   --size-body: 1.0625rem;
   --size-small: 0.9375rem;
 
-  /* Rhythm — closer than a product page; this reads like a page, not a deck */
+  /* Rhythm */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
@@ -100,7 +99,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(247, 242, 231, 0.88);
+  background: rgba(246, 244, 238, 0.88);
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -113,7 +112,7 @@ img {
 }
 
 .site-nav__brand {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.05rem;
   text-decoration: none;
@@ -189,7 +188,7 @@ img {
   background: var(--color-bg-alt);
   border: 1px solid var(--color-line);
   border-radius: 10px;
-  box-shadow: 0 18px 45px rgba(38, 32, 26, 0.12);
+  box-shadow: 0 18px 45px rgba(18, 21, 26, 0.12);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
@@ -206,7 +205,7 @@ img {
 
 .site-nav__dropdown a:hover,
 .site-nav__dropdown a:focus-visible {
-  background: rgba(156, 85, 38, 0.1);
+  background: rgba(11, 107, 95, 0.1);
 }
 
 .site-nav__item--dropdown:hover .site-nav__dropdown,
@@ -228,6 +227,22 @@ img {
 
   .site-nav__links a[data-fit-link] {
     display: none;
+  }
+
+  .site-nav__links a,
+  .site-nav__dropdown-trigger {
+    font-size: 0.875rem;
+  }
+
+  .site-nav__brand {
+    margin-right: var(--space-xs);
+  }
+
+  .design-toggle {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.75rem;
   }
 
   .site-nav__brand {
@@ -284,18 +299,24 @@ img {
 .hero__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  border-radius: 3px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-sm);
 }
 
 .hero__headline {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-hero);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.18;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
   margin: 0 auto var(--space-md);
   max-width: 780px;
   text-wrap: balance;
@@ -378,18 +399,24 @@ section + section {
 .section__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  border-radius: 3px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-xs);
 }
 
 .section__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h1);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.25;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
   margin: 0 0 var(--space-md);
   max-width: 760px;
   text-wrap: balance;
@@ -418,14 +445,14 @@ section + section {
   border-radius: 14px;
   padding: var(--space-md);
   background: var(--color-bg-alt);
-  box-shadow: 0 0 0 rgba(38, 32, 26, 0);
+  box-shadow: 0 0 0 rgba(18, 21, 26, 0);
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .case-card:hover {
   border-color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -14px rgba(38, 32, 26, 0.28);
+  box-shadow: 0 10px 24px -14px rgba(18, 21, 26, 0.28);
 }
 
 .case-card__logo {
@@ -444,7 +471,7 @@ section + section {
 }
 
 .case-card__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h2);
   font-weight: 600;
   letter-spacing: 0;
@@ -495,7 +522,7 @@ section + section {
 }
 
 .link-list__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-body-lg);
   font-weight: 500;
 }
@@ -604,7 +631,7 @@ section + section {
 
 .device--macbook .device__lid {
   position: relative;
-  background: #26201a;
+  background: #12151a;
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.45);
@@ -648,7 +675,7 @@ section + section {
 
 .device--iphone .device__frame {
   position: relative;
-  background: #26201a;
+  background: #12151a;
   border-radius: 48px;
   padding: 12px;
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
@@ -825,7 +852,7 @@ section + section {
 
 .workprint-flow__step {
   margin: 0 0 var(--space-lg);
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
@@ -833,7 +860,7 @@ section + section {
 }
 
 .workprint-flow__item h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   margin: 0 0 var(--space-sm);
   font-size: var(--size-body-lg);
   letter-spacing: 0;
@@ -968,11 +995,11 @@ section + section {
 }
 
 .trust-item__stat {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h2);
   font-weight: 600;
   letter-spacing: 0;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   margin: 0 0 var(--space-xs);
 }
 
@@ -1077,7 +1104,7 @@ section + section {
 .ai-use h3 {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin: 0 0 var(--space-sm);
@@ -1118,10 +1145,11 @@ section + section {
 }
 
 .resume-header__name {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-h1);
-  font-weight: 600;
-  letter-spacing: 0;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.01em;
   margin: 0 0 var(--space-xs);
 }
 
@@ -1200,7 +1228,7 @@ section + section {
 }
 
 .resume-role__title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-body-lg);
   font-weight: 500;
   text-wrap: balance;
@@ -1268,9 +1296,9 @@ section + section {
 /* ---- Hand-written aside: rare, small, never body copy ---- */
 
 .hand-note {
-  font-family: var(--font-hand);
+  font-family: var(--font-mono);
   color: var(--color-accent);
-  font-size: 1.2rem;
+  font-size: 0.85rem;
 }
 
 /* ---- Career timeline (homepage): the six-rung ladder ---- */
@@ -1306,7 +1334,7 @@ section + section {
 }
 
 .timeline__role {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.15rem;
   letter-spacing: 0;
@@ -1333,7 +1361,7 @@ section + section {
 }
 
 .timeline__meta {
-  color: var(--color-accent);
+  color: var(--color-ink);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: nowrap;
@@ -1417,14 +1445,14 @@ section + section {
 
 .timeline__stage-key-item:hover {
   color: var(--color-ink);
-  background: rgba(156, 85, 38, 0.07);
+  background: rgba(11, 107, 95, 0.07);
 }
 
 /* Pressed = the visitor filtered to this stage. Current = the stage of the
    role now scrolling past. Two cues, one palette. */
 .timeline__stage-key-item[aria-pressed="true"] {
   color: var(--color-accent);
-  background: rgba(156, 85, 38, 0.1);
+  background: rgba(11, 107, 95, 0.1);
   border-color: var(--color-accent);
 }
 
@@ -1451,7 +1479,7 @@ section + section {
     top: 52px;
     z-index: 5;
     padding: 0.5rem 0 0.25rem;
-    background: rgba(247, 242, 231, 0.92);
+    background: rgba(246, 244, 238, 0.92);
     backdrop-filter: blur(10px);
   }
 
@@ -1506,7 +1534,7 @@ section + section {
 .assistant-card__badge {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--color-accent);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1723,12 +1751,12 @@ section + section {
   --openui-text-neutral-link: var(--color-accent);
   --openui-text-brand: var(--color-accent);
   --openui-interactive-accent-default: var(--color-accent);
-  --openui-interactive-accent-hover: #9c5526;
-  --openui-interactive-accent-pressed: #9c5526;
-  --openui-highlight: rgba(181, 101, 46, 0.08);
-  --openui-highlight-subtle: rgba(181, 101, 46, 0.05);
-  --openui-sunk-light: rgba(38, 32, 26, 0.03);
-  --openui-sunk: rgba(38, 32, 26, 0.04);
+  --openui-interactive-accent-hover: #095a50;
+  --openui-interactive-accent-pressed: #095a50;
+  --openui-highlight: rgba(11, 107, 95, 0.08);
+  --openui-highlight-subtle: rgba(11, 107, 95, 0.05);
+  --openui-sunk-light: rgba(18, 21, 26, 0.03);
+  --openui-sunk: rgba(18, 21, 26, 0.04);
   --openui-text-body-default: 400 0.9375rem/1.5 var(--font-sans);
   --openui-text-body-default-heavy: 600 0.9375rem/1.5 var(--font-sans);
   --openui-text-body-lg: 400 1.0625rem/1.5 var(--font-sans);
@@ -1742,9 +1770,9 @@ section + section {
   --openui-text-label-sm-heavy: 600 0.8125rem/1.3 var(--font-sans);
   --openui-text-label-xs: 400 0.75rem/1.3 var(--font-sans);
   --openui-text-label-xs-heavy: 600 0.75rem/1.3 var(--font-sans);
-  --openui-text-heading-xs: 500 1rem/1.3 var(--font-serif);
-  --openui-text-heading-sm: 500 1.125rem/1.3 var(--font-serif);
-  --openui-text-heading-md: 500 1.375rem/1.25 var(--font-serif);
+  --openui-text-heading-xs: 500 1rem/1.3 var(--font-display);
+  --openui-text-heading-sm: 500 1.125rem/1.3 var(--font-display);
+  --openui-text-heading-md: 500 1.375rem/1.25 var(--font-display);
   align-self: stretch;
 }
 
@@ -1824,16 +1852,18 @@ section + section {
 }
 
 .proof__item:hover {
-  background: rgba(156, 85, 38, 0.07);
+  background: rgba(11, 107, 95, 0.07);
 }
 
 .proof__num {
   display: block;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--size-hero);
   font-weight: 600;
   line-height: 1.1;
-  color: var(--color-accent);
+  color: var(--color-ink);
+  font-weight: 800;
+  font-stretch: 112%;
 }
 
 .proof__label {
@@ -1864,19 +1894,23 @@ section + section {
   max-width: 34rem;
   margin: 0 0 var(--space-sm);
   padding: 0.6rem 0.85rem;
-  border-left: 3px solid var(--color-accent);
+  border-left: 3px solid var(--color-ink);
   border-radius: 2px 8px 8px 2px;
-  background: rgba(156, 85, 38, 0.08);
+  background: var(--color-bg-alt);
   color: var(--color-ink);
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
-  line-height: 1.3;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.45;
   text-align: left;
 }
 
 .hero .design-note {
   margin-left: auto;
   margin-right: auto;
+}
+
+.design-note__tag::before {
+  content: "\2794\00a0";
 }
 
 .design-note__tag {
@@ -1886,7 +1920,11 @@ section + section {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  background: var(--color-signal);
+  color: var(--color-ink);
+  border-radius: 3px;
 }
 
 body.is-annotated .design-note {
@@ -1916,10 +1954,10 @@ body.is-annotated .design-note {
   border: 1px solid var(--color-line);
   border-radius: 999px;
   background: var(--color-bg-alt);
-  box-shadow: 0 8px 24px -12px rgba(38, 32, 26, 0.35);
+  box-shadow: 0 8px 24px -12px rgba(18, 21, 26, 0.35);
   color: var(--color-ink);
-  font-family: var(--font-hand);
-  font-size: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -1989,10 +2027,23 @@ body.is-annotated .design-note {
   margin: 0 0 var(--space-xs);
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
-  background: rgba(156, 85, 38, 0.12);
-  color: var(--color-accent);
+  background: var(--color-signal);
+  color: var(--color-ink);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.proof__num > [data-count] {
+  background: linear-gradient(transparent 68%, var(--color-signal) 68%, var(--color-signal) 92%, transparent 92%);
+}
+
+@media (max-width: 640px) {
+  .hero__headline,
+  .section__title,
+  .proof__num,
+  .resume-header__name {
+    font-stretch: 100%;
+  }
 }
