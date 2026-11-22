@@ -90,255 +90,6 @@
   if (keys.length === 0 || entries.length === 0) return;
 
   var pressed = null;
-  var current = null;
-
-  // Winding route, drawn like a Ticket to Ride board: train-car spaces along
-  // a curve between city markers, a little map scenery, and a small train
-  // that drives to the pressed stage (or the stage of the role scrolling
-  // past). Spaces behind the train fill in as it claims them. Decorative
-  // only; aria-pressed carries the state.
-  var keyRow = keys[0].parentNode;
-  var SVGNS = "http://www.w3.org/2000/svg";
-  function svgEl(name, attrs, parent) {
-    var node = document.createElementNS(SVGNS, name);
-    for (var a in attrs) node.setAttribute(a, attrs[a]);
-    if (parent) parent.appendChild(node);
-    return node;
-  }
-
-  var track = svgEl("svg", { "class": "stage-track", "aria-hidden": "true", focusable: "false" });
-  var rail = svgEl("path", { "class": "stage-track__rail" }, track);
-  var decor = svgEl("g", { "class": "stage-track__decor" }, track);
-  var ends = svgEl("g", {}, track);
-  var spaces = svgEl("g", {}, track);
-  var cityLayer = svgEl("g", {}, track);
-
-  // Seen from above, like the board pieces: a carriage, then the engine.
-  var train = svgEl("g", { "class": "train" }, track);
-  var carriage = svgEl("g", { "class": "train__car" }, train);
-  svgEl("rect", { "class": "train__body", x: -7, y: -4.5, width: 14, height: 9, rx: 2 }, carriage);
-  svgEl("rect", { "class": "train__window", x: -4.5, y: -1.5, width: 3, height: 3, rx: 0.5 }, carriage);
-  svgEl("rect", { "class": "train__window", x: 1.5, y: -1.5, width: 3, height: 3, rx: 0.5 }, carriage);
-  var loco = svgEl("g", { "class": "train__loco" }, train);
-  svgEl("path", { "class": "train__nose", d: "M4 -4.5 L10 0 L4 4.5 Z" }, loco);
-  svgEl("rect", { "class": "train__body", x: -8, y: -4.5, width: 13, height: 9, rx: 2 }, loco);
-  svgEl("rect", { "class": "train__cab", x: -8, y: -4.5, width: 5, height: 9, rx: 1.5 }, loco);
-  svgEl("circle", { "class": "train__stack", cx: 2, cy: 0, r: 1.8 }, loco);
-  svgEl("circle", { "class": "train__puff", cx: -1, cy: 0, r: 2.6 }, loco);
-  keyRow.appendChild(track);
-
-  keys.forEach(function (k) {
-    var stop = document.createElement("span");
-    stop.className = "stop-dot";
-    stop.setAttribute("aria-hidden", "true");
-    k.insertBefore(stop, k.firstChild);
-  });
-  keyRow.classList.add("has-track");
-
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var roomForScenery = window.matchMedia("(min-width: 641px)");
-  var stopLen = {};
-  var total = 0;
-  var cars = [];
-  var cities = [];
-  var trainLen = null;
-  var trainDir = 1;
-  var trainStage = null;
-  var anim = null;
-  var TRAIN_SCALE = 1.4;
-
-  function angleAt(L) {
-    var a = rail.getPointAtLength(Math.max(0, L - 1));
-    var b = rail.getPointAtLength(Math.min(total, L + 1));
-    return (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
-  }
-
-  function place(node, L, flip, scale) {
-    var p = rail.getPointAtLength(L);
-    node.setAttribute(
-      "transform",
-      "translate(" + p.x + " " + p.y + ") rotate(" + (angleAt(L) + (flip ? 180 : 0)) + ")" + (scale ? " scale(" + scale + ")" : "")
-    );
-  }
-
-  // Tiny map scenery, drawn around (0, 0).
-  var SCENERY = {
-    trees: function (g) {
-      svgEl("path", { "class": "decor-land", d: "M-9 5 L-5.5 -4 L-2 5 Z M-1 5 L3 -7 L7 5 Z" }, g);
-    },
-    mountains: function (g) {
-      svgEl("path", { "class": "decor-land", d: "M-11 5 L-4 -6 L0 0 L4 -7 L11 5 Z" }, g);
-      svgEl("path", { "class": "decor-snow", d: "M2.4 -4.6 L4 -7 L5.6 -4.6 Z" }, g);
-    },
-    lake: function (g) {
-      svgEl("ellipse", { "class": "decor-water", cx: 0, cy: 0, rx: 10, ry: 4.5 }, g);
-    },
-  };
-  var SCENERY_ORDER = ["trees", "mountains", "lake", "trees", "mountains"];
-
-  function drawCompass(x, y) {
-    var g = svgEl("g", { "class": "decor-compass", transform: "translate(" + x + " " + y + ")" }, decor);
-    svgEl("circle", { cx: 0, cy: 0, r: 9 }, g);
-    svgEl("path", { "class": "decor-compass__needle", d: "M0 -8 L2 0 L0 8 L-2 0 Z M-8 0 L0 -1.5 L8 0 L0 1.5 Z" }, g);
-  }
-
-  // A smooth curve through the city markers, with short dotted lines off
-  // both ends so the route looks like it carries on past the map.
-  function drawTrack() {
-    var box = keyRow.getBoundingClientRect();
-    document.documentElement.style.setProperty("--stage-key-h", box.height + "px");
-    var pts = Array.prototype.map.call(keys, function (k) {
-      var r = k.querySelector(".stop-dot").getBoundingClientRect();
-      return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top];
-    });
-    var n = pts.length;
-    var lead = [pts[0][0] - (pts[1][0] - pts[0][0]) * 0.35, pts[0][1] - (pts[1][1] - pts[0][1]) * 0.35];
-    var tail = [pts[n - 1][0] + (pts[n - 1][0] - pts[n - 2][0]) * 0.35, pts[n - 1][1] + (pts[n - 1][1] - pts[n - 2][1]) * 0.35];
-    // Where the route doubles back (stops stacked one above the other on
-    // phones), bend it out through the side gutter so it skirts the labels.
-    var route = [pts[0]];
-    for (var w = 1; w < n; w++) {
-      var prev = pts[w - 1];
-      var next = pts[w];
-      if (Math.abs(next[0] - prev[0]) < 10 && Math.abs(next[1] - prev[1]) > 30) {
-        route.push([prev[0] > box.width / 2 ? box.width - 6 : 6, (prev[1] + next[1]) / 2]);
-      }
-      route.push(next);
-    }
-    var all = [lead].concat(route, [tail]);
-    var segs = [];
-    for (var i = 0; i < all.length - 1; i++) {
-      var p0 = all[i - 1] || all[i];
-      var p1 = all[i];
-      var p2 = all[i + 1];
-      var p3 = all[i + 2] || p2;
-      segs.push(" C" + (p1[0] + (p2[0] - p0[0]) / 6) + " " + (p1[1] + (p2[1] - p0[1]) / 6) +
-        " " + (p2[0] - (p3[0] - p1[0]) / 6) + " " + (p2[1] - (p3[1] - p1[1]) / 6) +
-        " " + p2[0] + " " + p2[1]);
-    }
-    rail.setAttribute("d", "M" + all[0][0] + " " + all[0][1] + segs.join(""));
-    total = rail.getTotalLength();
-
-    // Where each city sits along the line: walk forward to the closest point.
-    var from = 0;
-    pts.forEach(function (p, idx) {
-      var best = Infinity;
-      var bestL = from;
-      for (var L = from; L <= total; L += 2) {
-        var q = rail.getPointAtLength(L);
-        var dist = (q.x - p[0]) * (q.x - p[0]) + (q.y - p[1]) * (q.y - p[1]);
-        if (dist < best) {
-          best = dist;
-          bestL = L;
-        } else if (best < 4) {
-          break;
-        }
-      }
-      stopLen[keys[idx].dataset.stage] = bestL;
-      from = bestL;
-    });
-
-    ends.textContent = "";
-    svgEl("path", { "class": "stage-track__end", d: "M" + all[0][0] + " " + all[0][1] + segs[0] }, ends);
-    svgEl("path", { "class": "stage-track__end", d: "M" + pts[n - 1][0] + " " + pts[n - 1][1] + segs[segs.length - 1] }, ends);
-
-    // Train-car spaces on each route between neighbouring cities.
-    spaces.textContent = "";
-    cars = [];
-    var CAR = 18;
-    var GAP = 4;
-    var CLEAR = 9;
-    for (var s = 0; s < n - 1; s++) {
-      var a = stopLen[keys[s].dataset.stage] + CLEAR;
-      var b = stopLen[keys[s + 1].dataset.stage] - CLEAR;
-      var count = Math.max(1, Math.floor((b - a + GAP) / (CAR + GAP)));
-      var len = (b - a - GAP * (count - 1)) / count;
-      for (var c = 0; c < count; c++) {
-        var mid = a + c * (len + GAP) + len / 2;
-        var space = svgEl("rect", { "class": "track-space", x: -len / 2, y: -4, width: len, height: 8, rx: 1.5 }, spaces);
-        place(space, mid, false);
-        cars.push({ node: space, at: mid });
-      }
-    }
-
-    cityLayer.textContent = "";
-    cities = pts.map(function (p, idx) {
-      var city = svgEl("circle", { "class": "city", cx: p[0], cy: p[1], r: 6 }, cityLayer);
-      return { node: city, at: stopLen[keys[idx].dataset.stage] };
-    });
-
-    // Scenery beside each route, on the side away from the labels.
-    decor.textContent = "";
-    if (roomForScenery.matches) {
-      for (var t = 0; t < n - 1; t++) {
-        var m = (stopLen[keys[t].dataset.stage] + stopLen[keys[t + 1].dataset.stage]) / 2;
-        var q = rail.getPointAtLength(m);
-        var ang = (angleAt(m) * Math.PI) / 180;
-        var nx = -Math.sin(ang);
-        var ny = Math.cos(ang);
-        if (ny > 0) {
-          nx = -nx;
-          ny = -ny;
-        }
-        var g = svgEl("g", { transform: "translate(" + (q.x + nx * 20) + " " + (q.y + ny * 20) + ")" }, decor);
-        SCENERY[SCENERY_ORDER[t]](g);
-      }
-      drawCompass(box.width - 16, 14);
-    }
-
-    if (trainLen !== null) moveTrainTo(trainStage, true);
-  }
-
-  function setTrainAt(L) {
-    place(loco, L, trainDir < 0, TRAIN_SCALE);
-    place(carriage, Math.min(total, Math.max(0, L - trainDir * 21)), false, TRAIN_SCALE);
-    cars.forEach(function (c) {
-      c.node.classList.toggle("is-claimed", c.at <= L);
-    });
-    cities.forEach(function (c) {
-      c.node.classList.toggle("is-passed", c.at <= L + 0.5);
-    });
-    trainLen = L;
-  }
-
-  function moveTrainTo(stage, instant) {
-    var target = stopLen[stage];
-    if (target === undefined) return;
-    if (anim) cancelAnimationFrame(anim);
-    // First arrival rolls in from the start of the line.
-    var startLen = trainLen === null ? 0 : trainLen;
-    if (target !== startLen) trainDir = target > startLen ? 1 : -1;
-    train.classList.add("is-shown");
-    if (instant || reduceMotion.matches) {
-      train.classList.remove("is-moving");
-      setTrainAt(target);
-      return;
-    }
-    var startTime = null;
-    var duration = Math.min(1600, 300 + Math.abs(target - startLen) * 0.9);
-    train.classList.add("is-moving");
-    function step(now) {
-      if (startTime === null) startTime = now;
-      var t = Math.min((now - startTime) / duration, 1);
-      var eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      setTrainAt(startLen + (target - startLen) * eased);
-      if (t < 1) anim = requestAnimationFrame(step);
-      else train.classList.remove("is-moving");
-    }
-    anim = requestAnimationFrame(step);
-  }
-
-  function placeTrain() {
-    var stage = pressed || current;
-    if (!stage || stage === trainStage) return;
-    trainStage = stage;
-    moveTrainTo(stage, false);
-  }
-
-  drawTrack();
-  if ("ResizeObserver" in window) new ResizeObserver(drawTrack).observe(keyRow);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTrack);
-  roomForScenery.addEventListener("change", drawTrack);
 
   keys.forEach(function (key) {
     key.addEventListener("click", function () {
@@ -350,7 +101,6 @@
       entries.forEach(function (e) {
         e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
       });
-      placeTrain();
       // Take the visitor to the role, not just dim the others.
       if (pressed !== null) {
         var first = document.querySelector('.timeline__entry[data-stage="' + pressed + '"]');
@@ -369,11 +119,9 @@
     function (items) {
       items.forEach(function (item) {
         if (!item.isIntersecting) return;
-        current = item.target.dataset.stage;
         keys.forEach(function (k) {
-          k.classList.toggle("is-current", k.dataset.stage === current);
+          k.classList.toggle("is-current", k.dataset.stage === item.target.dataset.stage);
         });
-        placeTrain();
       });
     },
     { rootMargin: "-45% 0px -50% 0px" }
@@ -734,19 +482,6 @@
   let openuiPromise = null;
   let countState = "ok";
 
-  // Job-description answers open with a boarding-pass header. Decorative:
-  // the answer itself is announced separately.
-  function addFitTicket() {
-    const ticket = document.createElement("div");
-    ticket.className = "fit-ticket";
-    ticket.setAttribute("aria-hidden", "true");
-    const when = new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-    ticket.innerHTML =
-      '<span>Boarding pass · Fit check</span><span></span><span class="fit-ticket__route">From: your job description ➔ To: evidence from my work</span>';
-    ticket.children[1].textContent = when;
-    thread.appendChild(ticket);
-  }
-
   function addBubble(role, text) {
     const bubble = document.createElement("div");
     bubble.className = `qa-bubble ${role}`;
@@ -1065,7 +800,6 @@
       }
 
       const data = await res.json();
-      if (isFit) addFitTicket();
       let spoken;
       let remembered = data.answer;
 
@@ -1153,34 +887,6 @@
   });
 })();
 
-// Ticket stubs: a case study you've opened gets its ticket punched on the
-// home page. Kept in this browser only; nothing is sent anywhere.
-(function () {
-  var KEY = "tk-read";
-  var read = [];
-  try {
-    read = JSON.parse(localStorage.getItem(KEY) || "[]");
-  } catch (e) {}
-
-  var here = location.pathname.match(/\/case-studies\/([\w-]+)\.html$/);
-  if (here && read.indexOf(here[1]) === -1) {
-    read.push(here[1]);
-    try {
-      localStorage.setItem(KEY, JSON.stringify(read));
-    } catch (e) {}
-  }
-
-  document.querySelectorAll(".case-card").forEach(function (card) {
-    var slug = (card.getAttribute("href").match(/([\w-]+)\.html$/) || [])[1];
-    if (!slug || read.indexOf(slug) === -1) return;
-    card.classList.add("is-punched");
-    var note = document.createElement("span");
-    note.className = "sr-only";
-    note.textContent = " (already read)";
-    card.querySelector(".case-card__title").appendChild(note);
-  });
-})();
-
 // Station clock: my local time, so you know whether it's a sensible hour
 // to expect a reply.
 (function () {
@@ -1204,31 +910,4 @@
   tick();
   clock.hidden = false;
   setInterval(tick, 30000);
-})();
-
-// Easter egg: type "mind the gap" anywhere outside a text field.
-(function () {
-  var PHRASE = "mind the gap";
-  var typed = "";
-  var sign = null;
-
-  document.addEventListener("keydown", function (e) {
-    var t = e.target;
-    if (t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName))) return;
-    if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey) return;
-    typed = (typed + e.key.toLowerCase()).slice(-PHRASE.length);
-    if (typed !== PHRASE || sign) return;
-
-    sign = document.createElement("div");
-    sign.className = "gap-sign";
-    sign.setAttribute("role", "status");
-    sign.innerHTML =
-      '<span class="gap-sign__title">Mind the gap</span><span class="gap-sign__sub">You found the easter egg. Thanks for exploring.</span>';
-    document.body.appendChild(sign);
-    setTimeout(function () {
-      sign.remove();
-      sign = null;
-      typed = "";
-    }, 5000);
-  });
 })();
