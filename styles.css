@@ -2206,50 +2206,6 @@ body.is-annotated .design-note {
   }
 }
 
-/* ---- "You are here" pin on the ladder key ---- */
-
-.ladder-pin {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 12px;
-  height: 12px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.ladder-pin.is-shown {
-  opacity: 1;
-}
-
-.ladder-pin__dot {
-  position: relative;
-  display: block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-bg);
-}
-
-.ladder-pin__dot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 2px solid var(--color-accent);
-  border-radius: 50%;
-  animation: pin-pulse 1.6s ease-out 3;
-}
-
-@keyframes pin-pulse {
-  to {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-}
-
 /* ---- Proof numbers flip like a departures board ---- */
 
 .flap {
@@ -2438,7 +2394,6 @@ body.is-annotated .design-note {
 
 @media (prefers-reduced-motion: reduce) {
   .case-card.is-punched::after,
-  .ladder-pin__dot::after,
   .flap.is-flipping,
   .gap-sign {
     animation: none;
@@ -2446,59 +2401,159 @@ body.is-annotated .design-note {
 
 }
 
-/* ---- Winding route: the ladder key as a train line ----
-   script.js adds .has-track, a station dot on each stage, and an SVG track
-   curved through the dots. Without JS the key stays a flat legend. */
+/* ---- Winding route: the ladder key as a Ticket to Ride-style board ----
+   script.js adds .has-track and an SVG map: train-car spaces along a curve
+   between city markers, a little scenery, and a small train. The SVG sits
+   above the buttons but ignores the pointer, so taps still reach them.
+   Without JS the key stays a flat legend. */
 
 .timeline__stage-key.has-track::before {
   content: none;
 }
 
+/* Layout anchors for the city markers; the SVG draws the visible city. */
+.stop-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  visibility: hidden;
+}
+
 .stage-track {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   overflow: visible;
   pointer-events: none;
 }
 
-.stage-track__rail,
-.stage-track__done {
+.stage-track__rail {
   fill: none;
-  stroke-width: 3;
+  stroke: none;
 }
 
-.stage-track__rail {
-  stroke: var(--color-line);
+.stage-track__end {
+  fill: none;
+  stroke: var(--color-ink-soft);
+  stroke-width: 1.5;
+  stroke-dasharray: 1 5;
   stroke-linecap: round;
 }
 
-/* The stretch of line already travelled. */
-.stage-track__done {
+.track-space {
+  fill: var(--color-bg-alt);
+  stroke: var(--color-ink-soft);
+  stroke-width: 1;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+
+.track-space.is-claimed {
+  fill: var(--color-accent);
+  stroke: #095a50;
+}
+
+.city {
+  fill: var(--color-bg-alt);
+  stroke: var(--color-ink);
+  stroke-width: 2.5;
+  transition: stroke 0.3s ease;
+}
+
+.city.is-passed {
   stroke: var(--color-accent);
-  stroke-linecap: butt;
 }
 
-.stop-dot {
-  flex-shrink: 0;
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--color-ink-soft);
-  border-radius: 50%;
-  background: var(--color-bg-alt);
-  transition: border-color 0.3s ease;
+/* Map scenery: monochrome, so it reads as a map and not as more signals. */
+.decor-land {
+  fill: var(--color-line);
+  stroke: var(--color-ink-soft);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
 }
 
-.stop-dot.is-passed {
-  border-color: var(--color-accent);
+.decor-snow {
+  fill: var(--color-bg-alt);
 }
 
-/* Desktop: stops alternate high and low, so the line waves across. */
+.decor-water {
+  fill: rgba(11, 107, 95, 0.1);
+  stroke: rgba(11, 107, 95, 0.45);
+  stroke-width: 0.8;
+}
+
+.decor-compass circle {
+  fill: var(--color-bg-alt);
+  stroke: var(--color-ink-soft);
+  stroke-width: 0.8;
+}
+
+.decor-compass__needle {
+  fill: var(--color-ink-soft);
+}
+
+/* The train: ink body so it stands out on teal claimed spaces. */
+.train {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.train.is-shown {
+  opacity: 1;
+}
+
+.train__body {
+  fill: var(--color-ink);
+  stroke: var(--color-bg-alt);
+  stroke-width: 1;
+}
+
+.train__cab,
+.train__nose {
+  fill: var(--color-accent);
+  stroke: var(--color-bg-alt);
+  stroke-width: 1;
+}
+
+.train__window {
+  fill: var(--color-bg-alt);
+}
+
+.train__stack {
+  fill: var(--color-bg-alt);
+}
+
+.train__puff {
+  fill: var(--color-bg-alt);
+  stroke: var(--color-ink-soft);
+  stroke-width: 0.6;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.train.is-moving .train__puff {
+  animation: puff 0.5s ease-out infinite;
+}
+
+@keyframes puff {
+  from {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-9px) scale(1.7);
+  }
+}
+
+/* Desktop: cities alternate high and low so the route winds, with room
+   above for the scenery. */
 @media (min-width: 641px) {
   .timeline__stage-key.has-track {
     align-items: flex-start;
+    padding-top: 1.5rem;
   }
 
   .has-track .timeline__stage-key-item:nth-child(even) {
@@ -2506,13 +2561,15 @@ body.is-annotated .design-note {
   }
 }
 
-/* Phones: the line snakes across two rows and doubles back, like a route
-   map. Tab order still follows the route, 1 to 6. */
+/* Phones: the route snakes across two rows and doubles back. Tab order
+   still follows the route, 1 to 6. */
 @media (max-width: 640px) {
   .timeline__stage-key.has-track {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: var(--space-sm);
+    /* A gutter for the route to bend around where it doubles back. */
+    padding-right: 14px;
   }
 
   .has-track .timeline__stage-key-item {
@@ -2538,7 +2595,13 @@ body.is-annotated .design-note {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stop-dot {
+  .track-space,
+  .city,
+  .train {
     transition: none;
+  }
+
+  .train.is-moving .train__puff {
+    animation: none;
   }
 }
