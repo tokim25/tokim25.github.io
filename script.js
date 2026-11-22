@@ -90,6 +90,45 @@
   if (keys.length === 0 || entries.length === 0) return;
 
   var pressed = null;
+  var current = null;
+
+  // "You are here" pin: rides under the pressed stage, or the stage of the
+  // role scrolling past. Decorative; aria-pressed carries the state.
+  var keyRow = keys[0].parentNode;
+  var pin = document.createElement("span");
+  pin.className = "ladder-pin";
+  pin.setAttribute("aria-hidden", "true");
+  pin.innerHTML = '<span class="ladder-pin__dot"></span>';
+  keyRow.appendChild(pin);
+  var dot = pin.firstChild;
+  var pinStage = null;
+
+  function placePin() {
+    var stage = pressed || current;
+    if (!stage) return;
+    var btn = keyRow.querySelector('.timeline__stage-key-item[data-stage="' + stage + '"]');
+    var x = btn.offsetLeft + btn.offsetWidth / 2 - 6;
+    var y = btn.offsetTop + btn.offsetHeight - 7;
+    var first = !pin.classList.contains("is-shown");
+    if (first) pin.style.transition = "none";
+    pin.style.transform = "translate(" + x + "px, " + y + "px)";
+    if (first) {
+      void pin.offsetWidth;
+      pin.style.transition = "";
+      pin.classList.add("is-shown");
+    } else if (stage !== pinStage) {
+      dot.classList.remove("is-hopping");
+      void dot.offsetWidth;
+      dot.classList.add("is-hopping");
+    }
+    pinStage = stage;
+  }
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(placePin, 150);
+  });
 
   keys.forEach(function (key) {
     key.addEventListener("click", function () {
@@ -101,6 +140,7 @@
       entries.forEach(function (e) {
         e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
       });
+      placePin();
       // Take the visitor to the role, not just dim the others.
       if (pressed !== null) {
         var first = document.querySelector('.timeline__entry[data-stage="' + pressed + '"]');
@@ -119,9 +159,11 @@
     function (items) {
       items.forEach(function (item) {
         if (!item.isIntersecting) return;
+        current = item.target.dataset.stage;
         keys.forEach(function (k) {
-          k.classList.toggle("is-current", k.dataset.stage === item.target.dataset.stage);
+          k.classList.toggle("is-current", k.dataset.stage === current);
         });
+        placePin();
       });
     },
     { rootMargin: "-45% 0px -50% 0px" }
@@ -131,7 +173,7 @@
   });
 })();
 
-// Proof numerals count up once when they scroll into view. The final value is
+// Proof numerals flip into place once when they scroll into view. The final value is
 // already in the HTML, so no JS, reduced motion, or a missed observer all
 // leave the right numbers on the page.
 (function () {
@@ -140,21 +182,31 @@
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!("IntersectionObserver" in window)) return;
 
+  // Each digit flips through a few random numbers before it settles, one
+  // character a beat after the last, like a departures board.
   function run(el) {
-    var end = Number(el.dataset.count);
-    var pre = el.dataset.prefix || "";
-    var suf = el.dataset.suffix || "";
-    var start = null;
-    var DURATION = 900;
-    function frame(now) {
-      if (start === null) start = now;
-      var t = Math.min((now - start) / DURATION, 1);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = pre + Math.round(end * eased) + suf;
-      if (t < 1) requestAnimationFrame(frame);
-    }
-    el.textContent = pre + "0" + suf;
-    requestAnimationFrame(frame);
+    var final = el.textContent;
+    el.textContent = "";
+    final.split("").forEach(function (ch, i) {
+      var cell = document.createElement("span");
+      cell.className = "flap";
+      el.appendChild(cell);
+      if (!/\d/.test(ch)) {
+        cell.textContent = ch;
+        return;
+      }
+      cell.textContent = "0";
+      var flips = 5 + i * 2;
+      var n = 0;
+      var timer = setInterval(function () {
+        n++;
+        cell.textContent = n >= flips ? ch : String(Math.floor(Math.random() * 10));
+        cell.classList.remove("is-flipping");
+        void cell.offsetWidth;
+        cell.classList.add("is-flipping");
+        if (n >= flips) clearInterval(timer);
+      }, 70);
+    });
   }
 
   var io = new IntersectionObserver(
@@ -471,6 +523,19 @@
   let busy = false;
   let openuiPromise = null;
   let countState = "ok";
+
+  // Job-description answers open with a boarding-pass header. Decorative:
+  // the answer itself is announced separately.
+  function addFitTicket() {
+    const ticket = document.createElement("div");
+    ticket.className = "fit-ticket";
+    ticket.setAttribute("aria-hidden", "true");
+    const when = new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    ticket.innerHTML =
+      '<span>Boarding pass · Fit check</span><span></span><span class="fit-ticket__route">From: your job description ➔ To: evidence from my work</span>';
+    ticket.children[1].textContent = when;
+    thread.appendChild(ticket);
+  }
 
   function addBubble(role, text) {
     const bubble = document.createElement("div");
@@ -790,6 +855,7 @@
       }
 
       const data = await res.json();
+      if (isFit) addFitTicket();
       let spoken;
       let remembered = data.answer;
 
@@ -874,5 +940,85 @@
     if (mode === "fit" && !(e.metaKey || e.ctrlKey)) return;
     e.preventDefault();
     form.requestSubmit();
+  });
+})();
+
+// Ticket stubs: a case study you've opened gets its ticket punched on the
+// home page. Kept in this browser only; nothing is sent anywhere.
+(function () {
+  var KEY = "tk-read";
+  var read = [];
+  try {
+    read = JSON.parse(localStorage.getItem(KEY) || "[]");
+  } catch (e) {}
+
+  var here = location.pathname.match(/\/case-studies\/([\w-]+)\.html$/);
+  if (here && read.indexOf(here[1]) === -1) {
+    read.push(here[1]);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(read));
+    } catch (e) {}
+  }
+
+  document.querySelectorAll(".case-card").forEach(function (card) {
+    var slug = (card.getAttribute("href").match(/([\w-]+)\.html$/) || [])[1];
+    if (!slug || read.indexOf(slug) === -1) return;
+    card.classList.add("is-punched");
+    var note = document.createElement("span");
+    note.className = "sr-only";
+    note.textContent = " (already read)";
+    card.querySelector(".case-card__title").appendChild(note);
+  });
+})();
+
+// Station clock: my local time, so you know whether it's a sensible hour
+// to expect a reply.
+(function () {
+  var clock = document.querySelector(".station-clock");
+  if (!clock || !window.Intl) return;
+  var timeEl = clock.querySelector(".station-clock__time");
+  var hourHand = clock.querySelector(".station-clock__hand--h");
+  var minuteHand = clock.querySelector(".station-clock__hand--m");
+  var ZONE = "America/Los_Angeles";
+
+  function tick() {
+    var now = new Date();
+    timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: ZONE, hour: "numeric", minute: "2-digit" });
+    var parts = now.toLocaleTimeString("en-US", { timeZone: ZONE, hour12: false, hour: "2-digit", minute: "2-digit" }).split(":");
+    var h = Number(parts[0]) % 12;
+    var m = Number(parts[1]);
+    hourHand.style.transform = "rotate(" + (h * 30 + m / 2) + "deg)";
+    minuteHand.style.transform = "rotate(" + m * 6 + "deg)";
+  }
+
+  tick();
+  clock.hidden = false;
+  setInterval(tick, 30000);
+})();
+
+// Easter egg: type "mind the gap" anywhere outside a text field.
+(function () {
+  var PHRASE = "mind the gap";
+  var typed = "";
+  var sign = null;
+
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName))) return;
+    if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey) return;
+    typed = (typed + e.key.toLowerCase()).slice(-PHRASE.length);
+    if (typed !== PHRASE || sign) return;
+
+    sign = document.createElement("div");
+    sign.className = "gap-sign";
+    sign.setAttribute("role", "status");
+    sign.innerHTML =
+      '<span class="gap-sign__title">Mind the gap</span><span class="gap-sign__sub">You found the easter egg. Thanks for exploring.</span>';
+    document.body.appendChild(sign);
+    setTimeout(function () {
+      sign.remove();
+      sign = null;
+      typed = "";
+    }, 5000);
   });
 })();
