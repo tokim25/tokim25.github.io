@@ -92,43 +92,135 @@
   var pressed = null;
   var current = null;
 
-  // "You are here" pin: rides under the pressed stage, or the stage of the
-  // role scrolling past. Decorative; aria-pressed carries the state.
+  // Winding route: a curved track through a station dot on each stage, with
+  // a "you are here" pin that travels along it to the pressed stage, or the
+  // stage of the role scrolling past. The stretch already travelled fills in.
+  // Decorative only; aria-pressed carries the state.
   var keyRow = keys[0].parentNode;
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var track = document.createElementNS(SVGNS, "svg");
+  track.setAttribute("class", "stage-track");
+  track.setAttribute("aria-hidden", "true");
+  var rail = document.createElementNS(SVGNS, "path");
+  rail.setAttribute("class", "stage-track__rail");
+  var done = document.createElementNS(SVGNS, "path");
+  done.setAttribute("class", "stage-track__done");
+  track.appendChild(rail);
+  track.appendChild(done);
+  keyRow.appendChild(track);
+  keys.forEach(function (k) {
+    var stop = document.createElement("span");
+    stop.className = "stop-dot";
+    stop.setAttribute("aria-hidden", "true");
+    k.insertBefore(stop, k.firstChild);
+  });
+  keyRow.classList.add("has-track");
+
   var pin = document.createElement("span");
   pin.className = "ladder-pin";
   pin.setAttribute("aria-hidden", "true");
   pin.innerHTML = '<span class="ladder-pin__dot"></span>';
   keyRow.appendChild(pin);
-  var dot = pin.firstChild;
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var stopLen = {};
+  var total = 0;
+  var pinLen = null;
   var pinStage = null;
+  var anim = null;
+
+  // Catmull-Rom curve through the station dots, with a short lead-in and
+  // run-out so the line looks like it continues past both ends.
+  function drawTrack() {
+    var box = keyRow.getBoundingClientRect();
+    document.documentElement.style.setProperty("--stage-key-h", box.height + "px");
+    var pts = Array.prototype.map.call(keys, function (k) {
+      var r = k.querySelector(".stop-dot").getBoundingClientRect();
+      return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top];
+    });
+    var n = pts.length;
+    var lead = [pts[0][0] - (pts[1][0] - pts[0][0]) * 0.35, pts[0][1] - (pts[1][1] - pts[0][1]) * 0.35];
+    var tail = [pts[n - 1][0] + (pts[n - 1][0] - pts[n - 2][0]) * 0.35, pts[n - 1][1] + (pts[n - 1][1] - pts[n - 2][1]) * 0.35];
+    var all = [lead].concat(pts, [tail]);
+    var d = "M" + all[0][0] + " " + all[0][1];
+    for (var i = 0; i < all.length - 1; i++) {
+      var p0 = all[i - 1] || all[i];
+      var p1 = all[i];
+      var p2 = all[i + 1];
+      var p3 = all[i + 2] || p2;
+      d += " C" + (p1[0] + (p2[0] - p0[0]) / 6) + " " + (p1[1] + (p2[1] - p0[1]) / 6) +
+        " " + (p2[0] - (p3[0] - p1[0]) / 6) + " " + (p2[1] - (p3[1] - p1[1]) / 6) +
+        " " + p2[0] + " " + p2[1];
+    }
+    rail.setAttribute("d", d);
+    done.setAttribute("d", d);
+    total = rail.getTotalLength();
+
+    // Where each stop sits along the line: walk forward to the closest point.
+    var from = 0;
+    pts.forEach(function (p, idx) {
+      var best = Infinity;
+      var bestL = from;
+      for (var L = from; L <= total; L += 2) {
+        var q = rail.getPointAtLength(L);
+        var dist = (q.x - p[0]) * (q.x - p[0]) + (q.y - p[1]) * (q.y - p[1]);
+        if (dist < best) {
+          best = dist;
+          bestL = L;
+        } else if (best < 4) {
+          break;
+        }
+      }
+      stopLen[keys[idx].dataset.stage] = bestL;
+      from = bestL;
+    });
+
+    if (pinStage) movePinTo(pinStage, true);
+    else done.style.strokeDasharray = "0 " + total;
+  }
+
+  function setPinAt(L) {
+    var q = rail.getPointAtLength(L);
+    pin.style.transform = "translate(" + (q.x - 6) + "px, " + (q.y - 6) + "px)";
+    done.style.strokeDasharray = L + " " + total;
+    pinLen = L;
+  }
+
+  function movePinTo(stage, instant) {
+    var target = stopLen[stage];
+    if (target === undefined) return;
+    keys.forEach(function (k) {
+      k.querySelector(".stop-dot").classList.toggle("is-passed", Number(k.dataset.stage) <= Number(stage));
+    });
+    if (anim) cancelAnimationFrame(anim);
+    if (instant || pinLen === null || reduceMotion.matches) {
+      setPinAt(target);
+      pin.classList.add("is-shown");
+      return;
+    }
+    var startLen = pinLen;
+    var startTime = null;
+    var duration = Math.min(1100, 300 + Math.abs(target - startLen) * 0.9);
+    function step(now) {
+      if (startTime === null) startTime = now;
+      var t = Math.min((now - startTime) / duration, 1);
+      var eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      setPinAt(startLen + (target - startLen) * eased);
+      if (t < 1) anim = requestAnimationFrame(step);
+    }
+    anim = requestAnimationFrame(step);
+  }
 
   function placePin() {
     var stage = pressed || current;
-    if (!stage) return;
-    var btn = keyRow.querySelector('.timeline__stage-key-item[data-stage="' + stage + '"]');
-    var x = btn.offsetLeft + btn.offsetWidth / 2 - 6;
-    var y = btn.offsetTop + btn.offsetHeight - 7;
-    var first = !pin.classList.contains("is-shown");
-    if (first) pin.style.transition = "none";
-    pin.style.transform = "translate(" + x + "px, " + y + "px)";
-    if (first) {
-      void pin.offsetWidth;
-      pin.style.transition = "";
-      pin.classList.add("is-shown");
-    } else if (stage !== pinStage) {
-      dot.classList.remove("is-hopping");
-      void dot.offsetWidth;
-      dot.classList.add("is-hopping");
-    }
+    if (!stage || stage === pinStage) return;
     pinStage = stage;
+    movePinTo(stage, false);
   }
 
-  var resizeTimer;
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(placePin, 150);
-  });
+  drawTrack();
+  if ("ResizeObserver" in window) new ResizeObserver(drawTrack).observe(keyRow);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTrack);
 
   keys.forEach(function (key) {
     key.addEventListener("click", function () {

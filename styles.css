@@ -2119,7 +2119,7 @@ body.is-annotated .design-note {
 
 @media (min-width: 641px) {
   .timeline__entry {
-    scroll-margin-top: 9rem;
+    scroll-margin-top: calc(52px + var(--stage-key-h, 6rem) + 1rem);
   }
 }
 
@@ -2217,7 +2217,7 @@ body.is-annotated .design-note {
   height: 12px;
   pointer-events: none;
   opacity: 0;
-  transition: transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1), opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .ladder-pin.is-shown {
@@ -2241,16 +2241,6 @@ body.is-annotated .design-note {
   border: 2px solid var(--color-accent);
   border-radius: 50%;
   animation: pin-pulse 1.6s ease-out 3;
-}
-
-.ladder-pin__dot.is-hopping {
-  animation: pin-hop 0.45s ease;
-}
-
-@keyframes pin-hop {
-  40% {
-    transform: translateY(-10px);
-  }
 }
 
 @keyframes pin-pulse {
@@ -2449,13 +2439,106 @@ body.is-annotated .design-note {
 @media (prefers-reduced-motion: reduce) {
   .case-card.is-punched::after,
   .ladder-pin__dot::after,
-  .ladder-pin__dot.is-hopping,
   .flap.is-flipping,
   .gap-sign {
     animation: none;
   }
 
-  .ladder-pin {
-    transition: opacity 0.2s ease;
+}
+
+/* ---- Winding route: the ladder key as a train line ----
+   script.js adds .has-track, a station dot on each stage, and an SVG track
+   curved through the dots. Without JS the key stays a flat legend. */
+
+.timeline__stage-key.has-track::before {
+  content: none;
+}
+
+.stage-track {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.stage-track__rail,
+.stage-track__done {
+  fill: none;
+  stroke-width: 3;
+}
+
+.stage-track__rail {
+  stroke: var(--color-line);
+  stroke-linecap: round;
+}
+
+/* The stretch of line already travelled. */
+.stage-track__done {
+  stroke: var(--color-accent);
+  stroke-linecap: butt;
+}
+
+.stop-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-ink-soft);
+  border-radius: 50%;
+  background: var(--color-bg-alt);
+  transition: border-color 0.3s ease;
+}
+
+.stop-dot.is-passed {
+  border-color: var(--color-accent);
+}
+
+/* Desktop: stops alternate high and low, so the line waves across. */
+@media (min-width: 641px) {
+  .timeline__stage-key.has-track {
+    align-items: flex-start;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(even) {
+    margin-top: 28px;
+  }
+}
+
+/* Phones: the line snakes across two rows and doubles back, like a route
+   map. Tab order still follows the route, 1 to 6. */
+@media (max-width: 640px) {
+  .timeline__stage-key.has-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--space-sm);
+  }
+
+  .has-track .timeline__stage-key-item {
+    flex: none;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(2),
+  .has-track .timeline__stage-key-item:nth-child(5) {
+    margin-top: 14px;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(4) {
+    grid-area: 2 / 3;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(5) {
+    grid-area: 2 / 2;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(6) {
+    grid-area: 2 / 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop-dot {
+    transition: none;
   }
 }
