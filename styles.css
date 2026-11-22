@@ -1485,8 +1485,11 @@ section + section {
     backdrop-filter: blur(10px);
   }
 
+  /* The baseline runs under the labels, like a line on a transit map; the
+     "you are here" pin rides along it. */
   .timeline__stage-key::before {
-    top: 24px;
+    top: auto;
+    bottom: 0.3rem;
   }
 }
 
@@ -2116,6 +2119,426 @@ body.is-annotated .design-note {
 
 @media (min-width: 641px) {
   .timeline__entry {
-    scroll-margin-top: 9rem;
+    scroll-margin-top: calc(52px + var(--stage-key-h, 6rem) + 1rem);
+  }
+}
+
+/* ==========================================================================
+   Whimsy: small station-signage surprises. Each one also does a job, sits
+   still under reduced motion, and adds no new job for the signal yellow.
+   ========================================================================== */
+
+/* ---- Ticket-stub case cards: a perforated stub, punched once read ---- */
+
+.case-card {
+  position: relative;
+  padding-bottom: calc(var(--space-md) + 2.75rem);
+}
+
+.case-card__stub {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  border-top: 1px dashed var(--color-line);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+/* Notches where the stub tears off: a page-colored half disc on each edge,
+   drawn inside the card's border so nothing pokes past it. */
+.case-card__stub::before,
+.case-card__stub::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  width: 10px;
+  height: 18px;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+}
+
+.case-card__stub::before {
+  left: -1px;
+  border-left: 0;
+  border-radius: 0 9px 9px 0;
+}
+
+.case-card__stub::after {
+  right: -1px;
+  border-right: 0;
+  border-radius: 9px 0 0 9px;
+}
+
+.case-card__stub-read,
+.case-card.is-punched .case-card__stub-new {
+  display: none;
+}
+
+.case-card.is-punched .case-card__stub-read {
+  display: inline;
+}
+
+/* The punched hole itself. */
+.case-card.is-punched::after {
+  content: "";
+  position: absolute;
+  right: var(--space-md);
+  bottom: calc(1.375rem - 7px);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  box-shadow: inset 0 1px 2px rgba(18, 21, 26, 0.35);
+  animation: punch 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes punch {
+  from {
+    transform: scale(0);
+  }
+}
+
+/* ---- "You are here" pin on the ladder key ---- */
+
+.ladder-pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.ladder-pin.is-shown {
+  opacity: 1;
+}
+
+.ladder-pin__dot {
+  position: relative;
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-bg);
+}
+
+.ladder-pin__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  animation: pin-pulse 1.6s ease-out 3;
+}
+
+@keyframes pin-pulse {
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ---- Proof numbers flip like a departures board ---- */
+
+.flap {
+  display: inline-block;
+}
+
+.flap.is-flipping {
+  animation: flap 0.07s ease-out;
+}
+
+@keyframes flap {
+  from {
+    transform: perspective(200px) rotateX(70deg);
+  }
+}
+
+/* ---- Station clock beside Contact ---- */
+
+.station-clock {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: var(--space-sm) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+
+.station-clock[hidden] {
+  display: none;
+}
+
+.station-clock__face {
+  position: relative;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-bg-alt);
+}
+
+.station-clock__hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--color-ink);
+  transform-origin: 50% 100%;
+}
+
+.station-clock__hand--h {
+  height: 6px;
+}
+
+.station-clock__hand--m {
+  height: 9px;
+  background: var(--color-accent);
+}
+
+.station-clock__time {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+/* ---- Fit-check boarding pass: a ticket header on job-description answers ---- */
+
+.fit-ticket {
+  align-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px 10px 3px 3px;
+  border-bottom: 2px dashed var(--color-bg);
+  background: var(--color-ink);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fit-ticket__route {
+  flex-basis: 100%;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8125rem;
+  opacity: 0.85;
+}
+
+/* ---- Easter egg: type "mind the gap" anywhere ---- */
+
+.gap-sign {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  z-index: 30;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  background: var(--color-ink);
+  color: #ffffff;
+  text-align: center;
+  transform: translateX(-50%);
+  animation: gap-in 0.4s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+}
+
+.gap-sign__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.gap-sign__sub {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+@keyframes gap-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+}
+
+/* ---- 404 page: next departures ---- */
+
+.departures {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.departures__head {
+  max-width: 34rem;
+  margin: var(--space-lg) auto var(--space-xs);
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.departures a {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--color-line);
+  text-decoration: none;
+}
+
+.departures li:last-child a {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.departures a:hover .departures__dest {
+  color: var(--color-accent);
+}
+
+.departures__plat {
+  flex-shrink: 0;
+  width: 4.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-soft);
+}
+
+.departures__dest {
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-card.is-punched::after,
+  .ladder-pin__dot::after,
+  .flap.is-flipping,
+  .gap-sign {
+    animation: none;
+  }
+
+}
+
+/* ---- Winding route: the ladder key as a train line ----
+   script.js adds .has-track, a station dot on each stage, and an SVG track
+   curved through the dots. Without JS the key stays a flat legend. */
+
+.timeline__stage-key.has-track::before {
+  content: none;
+}
+
+.stage-track {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.stage-track__rail,
+.stage-track__done {
+  fill: none;
+  stroke-width: 3;
+}
+
+.stage-track__rail {
+  stroke: var(--color-line);
+  stroke-linecap: round;
+}
+
+/* The stretch of line already travelled. */
+.stage-track__done {
+  stroke: var(--color-accent);
+  stroke-linecap: butt;
+}
+
+.stop-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-ink-soft);
+  border-radius: 50%;
+  background: var(--color-bg-alt);
+  transition: border-color 0.3s ease;
+}
+
+.stop-dot.is-passed {
+  border-color: var(--color-accent);
+}
+
+/* Desktop: stops alternate high and low, so the line waves across. */
+@media (min-width: 641px) {
+  .timeline__stage-key.has-track {
+    align-items: flex-start;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(even) {
+    margin-top: 28px;
+  }
+}
+
+/* Phones: the line snakes across two rows and doubles back, like a route
+   map. Tab order still follows the route, 1 to 6. */
+@media (max-width: 640px) {
+  .timeline__stage-key.has-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--space-sm);
+  }
+
+  .has-track .timeline__stage-key-item {
+    flex: none;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(2),
+  .has-track .timeline__stage-key-item:nth-child(5) {
+    margin-top: 14px;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(4) {
+    grid-area: 2 / 3;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(5) {
+    grid-area: 2 / 2;
+  }
+
+  .has-track .timeline__stage-key-item:nth-child(6) {
+    grid-area: 2 / 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop-dot {
+    transition: none;
   }
 }

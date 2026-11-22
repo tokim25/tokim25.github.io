@@ -90,6 +90,137 @@
   if (keys.length === 0 || entries.length === 0) return;
 
   var pressed = null;
+  var current = null;
+
+  // Winding route: a curved track through a station dot on each stage, with
+  // a "you are here" pin that travels along it to the pressed stage, or the
+  // stage of the role scrolling past. The stretch already travelled fills in.
+  // Decorative only; aria-pressed carries the state.
+  var keyRow = keys[0].parentNode;
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var track = document.createElementNS(SVGNS, "svg");
+  track.setAttribute("class", "stage-track");
+  track.setAttribute("aria-hidden", "true");
+  var rail = document.createElementNS(SVGNS, "path");
+  rail.setAttribute("class", "stage-track__rail");
+  var done = document.createElementNS(SVGNS, "path");
+  done.setAttribute("class", "stage-track__done");
+  track.appendChild(rail);
+  track.appendChild(done);
+  keyRow.appendChild(track);
+  keys.forEach(function (k) {
+    var stop = document.createElement("span");
+    stop.className = "stop-dot";
+    stop.setAttribute("aria-hidden", "true");
+    k.insertBefore(stop, k.firstChild);
+  });
+  keyRow.classList.add("has-track");
+
+  var pin = document.createElement("span");
+  pin.className = "ladder-pin";
+  pin.setAttribute("aria-hidden", "true");
+  pin.innerHTML = '<span class="ladder-pin__dot"></span>';
+  keyRow.appendChild(pin);
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var stopLen = {};
+  var total = 0;
+  var pinLen = null;
+  var pinStage = null;
+  var anim = null;
+
+  // Catmull-Rom curve through the station dots, with a short lead-in and
+  // run-out so the line looks like it continues past both ends.
+  function drawTrack() {
+    var box = keyRow.getBoundingClientRect();
+    document.documentElement.style.setProperty("--stage-key-h", box.height + "px");
+    var pts = Array.prototype.map.call(keys, function (k) {
+      var r = k.querySelector(".stop-dot").getBoundingClientRect();
+      return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top];
+    });
+    var n = pts.length;
+    var lead = [pts[0][0] - (pts[1][0] - pts[0][0]) * 0.35, pts[0][1] - (pts[1][1] - pts[0][1]) * 0.35];
+    var tail = [pts[n - 1][0] + (pts[n - 1][0] - pts[n - 2][0]) * 0.35, pts[n - 1][1] + (pts[n - 1][1] - pts[n - 2][1]) * 0.35];
+    var all = [lead].concat(pts, [tail]);
+    var d = "M" + all[0][0] + " " + all[0][1];
+    for (var i = 0; i < all.length - 1; i++) {
+      var p0 = all[i - 1] || all[i];
+      var p1 = all[i];
+      var p2 = all[i + 1];
+      var p3 = all[i + 2] || p2;
+      d += " C" + (p1[0] + (p2[0] - p0[0]) / 6) + " " + (p1[1] + (p2[1] - p0[1]) / 6) +
+        " " + (p2[0] - (p3[0] - p1[0]) / 6) + " " + (p2[1] - (p3[1] - p1[1]) / 6) +
+        " " + p2[0] + " " + p2[1];
+    }
+    rail.setAttribute("d", d);
+    done.setAttribute("d", d);
+    total = rail.getTotalLength();
+
+    // Where each stop sits along the line: walk forward to the closest point.
+    var from = 0;
+    pts.forEach(function (p, idx) {
+      var best = Infinity;
+      var bestL = from;
+      for (var L = from; L <= total; L += 2) {
+        var q = rail.getPointAtLength(L);
+        var dist = (q.x - p[0]) * (q.x - p[0]) + (q.y - p[1]) * (q.y - p[1]);
+        if (dist < best) {
+          best = dist;
+          bestL = L;
+        } else if (best < 4) {
+          break;
+        }
+      }
+      stopLen[keys[idx].dataset.stage] = bestL;
+      from = bestL;
+    });
+
+    if (pinStage) movePinTo(pinStage, true);
+    else done.style.strokeDasharray = "0 " + total;
+  }
+
+  function setPinAt(L) {
+    var q = rail.getPointAtLength(L);
+    pin.style.transform = "translate(" + (q.x - 6) + "px, " + (q.y - 6) + "px)";
+    done.style.strokeDasharray = L + " " + total;
+    pinLen = L;
+  }
+
+  function movePinTo(stage, instant) {
+    var target = stopLen[stage];
+    if (target === undefined) return;
+    keys.forEach(function (k) {
+      k.querySelector(".stop-dot").classList.toggle("is-passed", Number(k.dataset.stage) <= Number(stage));
+    });
+    if (anim) cancelAnimationFrame(anim);
+    if (instant || pinLen === null || reduceMotion.matches) {
+      setPinAt(target);
+      pin.classList.add("is-shown");
+      return;
+    }
+    var startLen = pinLen;
+    var startTime = null;
+    var duration = Math.min(1100, 300 + Math.abs(target - startLen) * 0.9);
+    function step(now) {
+      if (startTime === null) startTime = now;
+      var t = Math.min((now - startTime) / duration, 1);
+      var eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      setPinAt(startLen + (target - startLen) * eased);
+      if (t < 1) anim = requestAnimationFrame(step);
+    }
+    anim = requestAnimationFrame(step);
+  }
+
+  function placePin() {
+    var stage = pressed || current;
+    if (!stage || stage === pinStage) return;
+    pinStage = stage;
+    movePinTo(stage, false);
+  }
+
+  drawTrack();
+  if ("ResizeObserver" in window) new ResizeObserver(drawTrack).observe(keyRow);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTrack);
 
   keys.forEach(function (key) {
     key.addEventListener("click", function () {
@@ -101,6 +232,7 @@
       entries.forEach(function (e) {
         e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
       });
+      placePin();
       // Take the visitor to the role, not just dim the others.
       if (pressed !== null) {
         var first = document.querySelector('.timeline__entry[data-stage="' + pressed + '"]');
@@ -119,9 +251,11 @@
     function (items) {
       items.forEach(function (item) {
         if (!item.isIntersecting) return;
+        current = item.target.dataset.stage;
         keys.forEach(function (k) {
-          k.classList.toggle("is-current", k.dataset.stage === item.target.dataset.stage);
+          k.classList.toggle("is-current", k.dataset.stage === current);
         });
+        placePin();
       });
     },
     { rootMargin: "-45% 0px -50% 0px" }
@@ -131,7 +265,7 @@
   });
 })();
 
-// Proof numerals count up once when they scroll into view. The final value is
+// Proof numerals flip into place once when they scroll into view. The final value is
 // already in the HTML, so no JS, reduced motion, or a missed observer all
 // leave the right numbers on the page.
 (function () {
@@ -140,21 +274,31 @@
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!("IntersectionObserver" in window)) return;
 
+  // Each digit flips through a few random numbers before it settles, one
+  // character a beat after the last, like a departures board.
   function run(el) {
-    var end = Number(el.dataset.count);
-    var pre = el.dataset.prefix || "";
-    var suf = el.dataset.suffix || "";
-    var start = null;
-    var DURATION = 900;
-    function frame(now) {
-      if (start === null) start = now;
-      var t = Math.min((now - start) / DURATION, 1);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = pre + Math.round(end * eased) + suf;
-      if (t < 1) requestAnimationFrame(frame);
-    }
-    el.textContent = pre + "0" + suf;
-    requestAnimationFrame(frame);
+    var final = el.textContent;
+    el.textContent = "";
+    final.split("").forEach(function (ch, i) {
+      var cell = document.createElement("span");
+      cell.className = "flap";
+      el.appendChild(cell);
+      if (!/\d/.test(ch)) {
+        cell.textContent = ch;
+        return;
+      }
+      cell.textContent = "0";
+      var flips = 5 + i * 2;
+      var n = 0;
+      var timer = setInterval(function () {
+        n++;
+        cell.textContent = n >= flips ? ch : String(Math.floor(Math.random() * 10));
+        cell.classList.remove("is-flipping");
+        void cell.offsetWidth;
+        cell.classList.add("is-flipping");
+        if (n >= flips) clearInterval(timer);
+      }, 70);
+    });
   }
 
   var io = new IntersectionObserver(
@@ -471,6 +615,19 @@
   let busy = false;
   let openuiPromise = null;
   let countState = "ok";
+
+  // Job-description answers open with a boarding-pass header. Decorative:
+  // the answer itself is announced separately.
+  function addFitTicket() {
+    const ticket = document.createElement("div");
+    ticket.className = "fit-ticket";
+    ticket.setAttribute("aria-hidden", "true");
+    const when = new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    ticket.innerHTML =
+      '<span>Boarding pass · Fit check</span><span></span><span class="fit-ticket__route">From: your job description ➔ To: evidence from my work</span>';
+    ticket.children[1].textContent = when;
+    thread.appendChild(ticket);
+  }
 
   function addBubble(role, text) {
     const bubble = document.createElement("div");
@@ -790,6 +947,7 @@
       }
 
       const data = await res.json();
+      if (isFit) addFitTicket();
       let spoken;
       let remembered = data.answer;
 
@@ -874,5 +1032,85 @@
     if (mode === "fit" && !(e.metaKey || e.ctrlKey)) return;
     e.preventDefault();
     form.requestSubmit();
+  });
+})();
+
+// Ticket stubs: a case study you've opened gets its ticket punched on the
+// home page. Kept in this browser only; nothing is sent anywhere.
+(function () {
+  var KEY = "tk-read";
+  var read = [];
+  try {
+    read = JSON.parse(localStorage.getItem(KEY) || "[]");
+  } catch (e) {}
+
+  var here = location.pathname.match(/\/case-studies\/([\w-]+)\.html$/);
+  if (here && read.indexOf(here[1]) === -1) {
+    read.push(here[1]);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(read));
+    } catch (e) {}
+  }
+
+  document.querySelectorAll(".case-card").forEach(function (card) {
+    var slug = (card.getAttribute("href").match(/([\w-]+)\.html$/) || [])[1];
+    if (!slug || read.indexOf(slug) === -1) return;
+    card.classList.add("is-punched");
+    var note = document.createElement("span");
+    note.className = "sr-only";
+    note.textContent = " (already read)";
+    card.querySelector(".case-card__title").appendChild(note);
+  });
+})();
+
+// Station clock: my local time, so you know whether it's a sensible hour
+// to expect a reply.
+(function () {
+  var clock = document.querySelector(".station-clock");
+  if (!clock || !window.Intl) return;
+  var timeEl = clock.querySelector(".station-clock__time");
+  var hourHand = clock.querySelector(".station-clock__hand--h");
+  var minuteHand = clock.querySelector(".station-clock__hand--m");
+  var ZONE = "America/Los_Angeles";
+
+  function tick() {
+    var now = new Date();
+    timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: ZONE, hour: "numeric", minute: "2-digit" });
+    var parts = now.toLocaleTimeString("en-US", { timeZone: ZONE, hour12: false, hour: "2-digit", minute: "2-digit" }).split(":");
+    var h = Number(parts[0]) % 12;
+    var m = Number(parts[1]);
+    hourHand.style.transform = "rotate(" + (h * 30 + m / 2) + "deg)";
+    minuteHand.style.transform = "rotate(" + m * 6 + "deg)";
+  }
+
+  tick();
+  clock.hidden = false;
+  setInterval(tick, 30000);
+})();
+
+// Easter egg: type "mind the gap" anywhere outside a text field.
+(function () {
+  var PHRASE = "mind the gap";
+  var typed = "";
+  var sign = null;
+
+  document.addEventListener("keydown", function (e) {
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName))) return;
+    if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey) return;
+    typed = (typed + e.key.toLowerCase()).slice(-PHRASE.length);
+    if (typed !== PHRASE || sign) return;
+
+    sign = document.createElement("div");
+    sign.className = "gap-sign";
+    sign.setAttribute("role", "status");
+    sign.innerHTML =
+      '<span class="gap-sign__title">Mind the gap</span><span class="gap-sign__sub">You found the easter egg. Thanks for exploring.</span>';
+    document.body.appendChild(sign);
+    setTimeout(function () {
+      sign.remove();
+      sign = null;
+      typed = "";
+    }, 5000);
   });
 })();
