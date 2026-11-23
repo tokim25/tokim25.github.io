@@ -64,11 +64,30 @@
     return;
   }
 
+  // Once an element has arrived, it switches to the shorter interaction
+  // timings (hover, press, dim) instead of keeping the slow entrance ones.
+  function settle(el) {
+    el.classList.add("is-visible");
+    setTimeout(function () {
+      el.classList.add("is-settled");
+    }, 650);
+  }
+
+  // Arriving through a cross-page morph: show what's already on screen at
+  // once, so the morph lands on visible content.
+  window.addEventListener("pagereveal", function (e) {
+    if (!e.viewTransition) return;
+    targets.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) settle(el);
+    });
+  });
+
   var observer = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
+          settle(entry.target);
           observer.unobserve(entry.target);
         }
       });
@@ -90,6 +109,28 @@
   if (keys.length === 0 || entries.length === 0) return;
 
   var pressed = null;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // The rung in the key and the rungs on the roles are the same mark: when
+  // the scroll lands, the matching rungs pulse once to make that link.
+  function pulseWhenLanded(stage) {
+    if (reduceMotion.matches || !("animate" in Element.prototype)) return;
+    var fired = false;
+    function pulse() {
+      if (fired) return;
+      fired = true;
+      window.removeEventListener("scrollend", pulse);
+      if (pressed !== stage) return;
+      document.querySelectorAll('.timeline__entry[data-stage="' + stage + '"] .timeline__rung').forEach(function (rung, i) {
+        rung.animate(
+          [{ transform: "scale(1)" }, { transform: "scale(1.25)" }, { transform: "scale(1)" }],
+          { duration: 300, delay: i * 60, easing: "cubic-bezier(0.34, 1.4, 0.64, 1)" }
+        );
+      });
+    }
+    window.addEventListener("scrollend", pulse);
+    setTimeout(pulse, 800);
+  }
 
   keys.forEach(function (key) {
     key.addEventListener("click", function () {
@@ -107,8 +148,9 @@
         if (first) {
           first.scrollIntoView({
             block: "start",
-            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+            behavior: reduceMotion.matches ? "auto" : "smooth",
           });
+          pulseWhenLanded(pressed);
         }
       }
     });
@@ -131,40 +173,65 @@
   });
 })();
 
-// Proof numerals flip into place once when they scroll into view. The final value is
-// already in the HTML, so no JS, reduced motion, or a missed observer all
-// leave the right numbers on the page.
+// Proof numbers count up once when they scroll into view, on the home page
+// and on case-study stats. The count only climbs toward the real figure, so
+// it never shows a wrong number. The final value is already in the HTML, so
+// no JS, reduced motion, or a missed observer all leave the right numbers.
 (function () {
-  var nums = document.querySelectorAll("[data-count]");
-  if (nums.length === 0) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!("IntersectionObserver" in window)) return;
 
-  // Each digit flips through a few random numbers before it settles, one
-  // character a beat after the last, like a departures board.
-  function run(el) {
-    var final = el.textContent;
+  function parse(text) {
+    var m = text.trim().match(/^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
+    if (!m) return null;
+    return {
+      pre: m[1],
+      value: parseFloat(m[2].replace(/,/g, "")),
+      decimals: (m[2].split(".")[1] || "").length,
+      commas: m[2].indexOf(",") !== -1,
+      suf: m[3],
+    };
+  }
+
+  function format(n, p) {
+    var s = n.toFixed(p.decimals);
+    if (p.commas) s = Number(s).toLocaleString("en-US", { minimumFractionDigits: p.decimals });
+    return p.pre + s + p.suf;
+  }
+
+  // Home page numbers already have an aria-hidden copy to animate. Case-study
+  // stats get one here, with the real value kept for screen readers.
+  var nums = Array.prototype.slice.call(document.querySelectorAll("[data-count]"));
+  document.querySelectorAll(".trust-item__stat").forEach(function (el) {
+    var text = el.textContent;
+    if (!parse(text)) return;
     el.textContent = "";
-    final.split("").forEach(function (ch, i) {
-      var cell = document.createElement("span");
-      cell.className = "flap";
-      el.appendChild(cell);
-      if (!/\d/.test(ch)) {
-        cell.textContent = ch;
-        return;
-      }
-      cell.textContent = "0";
-      var flips = 5 + i * 2;
-      var n = 0;
-      var timer = setInterval(function () {
-        n++;
-        cell.textContent = n >= flips ? ch : String(Math.floor(Math.random() * 10));
-        cell.classList.remove("is-flipping");
-        void cell.offsetWidth;
-        cell.classList.add("is-flipping");
-        if (n >= flips) clearInterval(timer);
-      }, 70);
-    });
+    var shown = document.createElement("span");
+    shown.setAttribute("aria-hidden", "true");
+    shown.textContent = text;
+    var real = document.createElement("span");
+    real.className = "sr-only";
+    real.textContent = text;
+    el.appendChild(shown);
+    el.appendChild(real);
+    nums.push(shown);
+  });
+  if (nums.length === 0) return;
+
+  function run(el) {
+    var p = parse(el.textContent);
+    if (!p) return;
+    var start = null;
+    var DURATION = 650;
+    function frame(now) {
+      if (start === null) start = now;
+      var t = Math.min((now - start) / DURATION, 1);
+      var eased = 1 - Math.pow(1 - t, 4);
+      el.textContent = t < 1 ? format(p.value * eased, p) : format(p.value, p);
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    el.textContent = format(0, p);
+    requestAnimationFrame(frame);
   }
 
   var io = new IntersectionObserver(
@@ -191,10 +258,49 @@
   btn.className = "design-toggle";
   btn.setAttribute("aria-pressed", "false");
   btn.textContent = "See the design";
+  var notes = document.querySelectorAll(".design-note");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var closing = null;
+
+  // Notes grow open where they are (240ms) and close a little faster
+  // (180ms), instead of snapping in and shoving the page.
+  function animateNotes(open) {
+    if (reduceMotion.matches || !("animate" in Element.prototype)) return null;
+    var last = null;
+    notes.forEach(function (note) {
+      var h = note.offsetHeight;
+      var frames = [
+        { height: "0px", paddingTop: "0px", paddingBottom: "0px", marginBottom: "0px", opacity: 0 },
+        { height: h + "px", opacity: 1 },
+      ];
+      last = note.animate(open ? frames : frames.slice().reverse(), {
+        duration: open ? 240 : 180,
+        easing: open ? "cubic-bezier(0.16, 1, 0.3, 1)" : "cubic-bezier(0.3, 0, 1, 1)",
+      });
+    });
+    return last;
+  }
+
   btn.addEventListener("click", function () {
     var on = btn.getAttribute("aria-pressed") !== "true";
     btn.setAttribute("aria-pressed", on ? "true" : "false");
-    document.body.classList.toggle("is-annotated", on);
+    btn.textContent = on ? "Hide the design · " + notes.length + " notes" : "See the design";
+    if (closing) closing.cancel();
+    closing = null;
+    if (on) {
+      document.body.classList.add("is-annotated");
+      animateNotes(true);
+    } else {
+      closing = animateNotes(false);
+      if (closing) {
+        closing.onfinish = function () {
+          document.body.classList.remove("is-annotated");
+          closing = null;
+        };
+      } else {
+        document.body.classList.remove("is-annotated");
+      }
+    }
   });
   document.body.appendChild(btn);
 
@@ -223,7 +329,20 @@
   };
   var KEY = "tk-path";
 
-  function apply(path) {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var live = document.createElement("p");
+  live.className = "sr-only";
+  live.setAttribute("aria-live", "polite");
+  grid.parentNode.insertBefore(live, grid);
+
+  function apply(path, animate) {
+    var canAnimate = animate && !reduceMotion.matches && "animate" in Element.prototype;
+    var before = new Map();
+    if (canAnimate) {
+      cards.forEach(function (card) {
+        before.set(card, card.getBoundingClientRect());
+      });
+    }
     chips.forEach(function (c) {
       c.setAttribute("aria-pressed", c.dataset.path === path ? "true" : "false");
     });
@@ -239,6 +358,12 @@
         badge.className = "case-card__fit";
         badge.textContent = "Fits: " + LABELS[path];
         card.insertBefore(badge, card.firstChild);
+        if (canAnimate) {
+          badge.animate(
+            [{ transform: "scale(0.6)", opacity: 0 }, { transform: "scale(1)", opacity: 1 }],
+            { duration: 180, delay: 200, easing: "cubic-bezier(0.34, 1.4, 0.64, 1)", fill: "backwards" }
+          );
+        }
       } else if (fits) {
         badge.textContent = "Fits: " + LABELS[path];
       } else if (badge) {
@@ -250,6 +375,29 @@
     (path ? matches.concat(rest) : cards).forEach(function (card) {
       grid.appendChild(card);
     });
+
+    // FLIP: each card starts where it was and glides to its new place, the
+    // matches first, so the visitor sees their answer re-sort the evidence.
+    if (canAnimate) {
+      var order = path ? matches.concat(rest) : cards;
+      order.forEach(function (card, i) {
+        var was = before.get(card);
+        var now = card.getBoundingClientRect();
+        var dx = was.left - now.left;
+        var dy = was.top - now.top;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+        card.animate(
+          [{ transform: "translate(" + dx + "px, " + dy + "px)" }, { transform: "translate(0, 0)" }],
+          { duration: 420, delay: Math.min(i, 4) * 40, easing: "cubic-bezier(0.65, 0, 0.35, 1)", fill: "backwards" }
+        );
+      });
+    }
+
+    if (animate) {
+      live.textContent = path
+        ? matches.length + " case studies fit " + LABELS[path] + ". They're now first."
+        : "Showing all case studies in the original order.";
+    }
     // Deferred so the assistant (loaded later in this file) is listening
     // when a saved path is restored on page load.
     setTimeout(function () {
@@ -265,7 +413,7 @@
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       current = current === chip.dataset.path ? null : chip.dataset.path;
-      apply(current);
+      apply(current, true);
     });
   });
 
@@ -273,7 +421,7 @@
     var saved = sessionStorage.getItem(KEY);
     if (saved && LABELS[saved]) {
       current = saved;
-      apply(saved);
+      apply(saved, false);
     }
   } catch (e) {}
 })();
@@ -298,14 +446,75 @@
     var imgHeight = img.clientHeight;
     var distance = screenHeight - imgHeight;
 
-    if (distance < 0 && !prefersReduced) {
-      container.style.setProperty("--scroll-distance", distance + "px");
-      container.classList.add("has-scroll");
-    } else {
-      container.classList.remove("has-scroll");
-      container.style.removeProperty("--scroll-distance");
+    if (distance < 0 && !prefersReduced && "animate" in Element.prototype) {
+      setUp(container, img, distance);
+    } else if (container._scroll) {
+      container._scroll.anim.cancel();
+      container._scroll.btn.remove();
+      container._scroll = null;
     }
   }
+
+  // The screenshot scrolls down and back once when it comes into view, then
+  // rests. A small button pauses it, or replays it once it has finished.
+  function setUp(container, img, distance) {
+    if (container._scroll) {
+      container._scroll.anim.cancel();
+      container._scroll.btn.remove();
+    }
+    var anim = img.animate(
+      [
+        { transform: "translateY(0)", offset: 0 },
+        { transform: "translateY(0)", offset: 0.08 },
+        { transform: "translateY(" + distance + "px)", offset: 0.92 },
+        { transform: "translateY(" + distance + "px)", offset: 1 },
+      ],
+      { duration: 6000, iterations: 2, direction: "alternate", easing: "ease-in-out" }
+    );
+    anim.pause();
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "device__toggle";
+    container.appendChild(btn);
+    container._scroll = { anim: anim, btn: btn, started: false };
+
+    function label() {
+      var state = anim.playState;
+      var text = state === "running" ? "Pause" : state === "finished" ? "Replay" : "Play";
+      btn.textContent = text;
+      btn.setAttribute("aria-label", text + " screenshot scroll");
+    }
+    btn.addEventListener("click", function () {
+      if (anim.playState === "running") anim.pause();
+      else if (anim.playState === "finished") {
+        anim.currentTime = 0;
+        anim.play();
+      } else anim.play();
+      container._scroll.started = true;
+      label();
+    });
+    anim.onfinish = label;
+    label();
+    if (seen) seen.observe(container);
+  }
+
+  var seen =
+    "IntersectionObserver" in window
+      ? new IntersectionObserver(
+          function (items) {
+            items.forEach(function (item) {
+              var s = item.target._scroll;
+              if (!item.isIntersecting || !s || s.started) return;
+              s.started = true;
+              s.anim.play();
+              s.btn.textContent = "Pause";
+              s.btn.setAttribute("aria-label", "Pause screenshot scroll");
+              seen.unobserve(item.target);
+            });
+          },
+          { threshold: 0.4 }
+        )
+      : null;
 
   containers.forEach(function (container) {
     var img = container.querySelector(".device__image");
@@ -910,4 +1119,105 @@
   tick();
   clock.hidden = false;
   setInterval(tick, 30000);
+})();
+
+// Career timeline: a teal line on the left grows down through the rungs as
+// you read, so the path fills in behind you. Fully drawn without JS or with
+// reduced motion (the CSS default).
+(function () {
+  var line = document.querySelector(".timeline");
+  if (!line || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var r = line.getBoundingClientRect();
+    var p = (window.innerHeight * 0.6 - r.top) / r.height;
+    line.style.setProperty("--rail", Math.max(0, Math.min(1, p)).toFixed(3));
+  }
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true }
+  );
+  window.addEventListener("resize", update);
+  update();
+})();
+
+// Home hero: the three lines of the thesis widen in turn (education, then
+// place, then time). The text is readable throughout; only its width moves.
+// Desktop only, where the headline is set wide.
+(function () {
+  var h = document.querySelector(".hero__headline[data-widen]");
+  if (!h) return;
+  var motionOk =
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    window.matchMedia("(min-width: 641px)").matches &&
+    "animate" in Element.prototype;
+  function finish() {
+    h.classList.add("is-widened");
+  }
+  if (!motionOk) return finish();
+
+  var lines = [];
+  Array.prototype.slice.call(h.childNodes).forEach(function (node) {
+    if (node.nodeType === 3 && node.textContent.trim()) {
+      var span = document.createElement("span");
+      span.className = "hero__line";
+      span.textContent = node.textContent;
+      h.replaceChild(span, node);
+      lines.push(span);
+    }
+  });
+
+  var started = false;
+  function go() {
+    if (started) return;
+    started = true;
+    var anims = lines.map(function (line, i) {
+      return line.animate([{ fontStretch: "100%" }, { fontStretch: "112%" }], {
+        duration: 600,
+        delay: i * 120,
+        easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+        fill: "both",
+      });
+    });
+    anims[anims.length - 1].onfinish = function () {
+      finish();
+      anims.forEach(function (a) {
+        a.cancel();
+      });
+    };
+  }
+  // Wait for the real font so the widening shows, but never long.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+  setTimeout(function () {
+    if (!started) finish();
+  }, 1200);
+})();
+
+// Case-study headlines in two beats: the last sentence lands a moment after
+// the rest ("The advice was right." ... "The timing wasn't.").
+(function () {
+  var h = document.querySelector(".hero__headline");
+  if (!h || h.hasAttribute("data-widen") || h.children.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("animate" in Element.prototype)) return;
+  var text = h.textContent;
+  var cut = text.trim().replace(/[.!?]\s*$/, "").search(/[.!?]\s+[^.!?]+$/);
+  if (cut === -1) return;
+  var first = text.slice(0, cut + 1);
+  var last = text.slice(cut + 1).trim();
+  h.textContent = first + " ";
+  var beat = document.createElement("span");
+  beat.className = "hero__beat";
+  beat.textContent = last;
+  h.appendChild(beat);
+  beat.animate(
+    [{ opacity: 0.25, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }],
+    { duration: 360, delay: 450, easing: "cubic-bezier(0.34, 1.4, 0.64, 1)", fill: "backwards" }
+  );
 })();

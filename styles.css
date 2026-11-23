@@ -37,6 +37,22 @@
   --size-body: 1.0625rem;
   --size-small: 0.9375rem;
 
+  /* Motion: four durations, three curves.
+     tick   = hover, press, chips       (feedback, under 160ms)
+     move   = dims, notes, badges       (state changes)
+     travel = re-sorts, page morphs     (things changing place)
+     story  = entrances and the hero only
+     Rules: motion explains a change in structure, never decorates; exits
+     run faster than entrances; nothing loops; content is never hidden
+     waiting on an animation; reduced motion keeps the state, drops the move. */
+  --dur-tick: 120ms;
+  --dur-move: 240ms;
+  --dur-travel: 420ms;
+  --dur-story: 600ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.34, 1.4, 0.64, 1);
+
   /* Rhythm */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -151,7 +167,7 @@ img {
   font-size: var(--size-small);
   text-decoration: none;
   color: var(--color-ink-soft);
-  transition: color 0.2s ease;
+  transition: color var(--dur-tick) var(--ease-out);
 }
 
 .site-nav__links a:hover,
@@ -177,7 +193,7 @@ img {
 .site-nav__dropdown-chevron {
   font-size: 0.7em;
   line-height: 1;
-  transition: transform 0.2s ease;
+  transition: transform var(--dur-tick) var(--ease-out);
 }
 
 .site-nav__dropdown {
@@ -195,7 +211,7 @@ img {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  transition: opacity var(--dur-tick) var(--ease-out), transform var(--dur-tick) var(--ease-out), visibility var(--dur-tick);
 }
 
 .site-nav__dropdown a {
@@ -366,7 +382,7 @@ img {
   border-radius: 8px;
   font-size: var(--size-body);
   text-decoration: none;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity var(--dur-tick) var(--ease-out), background var(--dur-tick) var(--ease-out);
 }
 
 .btn--primary {
@@ -446,7 +462,7 @@ section + section {
   padding: var(--space-md);
   background: var(--color-bg-alt);
   box-shadow: 0 0 0 rgba(18, 21, 26, 0);
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--dur-tick) var(--ease-out), transform var(--dur-tick) var(--ease-out), box-shadow var(--dur-tick) var(--ease-out);
 }
 
 .case-card:hover {
@@ -576,7 +592,7 @@ section + section {
   transform: translate(-50%, -50%);
   width: 68px;
   height: 48px;
-  transition: transform 0.2s ease;
+  transition: transform var(--dur-tick) var(--ease-out);
 }
 
 .video-link:hover .video-link__play {
@@ -790,28 +806,27 @@ section + section {
   will-change: transform;
 }
 
-@keyframes device-autoscroll {
-  0%, 8% {
-    transform: translateY(0);
-  }
-  92%, 100% {
-    transform: translateY(var(--scroll-distance, 0px));
-  }
+/* Screenshot scroll: script.js plays it down and back once when it comes
+   into view, with this button to pause or replay. Nothing loops. */
+.device__toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+  padding: 0.3rem 0.65rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(18, 21, 26, 0.78);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  cursor: pointer;
 }
 
-.device__scroll.has-scroll .device__image {
-  animation: device-autoscroll 6s ease-in-out infinite alternate;
-}
-
-.device__scroll:hover .device__image {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .device__scroll.has-scroll .device__image {
-    animation: none;
-    transform: translateY(0);
-  }
+.device--iphone .device__toggle {
+  right: 50%;
+  bottom: 18px;
+  transform: translateX(50%);
 }
 
 .device-figure {
@@ -1014,7 +1029,18 @@ section + section {
 /* ---- Scroll reveal ---- */
 
 .reveal {
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity var(--dur-story) var(--ease-out), transform var(--dur-story) var(--ease-out);
+}
+
+/* Once arrived (script.js adds .is-settled), an element answers hover, press
+   and dimming at interaction speed instead of entrance speed. */
+.reveal.is-settled {
+  transition: opacity var(--dur-move) var(--ease-move), transform var(--dur-tick) var(--ease-out);
+}
+
+.case-card.reveal.is-settled {
+  transition: opacity var(--dur-move) var(--ease-move), transform var(--dur-tick) var(--ease-out),
+    border-color var(--dur-tick) var(--ease-out), box-shadow var(--dur-tick) var(--ease-out);
 }
 
 /* Hidden only when scripts can run, so content never stays invisible if JS fails. */
@@ -1030,17 +1056,10 @@ section + section {
   }
 }
 
-/* A gentle per-row cascade for lists of .reveal siblings (timeline, resume
-   roles) -- entries a little further down the list settle in a beat later,
-   so scrolling through a career reads as unfolding rather than a flat wall
-   appearing at once. Capped at 6 so a long list doesn't feel laggy. */
-.timeline__entry.reveal:nth-child(1) { transition-delay: 0s; }
-.timeline__entry.reveal:nth-child(2) { transition-delay: 0.06s; }
-.timeline__entry.reveal:nth-child(3) { transition-delay: 0.12s; }
-.timeline__entry.reveal:nth-child(4) { transition-delay: 0.18s; }
-.timeline__entry.reveal:nth-child(5) { transition-delay: 0.24s; }
-.timeline__entry.reveal:nth-child(n+6) { transition-delay: 0.3s; }
-
+/* A gentle per-row cascade for the resume's roles, which enter together.
+   (The home timeline's entries arrive one at a time as you scroll, so they
+   get no cascade: a delay there only made late entries wait, and slowed the
+   stage filter.) Staggers are for entrances only, never for filters. */
 .resume-role.reveal:nth-child(1) { transition-delay: 0s; }
 .resume-role.reveal:nth-child(2) { transition-delay: 0.06s; }
 .resume-role.reveal:nth-child(3) { transition-delay: 0.12s; }
@@ -1049,7 +1068,6 @@ section + section {
 .resume-role.reveal:nth-child(n+6) { transition-delay: 0.3s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .timeline__entry.reveal,
   .resume-role.reveal {
     transition-delay: 0s;
   }
@@ -1246,7 +1264,7 @@ section + section {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
-  transition: transform 0.2s ease;
+  transition: transform var(--dur-tick) var(--ease-out);
   color: var(--color-ink-soft);
 }
 
@@ -1397,7 +1415,7 @@ section + section {
   border: 1px solid var(--color-line);
   border-radius: 6px;
   padding: 0.25rem 0.6rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color var(--dur-tick) var(--ease-out), background var(--dur-tick) var(--ease-out);
 }
 
 .timeline__case-link:hover {
@@ -1442,7 +1460,7 @@ section + section {
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition: color var(--dur-tick) var(--ease-out), background var(--dur-tick) var(--ease-out), border-color var(--dur-tick) var(--ease-out);
 }
 
 .timeline__stage-key-item:hover {
@@ -1468,7 +1486,7 @@ section + section {
 }
 
 .timeline__stage-key-item svg {
-  transition: transform 0.25s ease;
+  transition: transform var(--dur-move) var(--ease-out);
 }
 
 .timeline .timeline__entry.is-dim {
@@ -1621,7 +1639,7 @@ section + section {
   background: var(--color-accent);
   color: var(--color-accent-ink);
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--dur-tick) var(--ease-out);
 }
 
 .assistant-card__send:hover {
@@ -1850,7 +1868,7 @@ section + section {
   border-radius: 10px;
   padding: var(--space-xs) var(--space-sm);
   margin: calc(var(--space-xs) * -1) calc(var(--space-sm) * -1);
-  transition: background 0.2s ease;
+  transition: background var(--dur-tick) var(--ease-out);
 }
 
 .proof__item:hover {
@@ -1895,8 +1913,9 @@ section + section {
   display: none;
   max-width: 34rem;
   margin: 0 0 var(--space-sm);
-  padding: 0.6rem 0.85rem;
-  border-left: 3px solid var(--color-ink);
+  position: relative;
+  overflow: hidden;
+  padding: 0.6rem 0.85rem 0.6rem calc(0.85rem + 3px);
   border-radius: 2px 8px 8px 2px;
   background: var(--color-bg-alt);
   color: var(--color-ink);
@@ -1927,18 +1946,32 @@ section + section {
 
 body.is-annotated .design-note {
   display: block;
-  animation: note-in 0.35s ease both;
 }
 
-@keyframes note-in {
+/* The note's left rule draws downward as it opens. */
+.design-note::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--color-ink);
+  transform-origin: top;
+}
+
+body.is-annotated .design-note::before {
+  animation: rule-draw var(--dur-move) var(--ease-out) both;
+}
+
+@keyframes rule-draw {
   from {
-    opacity: 0;
-    transform: translateY(-6px);
+    transform: scaleY(0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.is-annotated .design-note {
+  body.is-annotated .design-note::before {
     animation: none;
   }
 }
@@ -1958,7 +1991,7 @@ body.is-annotated .design-note {
   font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.25s ease, transform 0.25s ease;
+  transition: background var(--dur-tick) var(--ease-out), color var(--dur-tick) var(--ease-out), border-color var(--dur-tick) var(--ease-out), opacity var(--dur-move) var(--ease-out), transform var(--dur-move) var(--ease-out);
 }
 
 .design-toggle:hover {
@@ -1999,7 +2032,7 @@ body.is-annotated .design-note {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition: border-color var(--dur-tick) var(--ease-out), background var(--dur-tick) var(--ease-out), color var(--dur-tick) var(--ease-out);
 }
 
 .path__chip:hover {
@@ -2121,24 +2154,8 @@ body.is-annotated .design-note {
 }
 
 /* ==========================================================================
-   Small surprises that each do a job. Both sit still under reduced motion.
+   Small surprises that each do a job.
    ========================================================================== */
-
-/* ---- Proof numbers flip like a departures board ---- */
-
-.flap {
-  display: inline-block;
-}
-
-.flap.is-flipping {
-  animation: flap 0.07s ease-out;
-}
-
-@keyframes flap {
-  from {
-    transform: perspective(200px) rotateX(70deg);
-  }
-}
 
 /* ---- Station clock beside Contact ---- */
 
@@ -2191,8 +2208,80 @@ body.is-annotated .design-note {
   font-weight: 500;
 }
 
+
+/* ==========================================================================
+   Motion that explains structure
+   ========================================================================== */
+
+/* ---- Career timeline: a teal line grows down through the rungs as you
+   read (script.js sets --rail); each role's lit rung draws in as it
+   arrives. Fully drawn without JS or with reduced motion. ---- */
+
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 7px;
+  width: 2px;
+  background: var(--color-accent);
+  opacity: 0.55;
+  transform: scaleY(var(--rail, 1));
+  transform-origin: top;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .timeline__entry.reveal .timeline__rung line[stroke="#0b6b5f"] {
+    stroke-dasharray: 10;
+    stroke-dashoffset: 10;
+    transition: stroke-dashoffset var(--dur-move) var(--ease-out) 150ms;
+  }
+
+  .timeline__entry.reveal.is-visible .timeline__rung line[stroke="#0b6b5f"] {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Home hero: the thesis lines widen in turn (script.js). Until then
+   the headline waits at normal width, still fully readable. ---- */
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (min-width: 641px) {
+  .hero__headline[data-widen]:not(.is-widened) {
+    font-stretch: 100%;
+  }
+}
+
+/* ---- Case-study headline: the last sentence lands a beat later ---- */
+
+.hero__beat {
+  display: inline-block;
+}
+
+/* ---- Case card into case study: the card's logo and title morph into the
+   page header (cross-document view transitions; names are set inline). ---- */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(*) {
+  animation-duration: var(--dur-travel);
+  animation-timing-function: var(--ease-move);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .flap.is-flipping {
-    animation: none;
+  @view-transition {
+    navigation: none;
+  }
+
+  :root {
+    --dur-tick: 0ms;
+    --dur-move: 0ms;
+    --dur-travel: 0ms;
+    --dur-story: 0ms;
   }
 }
