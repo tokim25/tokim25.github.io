@@ -1,47 +1,63 @@
 /* ==========================================================================
    Tony Kim — Portfolio
-   Shared visual system: "Platform Signage"
+   Shared visual system: 책거리 Chaekgeori and 색동 Saekdong
 
-   Learning that meets people at the right place and time is wayfinding, so
-   the site borrows from station signage. One variable grotesque (Archivo),
-   set wide and heavy for headlines and normal-width for reading; a mono face
-   for the small labels a sign would carry (dates, tags, eyebrows). Cool paper,
-   near-black ink. Two signal colors with strict jobs:
-     - rail teal  = you can act here, or this is where you are (links, buttons,
-                    focus ring, the lit rung on the ladder)
-     - signal yellow = a marker, always a fill behind ink, never text or a line
-   Yellow has exactly three jobs, and new pages should not add a fourth:
-     1. the one role chip at the top of a page (.hero__eyebrow)
-     2. the marker underline under the proof numbers (.proof__num)
-     3. the "Fits:" badge on a case card the visitor selected (.case-card__fit)
+   A homage to Korean folk painting. Chaekgeori screens show what a scholar
+   has learned, arranged in the compartments of a painted cabinet: here that
+   cabinet holds the case studies. Saekdong stripes were sewn onto a child's
+   sleeve as a wish for a long, good life: here they mark the six stages of
+   the career, stripe by stripe.
+
+   Type is SF Pro through the system stack (Apple's license doesn't allow
+   hosting it): thin connecting words, heavy key words. Mineral pigments on
+   hanji-toned paper. Colour has two jobs only: stage (the sleeve) and
+   discipline (the compartment bands). Indigo is "act here / you are here".
+   Ochre is a fill behind ink, never text.
    ========================================================================== */
 
 
 :root {
-  --color-bg: #f6f4ee;
-  --color-bg-alt: #ffffff;
-  --color-ink: #12151a;
-  --color-ink-soft: #4a5059; /* 7.4:1 on paper: holds up for small labels in sunlight */
-  --color-line: #d9d6cc;
-  --color-accent: #0b6b5f;
-  --color-accent-ink: #ffffff;
-  --color-signal: #ffc928;
-  /* Teal's family: every one of these only ever appears with teal's job
-     ("act here / you are here"). */
-  --color-accent-strong: #084f46; /* hover/pressed on teal: white 9.5:1 */
-  --color-accent-wash: #e3f0ec;   /* behind current / pressed stage: teal 5.5:1 */
-  --color-accent-on-ink: #5fc2ad; /* teal links on the ink band: 8.5:1 */
-  /* Neutrals: three surfaces for depth (sunk, paper, white) */
-  --color-bg-sunk: #ece9df;
-  /* Edges of things you can click need 3:1 (WCAG 1.4.11); the light line
-     stays for dividers only. */
-  --color-line-strong: #8f8a7e;
-  --color-danger: #a3361f;
-  --fs-label: 0.8125rem; /* one size for every mono label */
+  /* Mineral pigments on hanji-toned paper (contrast on hanji in brackets) */
+  --color-bg: #efe6d2;           /* hanji */
+  --color-bg-alt: #f7f1e4;       /* paper: compartments, cards */
+  --color-bg-sunk: #e6dcc5;
+  --color-ink: #1e1b16;          /* 13.8:1 */
+  --color-ink-soft: #4d463b;     /* 7.5:1 */
+  --color-line: #d8ccb4;         /* dividers only */
+  --color-line-strong: #847a68;  /* clickable edges: 3.4:1 (WCAG 1.4.11) */
+  --color-accent: #2c4a7a;       /* indigo: act here / you are here, 7.2:1 */
+  --color-accent-ink: #ffffff;   /* on indigo: 8.9:1 */
+  --color-accent-strong: #1f3558;
+  --color-accent-wash: #e1e6ef;
+  --color-accent-on-ink: #a9bde0; /* links on the ink band: 9.0:1 */
+  --color-signal: #c8952e;       /* ochre: a fill behind ink only (6.4:1) */
+  --color-cinnabar: #a8331f;     /* emphasis and seals: 5.4:1 */
+  --color-wood: #5b3a24;         /* the cabinet */
+  --color-danger: #a8331f;
 
-  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "Spline Sans Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  /* 색동 stage stripes (fills), with text-safe shades where the pigment
+     is too light to read as text (4.75:1 or better on hanji and paper) */
+  --stage-1: #c8952e; --stage-1-text: #7f5f1d; /* Facilitator: ochre */
+  --stage-2: #a8331f; --stage-2-text: #a8331f; /* Training Specialist: cinnabar */
+  --stage-3: #3f7f5f; --stage-3-text: #376f53; /* Instructional Designer: malachite */
+  --stage-4: #b23a5e; --stage-4-text: #b23a5e; /* People Manager: yeonji rouge */
+  --stage-5: #2c4a7a; --stage-5-text: #2c4a7a; /* Education Strategist: indigo */
+  --stage-6: #1e1b16; --stage-6-text: #1e1b16; /* Learning Architect: ink */
+
+  /* Compartment bands, by discipline */
+  --band-indigo: #2c4a7a;
+  --band-ochre: #c8952e;
+  --band-cinnabar: #a8331f;
+  --band-malachite: #3f7f5f;
+  --band-yeonji: #b23a5e;
+
+  --fs-label: 0.8125rem; /* one size for every label */
+
+  /* SF Pro on Apple devices; Segoe UI / Roboto elsewhere. Nothing to download. */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-hangul: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
   --size-hero: clamp(2.25rem, 4.6vw, 3.5rem);
   --size-h1: clamp(1.75rem, 3.1vw, 2.5rem);
   --size-h2: clamp(1.375rem, 2.2vw, 1.75rem);
@@ -130,7 +146,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(246, 244, 238, 0.88);
+  background: rgba(239, 230, 210, 0.9);
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -1523,7 +1539,7 @@ section + section {
     top: 52px;
     z-index: 5;
     padding: 0.5rem 0 0.25rem;
-    background: rgba(236, 233, 223, 0.94); /* --color-bg-sunk */
+    background: rgba(239, 230, 210, 0.95);
     backdrop-filter: blur(10px);
   }
 
@@ -2176,7 +2192,7 @@ body.is-annotated .design-note::before {
 
 @media (min-width: 641px) {
   .timeline__entry {
-    scroll-margin-top: 9rem;
+    scroll-margin-top: calc(52px + var(--stage-key-h, 7rem) + 0.75rem);
   }
 }
 
@@ -2240,9 +2256,7 @@ body.is-annotated .design-note::before {
    Motion that explains structure
    ========================================================================== */
 
-/* ---- Career timeline: a teal line grows down through the rungs as you
-   read (script.js sets --rail); each role's lit rung draws in as it
-   arrives. Fully drawn without JS or with reduced motion. ---- */
+/* ---- Career timeline rail (restyled below as the vertical sleeve) ---- */
 
 .timeline {
   position: relative;
@@ -2259,27 +2273,6 @@ body.is-annotated .design-note::before {
   opacity: 0.55;
   transform: scaleY(var(--rail, 1));
   transform-origin: top;
-}
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .timeline__entry.reveal .timeline__rung line[stroke="#0b6b5f"] {
-    stroke-dasharray: 10;
-    stroke-dashoffset: 10;
-    transition: stroke-dashoffset var(--dur-move) var(--ease-out) 150ms;
-  }
-
-  .timeline__entry.reveal.is-visible .timeline__rung line[stroke="#0b6b5f"] {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* ---- Home hero: the thesis lines widen in turn (script.js). Until then
-   the headline waits at normal width, still fully readable. ---- */
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (min-width: 641px) {
-  .hero__headline[data-widen]:not(.is-widened) {
-    font-stretch: 100%;
-  }
 }
 
 /* ---- Case-study headline: the last sentence lands a beat later ---- */
@@ -2327,5 +2320,542 @@ body.is-annotated .design-note::before {
 
   .trust-item__stat {
     font-stretch: 106%;
+  }
+}
+
+/* ==========================================================================
+   책거리 · 색동 — Chaekgeori and Saekdong
+   ========================================================================== */
+
+/* ---- Type: thin connecting words, heavy key words ---- */
+
+.hero__headline {
+  font-size: clamp(2.6rem, 6vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  max-width: none;
+}
+
+.hero__headline:has(b),
+.hero__headline:has(.hero__beat) {
+  font-weight: 200;
+  letter-spacing: -0.035em;
+}
+
+.hero__headline b,
+.hero__beat {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.hero__headline b {
+  color: var(--color-cinnabar);
+}
+
+.section__title {
+  letter-spacing: -0.025em;
+}
+
+.section__title:has(b) {
+  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+  font-weight: 250;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.section__title b {
+  font-weight: 800;
+}
+
+.proof__num,
+.trust-item__stat {
+  letter-spacing: -0.03em;
+}
+
+.case-card__title,
+.timeline__role {
+  letter-spacing: -0.015em;
+}
+
+/* Until script.js plays the emphasis, the key words wait light. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .hero__headline[data-emphasis]:not(.is-emphasized) b {
+    font-weight: 300;
+  }
+}
+
+/* ---- The painter's seal (낙관): 김 on the portrait ---- */
+
+.hero__portrait {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto var(--space-md);
+}
+
+.hero__portrait .hero__photo {
+  margin: 0;
+  border: 6px solid var(--color-accent);
+  border-radius: 2px;
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+.seal {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: var(--seal, var(--color-cinnabar));
+  color: var(--color-bg-alt);
+  box-shadow: inset 0 0 0 2px var(--seal, var(--color-cinnabar)), inset 0 0 0 3px rgba(247, 241, 228, 0.85);
+  font-family: var(--font-hangul);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.seal--hero {
+  position: absolute;
+  right: -16px;
+  bottom: -16px;
+  transform: rotate(-4deg);
+  cursor: pointer;
+}
+
+.seal--hero.is-stamped {
+  animation: stamp var(--dur-move) var(--ease-snap) both;
+}
+
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-4deg) scale(1.35);
+  }
+}
+
+.seal-note {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  z-index: 6;
+  width: min(18rem, 80vw);
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 6px;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: left;
+  transform: translateX(-50%);
+}
+
+/* ---- The ladder as a 색동 sleeve ---- */
+
+.timeline__stage-key-item[data-stage="1"] { --stripe: var(--stage-1); --stripe-text: var(--stage-1-text); }
+.timeline__stage-key-item[data-stage="2"] { --stripe: var(--stage-2); --stripe-text: var(--stage-2-text); }
+.timeline__stage-key-item[data-stage="3"] { --stripe: var(--stage-3); --stripe-text: var(--stage-3-text); }
+.timeline__stage-key-item[data-stage="4"] { --stripe: var(--stage-4); --stripe-text: var(--stage-4-text); }
+.timeline__stage-key-item[data-stage="5"] { --stripe: var(--stage-5); --stripe-text: var(--stage-5-text); }
+.timeline__stage-key-item[data-stage="6"] { --stripe: var(--stage-6); --stripe-text: var(--stage-6-text); }
+
+.timeline__stage-key::before {
+  content: none;
+}
+
+.timeline__stage-key .timeline__stage-key-item {
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.6rem 0.75rem 0.65rem;
+  border: 0;
+  border-top: 8px solid var(--stripe);
+  border-radius: 0;
+  background: none;
+  color: var(--color-ink-soft);
+  font-family: var(--font-sans);
+  text-align: left;
+  transition: border-top-width var(--dur-move) var(--ease-out), border-color var(--dur-move) var(--ease-out),
+    background-color var(--dur-tick) var(--ease-out), color var(--dur-tick) var(--ease-out);
+}
+
+.stage__num {
+  color: var(--stripe-text);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.stage__name {
+  color: var(--color-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.stage__gloss {
+  color: var(--color-ink-soft);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.timeline__stage-key .timeline__stage-key-item:hover {
+  background: var(--color-bg-alt);
+}
+
+/* Current (the role scrolling past): a fuller stripe, a heavier name. */
+.timeline__stage-key .timeline__stage-key-item.is-current {
+  border-top-width: 12px;
+  background: var(--color-bg-alt);
+}
+
+.timeline__stage-key .timeline__stage-key-item.is-current .stage__name {
+  font-weight: 650;
+}
+
+/* Pressed (filtering): the cell fills with its stage colour. */
+.timeline__stage-key .timeline__stage-key-item[aria-pressed="true"] {
+  border-top-color: var(--stripe-text);
+  background: var(--stripe-text);
+}
+
+.timeline__stage-key .timeline__stage-key-item[aria-pressed="true"] :is(.stage__num, .stage__name, .stage__gloss) {
+  color: #ffffff;
+}
+
+/* While filtering, the other stripes wash back and "current" stands down. */
+.timeline__stage-key.is-filtering .timeline__stage-key-item:not([aria-pressed="true"]) {
+  border-top-color: color-mix(in srgb, var(--stripe) 30%, var(--color-bg));
+}
+
+.timeline__stage-key.is-filtering .timeline__stage-key-item.is-current:not([aria-pressed="true"]) {
+  border-top-width: 8px;
+  background: none;
+}
+
+.timeline__stage-key.is-filtering .timeline__stage-key-item.is-current .stage__name {
+  font-weight: 500;
+}
+
+/* ---- Roles: a sleeve swatch glyph, a stage word, and a rail that is a
+   vertical sleeve in true chronological order ---- */
+
+.timeline__stage {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.timeline__stage::before {
+  content: "\00b7";
+  margin-right: 0.4rem;
+  color: var(--color-line);
+}
+
+.timeline::before {
+  left: 5.5px;
+  width: 3px;
+  background: var(--rail-paint, var(--color-line));
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 calc((1 - var(--rail, 1)) * 100%) 0);
+}
+
+.timeline__rung {
+  position: relative;
+  z-index: 1;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .timeline__entry.reveal .glyph__lit {
+    transform: scaleX(0);
+    transform-box: fill-box;
+    transform-origin: left;
+    transition: transform var(--dur-move) var(--ease-out) 150ms;
+  }
+
+  .timeline__entry.reveal.is-visible .glyph__lit {
+    transform: none;
+  }
+}
+
+/* Filtering folds the other roles down to title, company and dates, at
+   full contrast, instead of fading them. */
+.timeline__entry.is-collapsed {
+  padding: var(--space-sm) 0;
+}
+
+.timeline__entry.is-collapsed :is(.timeline__desc, .timeline__cases) {
+  display: none;
+}
+
+.timeline__entry.is-collapsed .timeline__role {
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .timeline__rung {
+    display: none;
+  }
+
+  .timeline__body {
+    padding-left: 20px;
+  }
+
+  .timeline__stage {
+    flex-basis: 100%;
+  }
+
+  .timeline__stage::before {
+    content: none;
+  }
+}
+
+/* ---- The sleeve completes: six stripes under the timeline ---- */
+
+.sleeve {
+  margin: var(--space-lg) 0 0;
+}
+
+.sleeve__band {
+  display: flex;
+  max-width: 420px;
+  height: 10px;
+}
+
+.sleeve__band span {
+  flex: 1;
+  transform-origin: left;
+}
+
+.sleeve__band span:nth-child(1) { background: var(--stage-1); }
+.sleeve__band span:nth-child(2) { background: var(--stage-2); }
+.sleeve__band span:nth-child(3) { background: var(--stage-3); }
+.sleeve__band span:nth-child(4) { background: var(--stage-4); }
+.sleeve__band span:nth-child(5) { background: var(--stage-5); }
+.sleeve__band span:nth-child(6) { background: var(--stage-6); }
+
+.sleeve__caption {
+  margin: 0.6rem 0 0;
+  color: var(--color-ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .sleeve__band span {
+    transition: transform var(--dur-story) var(--ease-out);
+  }
+
+  .sleeve.is-pending .sleeve__band span {
+    transform: scaleX(0);
+  }
+
+  .sleeve__band span:nth-child(2) { transition-delay: 60ms; }
+  .sleeve__band span:nth-child(3) { transition-delay: 120ms; }
+  .sleeve__band span:nth-child(4) { transition-delay: 180ms; }
+  .sleeve__band span:nth-child(5) { transition-delay: 240ms; }
+  .sleeve__band span:nth-child(6) { transition-delay: 300ms; }
+}
+
+/* ---- The cabinet: case studies as painted compartments ---- */
+
+.case-grid {
+  gap: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  background: var(--color-wood);
+  box-shadow: inset 0 0 0 3px #3e2817, 0 18px 40px -24px rgba(30, 27, 22, 0.5);
+}
+
+.case-grid .case-card {
+  position: relative;
+  overflow: hidden;
+  padding-top: calc(var(--space-md) + 12px);
+  padding-bottom: calc(var(--space-md) + 26px);
+  border: 0;
+  border-radius: 0;
+  background: var(--color-bg-alt);
+  box-shadow: none;
+}
+
+.case-card[data-band="indigo"] { --band: var(--band-indigo); }
+.case-card[data-band="ochre"] { --band: var(--band-ochre); }
+.case-card[data-band="cinnabar"] { --band: var(--band-cinnabar); }
+.case-card[data-band="malachite"] { --band: var(--band-malachite); }
+.case-card[data-band="yeonji"] { --band: var(--band-yeonji); }
+
+.case-card__band {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 12px;
+  background: var(--band);
+}
+
+/* The shelf floor, drawn in folk-painting reverse perspective: wider toward
+   the viewer. It flares a little further when pressed. */
+.case-grid .case-card::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 24px;
+  background: #dccdae;
+  clip-path: polygon(0 100%, 100% 100%, 86% 0, 14% 0);
+  transition: clip-path var(--dur-tick) var(--ease-out);
+}
+
+.case-grid .case-card:active::before {
+  clip-path: polygon(0 100%, 100% 100%, 91% 0, 9% 0);
+}
+
+.case-grid .case-card:hover {
+  box-shadow: inset 0 0 0 1px var(--band);
+}
+
+@media (max-width: 640px) {
+  .case-grid {
+    gap: 6px;
+    padding: 6px;
+  }
+}
+
+/* ---- Colophon: six titles, one painter ---- */
+
+/* With three columns, seven cases leave one gap: the colophon takes two
+   compartments so the cabinet closes square. */
+.case-grid {
+  container-type: inline-size;
+}
+
+@container (min-width: 860px) {
+  .colophon {
+    grid-column: span 2;
+  }
+}
+
+.colophon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-alt);
+}
+
+.colophon__line {
+  margin: 0;
+  font-size: var(--size-h2);
+  font-weight: 250;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.colophon__line b {
+  font-weight: 800;
+}
+
+.colophon__seals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colophon__seals li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.colophon__seals li:nth-child(odd) .seal { transform: rotate(-3deg); }
+.colophon__seals li:nth-child(even) .seal { transform: rotate(2deg); }
+
+.seal--small {
+  width: 30px;
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.colophon__title {
+  color: var(--color-ink-soft);
+  font-size: 0.6875rem;
+  line-height: 1.25;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .colophon.is-pending .seal--small {
+    opacity: 0;
+  }
+
+  .colophon .seal--small.is-stamped {
+    opacity: 1;
+    animation: stamp-small var(--dur-move) var(--ease-snap) both;
+  }
+}
+
+@keyframes stamp-small {
+  from {
+    opacity: 0;
+    scale: 1.35;
+  }
+}
+
+/* ---- Case-study pages: the compartment band carries over ---- */
+
+.hero {
+  position: relative;
+}
+
+.case-band {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 12px;
+  background: var(--band);
+}
+
+.case-band[data-band="indigo"] { --band: var(--band-indigo); }
+.case-band[data-band="ochre"] { --band: var(--band-ochre); }
+.case-band[data-band="cinnabar"] { --band: var(--band-cinnabar); }
+.case-band[data-band="malachite"] { --band: var(--band-malachite); }
+.case-band[data-band="yeonji"] { --band: var(--band-yeonji); }
+
+/* ---- Proof numbers: the ochre underline draws in as the count lands ---- */
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .proof__num > [data-count] {
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    transition: background-size var(--dur-travel) var(--ease-out);
+  }
+
+  .proof__num > [data-count].is-counted {
+    background-size: 100% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal--hero.is-stamped,
+  .colophon .seal--small.is-stamped {
+    animation: none;
+  }
+
+  .timeline__stage-key .timeline__stage-key-item,
+  .case-grid .case-card::before {
+    transition: none;
   }
 }

@@ -110,6 +110,37 @@
 
   var pressed = null;
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var keyRow = keys[0].parentNode;
+
+  // Tapped roles land below the sticky key; its height (plus room for the
+  // thicker "current" stripe) sets their scroll margin.
+  function syncKeyHeight() {
+    document.documentElement.style.setProperty("--stage-key-h", keyRow.offsetHeight + 8 + "px");
+  }
+  syncKeyHeight();
+  window.addEventListener("resize", syncKeyHeight);
+  window.addEventListener("load", syncKeyHeight);
+
+  // Roles outside the pressed stage fold down to title, company and dates
+  // (full contrast, still readable). Heights animate so nothing jumps.
+  function foldRoles() {
+    var animate = !reduceMotion.matches && "animate" in Element.prototype;
+    var before = animate ? Array.prototype.map.call(entries, function (e) { return e.offsetHeight; }) : null;
+    entries.forEach(function (e) {
+      e.classList.toggle("is-collapsed", pressed !== null && e.dataset.stage !== pressed);
+    });
+    if (animate) {
+      entries.forEach(function (e, i) {
+        var h = e.offsetHeight;
+        if (Math.abs(h - before[i]) < 1) return;
+        e.animate([{ height: before[i] + "px", overflow: "hidden" }, { height: h + "px", overflow: "hidden" }], {
+          duration: 240,
+          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+        });
+      });
+    }
+    document.dispatchEvent(new CustomEvent("timelinechange"));
+  }
 
   // The rung in the key and the rungs on the roles are the same mark: when
   // the scroll lands, the matching rungs pulse once to make that link.
@@ -139,18 +170,21 @@
       keys.forEach(function (k) {
         k.setAttribute("aria-pressed", k.dataset.stage === pressed ? "true" : "false");
       });
-      entries.forEach(function (e) {
-        e.classList.toggle("is-dim", pressed !== null && e.dataset.stage !== pressed);
-      });
+      keyRow.classList.toggle("is-filtering", pressed !== null);
+      foldRoles();
       // Take the visitor to the role, not just dim the others.
       if (pressed !== null) {
         var first = document.querySelector('.timeline__entry[data-stage="' + pressed + '"]');
         if (first) {
-          first.scrollIntoView({
-            block: "start",
-            behavior: reduceMotion.matches ? "auto" : "smooth",
-          });
-          pulseWhenLanded(pressed);
+          // Wait for the other roles to finish folding, so the scroll aims
+          // at where the role will actually be.
+          setTimeout(function () {
+            first.scrollIntoView({
+              block: "start",
+              behavior: reduceMotion.matches ? "auto" : "smooth",
+            });
+            pulseWhenLanded(stage);
+          }, reduceMotion.matches ? 0 : 260);
         }
       }
     });
@@ -179,7 +213,12 @@
 // no JS, reduced motion, or a missed observer all leave the right numbers.
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  if (!("IntersectionObserver" in window)) return;
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll("[data-count]").forEach(function (el) {
+      el.classList.add("is-counted");
+    });
+    return;
+  }
 
   function parse(text) {
     var m = text.trim().match(/^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
@@ -229,6 +268,7 @@
       var eased = 1 - Math.pow(1 - t, 4);
       el.textContent = t < 1 ? format(p.value * eased, p) : format(p.value, p);
       if (t < 1) requestAnimationFrame(frame);
+      else el.classList.add("is-counted");
     }
     el.textContent = format(0, p);
     requestAnimationFrame(frame);
@@ -375,6 +415,8 @@
     (path ? matches.concat(rest) : cards).forEach(function (card) {
       grid.appendChild(card);
     });
+    var colophon = grid.querySelector(".colophon");
+    if (colophon) grid.appendChild(colophon);
 
     // FLIP: each card starts where it was and glides to its new place, the
     // matches first, so the visitor sees their answer re-sort the evidence.
@@ -1121,12 +1163,34 @@
   setInterval(tick, 30000);
 })();
 
-// Career timeline: a teal line on the left grows down through the rungs as
-// you read, so the path fills in behind you. Fully drawn without JS or with
-// reduced motion (the CSS default).
+// Career timeline rail: a vertical 색동 sleeve. Each role's slice is painted
+// in its stage colour, so reading down shows the path as it really ran.
+// With motion, it grows down behind you as you read; without, it's full.
 (function () {
   var line = document.querySelector(".timeline");
-  if (!line || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!line) return;
+  var entries = line.querySelectorAll(".timeline__entry[data-stage]");
+
+  function paint() {
+    var total = line.offsetHeight;
+    if (!total) return;
+    var stops = [];
+    entries.forEach(function (e) {
+      var top = (e.offsetTop / total) * 100;
+      var bottom = ((e.offsetTop + e.offsetHeight) / total) * 100;
+      var colour = "var(--stage-" + e.dataset.stage + ")";
+      stops.push(colour + " " + top.toFixed(2) + "%", colour + " " + bottom.toFixed(2) + "%");
+    });
+    line.style.setProperty("--rail-paint", "linear-gradient(" + stops.join(", ") + ")");
+  }
+  paint();
+  window.addEventListener("resize", paint);
+  window.addEventListener("load", paint);
+  document.addEventListener("timelinechange", function () {
+    setTimeout(paint, 260);
+  });
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var ticking = false;
   function update() {
     ticking = false;
@@ -1148,64 +1212,37 @@
   update();
 })();
 
-// Home hero: the three lines of the thesis widen in turn (education, then
-// place, then time). The text is readable throughout; only its width moves.
-// Desktop only, where the headline is set wide.
+// Home hero: the three key words (education, place, time) thicken in turn,
+// from light to heavy. The text is readable throughout; only weight moves.
 (function () {
-  var h = document.querySelector(".hero__headline[data-widen]");
+  var h = document.querySelector(".hero__headline[data-emphasis]");
   if (!h) return;
-  var motionOk =
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-    window.matchMedia("(min-width: 641px)").matches &&
-    "animate" in Element.prototype;
   function finish() {
-    h.classList.add("is-widened");
+    h.classList.add("is-emphasized");
   }
-  if (!motionOk) return finish();
-
-  var lines = [];
-  Array.prototype.slice.call(h.childNodes).forEach(function (node) {
-    if (node.nodeType === 3 && node.textContent.trim()) {
-      var span = document.createElement("span");
-      span.className = "hero__line";
-      span.textContent = node.textContent;
-      h.replaceChild(span, node);
-      lines.push(span);
-    }
-  });
-
-  var started = false;
-  function go() {
-    if (started) return;
-    started = true;
-    var anims = lines.map(function (line, i) {
-      return line.animate([{ fontStretch: "100%" }, { fontStretch: "112%" }], {
-        duration: 600,
-        delay: i * 120,
-        easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-        fill: "both",
-      });
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("animate" in Element.prototype)) return finish();
+  var words = h.querySelectorAll("b");
+  var anims = Array.prototype.map.call(words, function (w, i) {
+    return w.animate([{ fontWeight: 300 }, { fontWeight: 800 }], {
+      duration: 600,
+      delay: 200 + i * 160,
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      fill: "both",
     });
-    anims[anims.length - 1].onfinish = function () {
-      finish();
-      anims.forEach(function (a) {
-        a.cancel();
-      });
-    };
-  }
-  // Wait for the real font so the widening shows, but never long.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
-  setTimeout(function () {
-    if (!started) finish();
-  }, 1200);
+  });
+  anims[anims.length - 1].onfinish = function () {
+    finish();
+    anims.forEach(function (a) {
+      a.cancel();
+    });
+  };
 })();
 
 // Case-study headlines in two beats: the last sentence lands a moment after
 // the rest ("The advice was right." ... "The timing wasn't.").
 (function () {
   var h = document.querySelector(".hero__headline");
-  if (!h || h.hasAttribute("data-widen") || h.children.length) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("animate" in Element.prototype)) return;
+  if (!h || h.hasAttribute("data-emphasis") || h.children.length) return;
   var text = h.textContent;
   var cut = text.trim().replace(/[.!?]\s*$/, "").search(/[.!?]\s+[^.!?]+$/);
   if (cut === -1) return;
@@ -1216,8 +1253,84 @@
   beat.className = "hero__beat";
   beat.textContent = last;
   h.appendChild(beat);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("animate" in Element.prototype)) return;
   beat.animate(
     [{ opacity: 0.25, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }],
     { duration: 360, delay: 450, easing: "cubic-bezier(0.34, 1.4, 0.64, 1)", fill: "backwards" }
   );
+})();
+
+// The painter's seal (낙관). Court painters rarely signed chaekgeori screens;
+// some hid a seal in the painting. This one stamps onto the portrait once,
+// and tapping it tells the story.
+(function () {
+  var seal = document.querySelector(".seal--hero");
+  if (!seal) return;
+  var note = document.getElementById(seal.getAttribute("aria-controls"));
+  function setOpen(open) {
+    seal.setAttribute("aria-expanded", open ? "true" : "false");
+    note.hidden = !open;
+  }
+  seal.addEventListener("click", function (e) {
+    e.stopPropagation();
+    setOpen(note.hidden);
+  });
+  document.addEventListener("click", function (e) {
+    if (!note.hidden && !note.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !note.hidden) {
+      setOpen(false);
+      seal.focus();
+    }
+  });
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setTimeout(function () {
+      seal.classList.add("is-stamped");
+    }, 900);
+  }
+})();
+
+// Colophon: six seals stamp in one after another when the last compartment
+// comes into view. Six titles, one painter.
+(function () {
+  var colophon = document.querySelector(".colophon");
+  if (!colophon || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+  colophon.classList.add("is-pending");
+  var io = new IntersectionObserver(
+    function (items) {
+      if (!items[0].isIntersecting) return;
+      io.disconnect();
+      colophon.querySelectorAll(".seal--small").forEach(function (seal, i) {
+        setTimeout(function () {
+          seal.classList.add("is-stamped");
+        }, 150 + i * 140);
+      });
+      setTimeout(function () {
+        colophon.classList.remove("is-pending");
+      }, 150 + 6 * 140 + 300);
+    },
+    { threshold: 0.5 }
+  );
+  io.observe(colophon);
+})();
+
+// The sleeve completes: when you reach the start of the career (the last
+// role), the six-stripe band under the timeline fills in.
+(function () {
+  var sleeve = document.querySelector(".sleeve");
+  var entries = document.querySelectorAll(".timeline__entry[data-stage]");
+  if (!sleeve || !entries.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+  sleeve.classList.add("is-pending");
+  var io = new IntersectionObserver(
+    function (items) {
+      if (!items[0].isIntersecting) return;
+      io.disconnect();
+      sleeve.classList.remove("is-pending");
+    },
+    { threshold: 0.6 }
+  );
+  io.observe(entries[entries.length - 1]);
 })();

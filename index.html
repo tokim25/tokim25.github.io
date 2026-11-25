@@ -21,11 +21,8 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<meta name="theme-color" content="#f6f4ee" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Spline+Sans+Mono:wght@400;500&display=swap" />
-<link rel="stylesheet" href="styles.css?v=20261124-type" />
+<meta name="theme-color" content="#efe6d2" />
+<link rel="stylesheet" href="styles.css?v=20261125-chaekgeori" />
 </head>
 <body>
 
@@ -57,10 +54,14 @@
 
   <header class="hero" id="top">
     <div class="wrap">
-      <img src="assets/images/profile-tony-kim.jpg" alt="Tony Kim" class="hero__photo reveal" />
+      <div class="hero__portrait reveal">
+        <img src="assets/images/profile-tony-kim.jpg" alt="Tony Kim" class="hero__photo" />
+        <button type="button" class="seal seal--hero" aria-expanded="false" aria-controls="seal-note" aria-label="Seal: 김 (Kim). What is this?"><span aria-hidden="true">김</span></button>
+        <p class="seal-note" id="seal-note" hidden>Court painters rarely signed their screens. A few hid a seal in the painting instead. This one is mine.</p>
+      </div>
       <aside class="design-note"><span class="design-note__tag">Design note</span> Gain attention and state the objective. One headline carries the thesis, so a visitor who reads nothing else still has it.</aside>
       <p class="hero__eyebrow">Learning Architect</p>
-      <h1 class="hero__headline" data-widen>The right education,<br />at the right place,<br />at the right time.</h1>
+      <h1 class="hero__headline" data-emphasis>The right <b>education</b>,<br />at the right <b>place</b>,<br />at the right <b>time</b>.</h1>
       <p class="hero__sub">That's been my throughline for 14+ years, from Apple retail floors to Airbnb's 5.5M+ hosts to AI-enabled learning systems at Stripe. I turn ambiguous goals into learning strategy that moves the business.</p>
       <div class="hero__cta">
         <a href="#career" class="btn btn--primary">See the path</a>
@@ -85,23 +86,23 @@
     <div class="wrap">
       <aside class="design-note"><span class="design-note__tag">Design note</span> Give the learner a map. The stage key is an advance organizer: six stages first, then nine roles placed against them. Tapping a stage filters the roles, which puts the path in the visitor's hands.</aside>
       <p class="section__eyebrow">Career</p>
-      <h2 class="section__title">How I got here, one role at a time.</h2>
+      <h2 class="section__title">How I got here, <b>one role at a time.</b></h2>
       <p class="section__lede">I care about helping people become the best version of themselves. Facilitation showed me that happening in a room. Training made it repeatable. Instructional design built it in before the room even started. Leading a team changed the question from &ldquo;did this land&rdquo; to &ldquo;will it hold up when I'm not there,&rdquo; and that's what pulled me toward Learning Architect: building systems that put the right education at the right place at the right time.</p>
       <p class="section__lede">The mark next to each role below shows where it sits on that path. Tap a stage to see only those roles.</p>
 
       <div class="timeline__stage-key" role="group" aria-label="Filter roles by career stage">
-        <button type="button" class="timeline__stage-key-item" data-stage="1" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Facilitator</span></button>
-        <button type="button" class="timeline__stage-key-item" data-stage="2" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Training Specialist</span></button>
-        <button type="button" class="timeline__stage-key-item" data-stage="3" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Instructional Designer</span></button>
-        <button type="button" class="timeline__stage-key-item" data-stage="4" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>People Manager</span></button>
-        <button type="button" class="timeline__stage-key-item" data-stage="5" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/></svg><span>Education Strategist</span></button>
-        <button type="button" class="timeline__stage-key-item" data-stage="6" aria-pressed="false"><svg width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="currentColor" stroke-opacity=".3" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/></svg><span>Learning Architect</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="1" aria-pressed="false"><span class="stage__num">01</span><span class="stage__name">Facilitator</span><span class="stage__gloss">in the room</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="2" aria-pressed="false"><span class="stage__num">02</span><span class="stage__name">Training Specialist</span><span class="stage__gloss">made repeatable</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="3" aria-pressed="false"><span class="stage__num">03</span><span class="stage__name">Instructional Designer</span><span class="stage__gloss">built in before</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="4" aria-pressed="false"><span class="stage__num">04</span><span class="stage__name">People Manager</span><span class="stage__gloss">through others</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="5" aria-pressed="false"><span class="stage__num">05</span><span class="stage__name">Education Strategist</span><span class="stage__gloss">across the business</span></button>
+        <button type="button" class="timeline__stage-key-item" data-stage="6" aria-pressed="false"><span class="stage__num">06</span><span class="stage__name">Learning Architect</span><span class="stage__gloss">systems that hold</span></button>
       </div>
 
       <div class="timeline">
 
         <div class="timeline__entry reveal" data-stage="6">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--stage-3);opacity:.35"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--stage-4);opacity:.35"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--stage-5);opacity:.35"/><rect class="glyph__lit" x="0" y="-2" width="14" height="5" rx="1" style="fill:var(--stage-6)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Learning Architect</span>
@@ -109,13 +110,14 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Stripe</span>
               <span class="timeline__meta">Sep 2026 &mdash; Present</span>
+              <span class="timeline__stage" style="color:var(--stage-6-text)">Learning Architect</span>
             </div>
             <p class="timeline__desc">Combining learning experience design with product engineering skills to build the systems and platforms that meet Stripe employees at every stage &mdash; onboarding, leadership development.</p>
           </div>
         </div>
 
         <div class="timeline__entry reveal" data-stage="5">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--stage-3);opacity:.35"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--stage-4);opacity:.35"/><rect class="glyph__lit" x="0" y="3" width="14" height="5" rx="1" style="fill:var(--stage-5)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Education Strategist</span>
@@ -123,6 +125,7 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Airbnb</span>
               <span class="timeline__meta">Jul 2025 &mdash; Aug 2026</span>
+              <span class="timeline__stage" style="color:var(--stage-5-text)">Education Strategist</span>
             </div>
             <p class="timeline__desc">Led scaled host education across Airbnb's three lines of business &mdash; Homes, Experiences, and Services &mdash; reaching 5,000+ listings through in-product content, webinars, and toolkits.</p>
             <div class="timeline__cases">
@@ -133,7 +136,7 @@
         </div>
 
         <div class="timeline__entry reveal" data-stage="4">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--stage-3);opacity:.35"/><rect class="glyph__lit" x="0" y="8" width="14" height="5" rx="1" style="fill:var(--stage-4)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Manager, Host Education</span>
@@ -141,6 +144,7 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Airbnb</span>
               <span class="timeline__meta">Oct 2022 &mdash; Jul 2025</span>
+              <span class="timeline__stage" style="color:var(--stage-4-text)">People Manager</span>
             </div>
             <p class="timeline__desc">Led a distributed team of four education strategists. Scaled a pricing education program to 29% of the addressable host population, driving $24M+ in gross booking value.</p>
             <div class="timeline__cases">
@@ -151,7 +155,7 @@
         </div>
 
         <div class="timeline__entry reveal" data-stage="4">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--stage-3);opacity:.35"/><rect class="glyph__lit" x="0" y="8" width="14" height="5" rx="1" style="fill:var(--stage-4)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Manager, Instructional Design</span>
@@ -159,6 +163,7 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Workday</span>
               <span class="timeline__meta">Sep 2020 &mdash; Oct 2022</span>
+              <span class="timeline__stage" style="color:var(--stage-4-text)">People Manager</span>
             </div>
             <p class="timeline__desc">Directed instructional design for Workday's Product and Technology org, leading a team of 4 designers and 4 program managers.</p>
             <div class="timeline__cases">
@@ -168,7 +173,7 @@
         </div>
 
         <div class="timeline__entry reveal" data-stage="3">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect class="glyph__lit" x="0" y="13" width="14" height="5" rx="1" style="fill:var(--stage-3)"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Instructional Designer</span>
@@ -176,13 +181,14 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Meta</span>
               <span class="timeline__meta">Apr 2017 &mdash; Sep 2020</span>
+              <span class="timeline__stage" style="color:var(--stage-3-text)">Instructional Designer</span>
             </div>
             <p class="timeline__desc">Designed blended learning for Meta's Global Market Solutions org &mdash; sales reps, account managers, and client partners across SMB, agency, and global advertisers.</p>
           </div>
         </div>
 
         <div class="timeline__entry reveal" data-stage="3">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--stage-2);opacity:.35"/><rect class="glyph__lit" x="0" y="13" width="14" height="5" rx="1" style="fill:var(--stage-3)"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Senior Instructional Designer</span>
@@ -190,6 +196,7 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Pandora Media</span>
               <span class="timeline__meta">May 2014 &mdash; Apr 2017</span>
+              <span class="timeline__stage" style="color:var(--stage-3-text)">Instructional Designer</span>
             </div>
             <p class="timeline__desc">Designed learning across six domains for Pandora's Revenue Operations team and led a blended onboarding build for 300+ client services hires.</p>
             <div class="timeline__cases">
@@ -199,7 +206,7 @@
         </div>
 
         <div class="timeline__entry reveal" data-stage="1">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect class="glyph__lit" x="0" y="23" width="14" height="5" rx="1" style="fill:var(--stage-1)"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Technical Trainer</span>
@@ -207,13 +214,14 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Apple Inc.</span>
               <span class="timeline__meta">Nov 2012 &mdash; May 2014</span>
+              <span class="timeline__stage" style="color:var(--stage-1-text)">Facilitator</span>
             </div>
             <p class="timeline__desc">Delivered technical, product, and customer experience training to frontline call center staff supporting global app review and developer support.</p>
           </div>
         </div>
 
         <div class="timeline__entry reveal" data-stage="2">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect x="1" y="24" width="12" height="3" rx="1" style="fill:var(--stage-1);opacity:.35"/><rect class="glyph__lit" x="0" y="18" width="14" height="5" rx="1" style="fill:var(--stage-2)"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Training Specialist</span>
@@ -221,13 +229,14 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Nespresso</span>
               <span class="timeline__meta">Apr 2012 &mdash; Nov 2012</span>
+              <span class="timeline__stage" style="color:var(--stage-2-text)">Training Specialist</span>
             </div>
             <p class="timeline__desc">Built brand ambassador and hospitality training programs supporting retail and B2B channel expansion across the US.</p>
           </div>
         </div>
 
         <div class="timeline__entry reveal" data-stage="1">
-          <svg class="timeline__rung" width="16" height="24" viewBox="0 0 16 24" aria-hidden="true"><line x1="8" y1="1" x2="8" y2="23" stroke="#d9d6cc" stroke-width="1.3"/><line x1="3" y1="21" x2="13" y2="21" stroke="#0b6b5f" stroke-width="2.1" stroke-linecap="round"/><line x1="3" y1="17.4" x2="13" y2="17.4" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13.8" x2="13" y2="13.8" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10.2" x2="13" y2="10.2" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="6.6" x2="13" y2="6.6" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="3" stroke="#d9d6cc" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="timeline__rung" width="14" height="28" viewBox="0 0 14 28" aria-hidden="true"><rect class="glyph__lit" x="0" y="23" width="14" height="5" rx="1" style="fill:var(--stage-1)"/><rect x="1" y="19" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="14" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="9" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="4" width="12" height="3" rx="1" style="fill:var(--color-line)"/><rect x="1" y="-1" width="12" height="3" rx="1" style="fill:var(--color-line)"/></svg>
           <div class="timeline__body">
             <div class="timeline__head">
               <span class="timeline__role">Field Trainer</span>
@@ -235,11 +244,17 @@
             <div class="timeline__subhead">
               <span class="timeline__org">Apple Inc.</span>
               <span class="timeline__meta">Jan 2010 &mdash; Nov 2011</span>
+              <span class="timeline__stage" style="color:var(--stage-1-text)">Facilitator</span>
             </div>
             <p class="timeline__desc">Led field, train-the-trainer, and leadership training for retail staff and new store managers across multiple US locations.</p>
           </div>
         </div>
 
+      </div>
+
+      <div class="sleeve">
+        <div class="sleeve__band" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <p class="sleeve__caption">Six stages, 2010 to today.</p>
       </div>
 
       <p style="margin-top: var(--space-md);"><a href="resume.html" class="btn btn--text">Full resume</a></p>
@@ -250,7 +265,7 @@
     <div class="wrap">
       <aside class="design-note"><span class="design-note__tag">Design note</span> Worked examples. Every case study follows the same arc of problem, action and result, so you can compare projects without relearning the format.</aside>
       <p class="section__eyebrow">Case Studies</p>
-      <h2 class="section__title">A few of these, up close.</h2>
+      <h2 class="section__title">A few of these, <b>up close.</b></h2>
       <p class="section__lede">Here's what some of that actually looked like in practice, from an AI-assisted prototyping tool to a pricing education program reaching millions of hosts. Each one covers the problem I was handed, what I did about it, and what shipped.</p>
 
       <div class="path" role="group" aria-label="What are you hiring for?">
@@ -262,54 +277,73 @@
 
       <div class="case-grid">
 
-        <a href="case-studies/workprint.html" class="case-card reveal" data-tags="ai strategy">
+        <a href="case-studies/workprint.html" class="case-card reveal" data-band="indigo" data-tags="ai strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-workprint" aria-hidden="true"></span>
           <img src="assets/logos/workprint.svg" alt="Workprint" class="case-card__logo" style="view-transition-name: case-logo-workprint" />
           <p class="case-card__label">Product</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-workprint">Workprint</h3>
           <p class="case-card__desc">An AI-assisted tool for reconstructing project context, from product strategy through visual direction.</p>
         </a>
 
-        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal" data-tags="ai design strategy">
+        <a href="case-studies/intuit-analytics-ai.html" class="case-card reveal" data-band="ochre" data-tags="ai design strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-intuit-analytics-ai" aria-hidden="true"></span>
           <img src="assets/logos/intuit.svg" alt="Intuit" class="case-card__logo" style="view-transition-name: case-logo-intuit-analytics-ai" />
           <p class="case-card__label">Take-home assignment</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-intuit-analytics-ai">Intuit Analytics AI Job Aid</h3>
           <p class="case-card__desc">A learning strategy brief and job aid for Mailchimp's Analytics AI, built for Intuit's seasonal support agents as part of a job application, not internal production work.</p>
         </a>
 
-        <a href="case-studies/experiences-services.html" class="case-card reveal" data-tags="design strategy">
+        <a href="case-studies/experiences-services.html" class="case-card reveal" data-band="cinnabar" data-tags="design strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-experiences-services" aria-hidden="true"></span>
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" style="view-transition-name: case-logo-experiences-services" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-experiences-services">Airbnb Experiences</h3>
           <p class="case-card__desc">Launch education for a brand-new Airbnb business line, built around the product's own six-dimension rating system.</p>
         </a>
 
-        <a href="case-studies/5-star-hosting.html" class="case-card reveal" data-tags="design strategy">
+        <a href="case-studies/5-star-hosting.html" class="case-card reveal" data-band="cinnabar" data-tags="design strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-5-star-hosting" aria-hidden="true"></span>
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" style="view-transition-name: case-logo-5-star-hosting" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-5-star-hosting">5-Star Hosting</h3>
           <p class="case-card__desc">A learning series for Airbnb's Host Resource Center, mapped to the five real dimensions guests use to rate a stay.</p>
         </a>
 
-        <a href="case-studies/pricing.html" class="case-card reveal" data-tags="strategy">
+        <a href="case-studies/pricing.html" class="case-card reveal" data-band="cinnabar" data-tags="strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-pricing" aria-hidden="true"></span>
           <img src="assets/logos/airbnb.svg" alt="Airbnb" class="case-card__logo" style="view-transition-name: case-logo-pricing" />
           <p class="case-card__label">Learning Design</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-pricing">Pricing Your Place</h3>
           <p class="case-card__desc">Pricing education for Airbnb's Homes hosts. Reached 29% of the addressable host population and generated $24M+ in gross booking value.</p>
         </a>
 
-        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal" data-tags="strategy">
+        <a href="case-studies/workday-learning-needs-survey.html" class="case-card reveal" data-band="malachite" data-tags="strategy">
+          <span class="case-card__band" style="view-transition-name: case-band-workday-learning-needs-survey" aria-hidden="true"></span>
           <img src="assets/logos/workday.svg" alt="Workday" class="case-card__logo" style="view-transition-name: case-logo-workday-learning-needs-survey" />
           <p class="case-card__label">Research</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-workday-learning-needs-survey">Workday Learning Needs Survey</h3>
           <p class="case-card__desc">A 930+ respondent survey across 45+ job families, built into an FY23 learning and enablement roadmap.</p>
         </a>
 
-        <a href="case-studies/pandora-onboarding.html" class="case-card reveal" data-tags="design">
+        <a href="case-studies/pandora-onboarding.html" class="case-card reveal" data-band="yeonji" data-tags="design">
+          <span class="case-card__band" style="view-transition-name: case-band-pandora-onboarding" aria-hidden="true"></span>
           <img src="assets/logos/pandora.svg" alt="Pandora" class="case-card__logo" style="view-transition-name: case-logo-pandora-onboarding" />
           <p class="case-card__label">Program Design</p>
           <h3 class="case-card__title" style="view-transition-name: case-title-pandora-onboarding">Pandora Onboarding</h3>
           <p class="case-card__desc">A blended onboarding program for 300+ client services hires across the US and Australia.</p>
         </a>
+
+        <div class="colophon reveal">
+          <p class="colophon__line">Six titles. <b>One painter.</b></p>
+          <ul class="colophon__seals" aria-label="My six titles">
+            <li><span class="seal seal--small" style="--seal:var(--stage-1-text)" aria-hidden="true">김</span><span class="colophon__title">Facilitator</span></li>
+            <li><span class="seal seal--small" style="--seal:var(--stage-2-text)" aria-hidden="true">김</span><span class="colophon__title">Training Specialist</span></li>
+            <li><span class="seal seal--small" style="--seal:var(--stage-3-text)" aria-hidden="true">김</span><span class="colophon__title">Instructional Designer</span></li>
+            <li><span class="seal seal--small" style="--seal:var(--stage-4-text)" aria-hidden="true">김</span><span class="colophon__title">People Manager</span></li>
+            <li><span class="seal seal--small" style="--seal:var(--stage-5-text)" aria-hidden="true">김</span><span class="colophon__title">Education Strategist</span></li>
+            <li><span class="seal seal--small" style="--seal:var(--stage-6-text)" aria-hidden="true">김</span><span class="colophon__title">Learning Architect</span></li>
+          </ul>
+        </div>
 
       </div>
     </div>
@@ -318,7 +352,7 @@
   <section id="contact">
     <div class="wrap">
       <p class="section__eyebrow">Contact</p>
-      <h2 class="section__title">I'd like to hear from you.</h2>
+      <h2 class="section__title">I'd like to <b>hear from you.</b></h2>
 
       <p class="contact-links">
         <a href="mailto:tokim25@gmail.com">tokim25@gmail.com</a>
@@ -374,6 +408,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261124-type"></script>
+  <script src="script.js?v=20261125-chaekgeori"></script>
 </body>
 </html>
